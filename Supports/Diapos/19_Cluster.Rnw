@@ -1,0 +1,227 @@
+\documentclass{beamer}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Mathématiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux supplémentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% Nécessaires pour les tableaux de la macro Excel.
+
+% Outil supplémentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour insérer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour insérer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour insérer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En têtes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+
+% Pour insérer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les différents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\dfs}{\emph{data.frames}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\listes}{\emph{lists}\xspace}
+
+\newcommand{\factor}{\emph{factor}\xspace}
+\newcommand{\character}{\emph{character}\xspace}
+\newcommand{\logical}{\emph{logical}\xspace}
+
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+\subtitle{Clustering}
+
+<<echo=F>>=
+require(FactoMineR)
+options(width=50)
+#opts_chunk$set(height=3,fig.width=3,size="small")
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',fig.height=3.3,fig.width=3.3,out.width="\\textwidth")
+@
+
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Cluster}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Le principe}
+
+  Le principe est à partir des variables de calculer la distance entre individus
+  et de grouper les individus les plus proches.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Température}
+
+Nous utilisons toujours les données sur la température.
+
+<<>>=
+temp <- read.csv2("data/temp.csv")
+colnames(temp)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Préparation des données}
+
+Dans ce cas il faut centrer et réduire les données pour éviter les problèmes
+de différence d'unités.
+
+<<>>=
+numerics <- sapply(temp,is.numeric)
+for (ii in which(numerics))
+  temp[[ii]] <- scale(temp[[ii]])
+@ 
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Peut-on résumer les informations ?}
+
+<<>>=
+hcpc <- HCPC(temp[,1:12],nb.clust = 3)
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+	\frametitle{Résultats}
+
+Nous pouvons voir à la longueur des branches de l'arbre quelles sont les villes
+les plus proches les unes des autres. 
+
+Après l'algorithme nous propose une coupure optimale à 3 groupes.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Résultats}
+
+Nous avons 1 groupe qui réunit les villes les plus au sud, un cluster
+qui réunit les villes de Bretagne au climat peu continental avec 
+peu de variations entre les températures extrêmes et les villes au climat 
+plus continental et situé au nord de la Loire.
+  
+\end{frame}
+
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Résultats}
+  
+  Le clustering fait partie des méthodes de \emph{Machine Learning} qui 
+  permettent d'analyser les comportements consomnateurs et du profilage
+  des individus sur internet.
+
+\end{frame}
+
+
+  
+
+\end{document}
+

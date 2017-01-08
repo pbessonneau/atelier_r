@@ -1,0 +1,278 @@
+\documentclass{article}
+% \usetheme[compress]{Singapore}
+% \useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Math?matiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux suppl?mentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% N?cessaires pour les tableaux de la macro Excel.
+
+% Outil suppl?mentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour ins?rer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour ins?rer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour ins?rer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En t?tes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour ins?rer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les diff?rents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+%\subtitle{Les premières données}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+<<defaults,results='hide',echo=FALSE>>=
+require(MASS,quietly=T,warn.conflicts=FALSE)
+require(xtable,quietly=T,warn.conflicts=FALSE)
+require(stringr,quietly=T,warn.conflicts=FALSE)
+require(RSQLite,quietly=T,warn.conflicts=FALSE)
+require(foreign,quietly=T,warn.conflicts=FALSE)
+require(lubridate,quietly=T,warn.conflicts=FALSE)
+require(reshape2,quietly=T,warn.conflicts=FALSE)
+require(plyr,quietly=T,warn.conflicts=FALSE)
+require(dplyr,quietly=T,warn.conflicts=FALSE)
+require(knitr,quietly=T,warn.conflicts=FALSE)
+
+# suppressPackageStartupMessages(require(sp,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maptools,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(rgdal,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maps,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(dplyr,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(ggplot2,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(jsonlite,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(RColorBrewer,quietly=T,warn.conflicts=FALSE))
+
+suppressPackageStartupMessages(require(XLConnect,quietly=T,warn.conflicts=FALSE))
+
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',
+               fig.height=7,fig.width=7,out.width="\\textwidth",resize.height="0.6\\textheight",
+               tidy=FALSE,prompt=TRUE,eval=FALSE
+               )
+
+options(width=45)
+
+correction <- TRUE
+
+
+@
+
+\begin{document}
+
+
+\section{Les tracés pour chaque épidémie en 2014/2015}
+
+
+\section{Superposition des épisodes épidémiques}
+
+Les questions de cet exercice sont les suivantes~:
+
+\begin{enumerate}
+  \item Importer les données "Openhealth" pour les trois maladies
+  \item Fusionner les tableaux pour l'année pour n'en faire plus qu'un avec 
+  une variable par maladie (seulement pour l'année 2014/2015).
+  \item La fusion va permettre de représenter graphiquement l'incidence des
+  maladies sur un même graphique mois par mois
+\end{enumerate}
+  
+  
+<<import,echo=correction>>=
+gale <- read.csv2("data/maladies/Openhealth_Gale_Regions.csv",stringsAsFactors = F)
+poux <- read.csv2("data/maladies/Openhealth_poux_Regions.csv",stringsAsFactors = F)
+grippe <- read.csv2("data/maladies/Openhealth_S-Grippal_Regions.csv",stringsAsFactors = F)
+
+@
+
+<<Renommage,echo=correction>>=
+gale$gale_2014_2015 <- gale$Sais_2014_2015
+poux$poux_2014_2015 <- poux$Sais_2014_2015
+grippe$grippe_2014_2015 <- grippe$Sais_2014_2015
+@
+
+<<fusion,echo=correction>>=
+fusion <- merge(gale[,c("PERIODE","gale_2014_2015")],poux[,c("PERIODE","poux_2014_2015")],all=T)
+dim(gale);dim(poux);dim(fusion)
+@
+
+<<fusion2,echo=correction>>=
+fusion <- merge(fusion,grippe[,c("PERIODE","grippe_2014_2015")],all=T)
+dim(fusion);dim(grippe);dim(fusion)
+@
+
+<<nettoyage,echo=correction>>=
+fusion <- fusion[!is.na(fusion$gale_2014_2015),]
+
+fusion$date <- dmy(fusion$PERIODE)
+@
+
+<<plotting,echo=correction>>=
+ylim <- range( c(fusion$gale_2014_2015,fusion$grippe_2014_2015,fusion$poux_2014_2015) )
+
+fusion <- fusion[order(fusion$date),]
+
+plot(fusion$date, fusion$gale_2014_2015, col = "black", type="l", ylim=ylim)
+lines(fusion$date, fusion$grippe_2014_2015, col = "red")
+lines(fusion$date, fusion$poux_2014_2015, col = "blue")
+@
+
+
+\section{Représentation graphique des courbes épidémiques de la grippe pour toutes les années}
+
+\subsection{Partie 1}
+
+Les questions de cet exercice sont les suivantes~:
+
+\begin{enumerate}
+  \item Couper la variable PERIODE pour enlever l'année
+  \item Représenter deux années sur un même graphique
+  \item Faire une boucle pour représenter toutes les années
+\end{enumerate}
+  
+
+
+<<echo=correction>>=
+grippe <- grippe[!is.na(grippe$Sais_2014_2015),]
+grippe$date <- substr(grippe$PERIODE,1,5)
+
+vars <- c("Sais_2014_2015","Sais_2013_2014","Sais_2012_2013","Sais_2011_2012", "Sais_2010_2011")
+
+ylim <- c()
+for (var in vars)
+  ylim <- range(c(ylim,grippe[[var]]),na.rm=T)
+
+couleurs <- rev(brewer.pal(length(vars),"YlOrBr"))
+
+plot(1:nrow(grippe),rep(0,nrow(grippe)),type="n",ylab="indice",xlab="date",main="Grippe",ylim=ylim)
+
+for (var in 1:length(vars))
+  lines(grippe[[vars[var]]],col=couleurs[[var]])
+
+legend("topright",vars,pch=20,col=couleurs)
+@
+
+
+\section{Partie 2 (avancée)}
+
+Le but est de repérer les valeurs moyennes et maximums pour chaque saisons.
+
+Comme il y a plusieurs variables, on préfère utiliser \emph{melt} pour n'avoir qu'une
+variable. 
+
+Puis on utilise \emph{ddply} pour calculer les statistiques pour chaque saison.
+
+<<moyennes_etc,echo=correction>>=
+grippe2 <- grippe
+
+grippe2 <- grippe[,grep("Sais_|date",colnames(grippe2))]
+colnames(grippe2)
+
+grippem <- melt(grippe2,id.vars=c("date"))
+
+colnames(grippem)
+
+grippem %>% group_by(variable) %>%
+  summarize(
+      mean=mean(value,na.rm=T),
+      sd=sd(value,na.rm=T),
+      max=max(value,na.rm=T)
+  )
+
+@
+
+\end{document}

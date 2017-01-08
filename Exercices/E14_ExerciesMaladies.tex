@@ -1,0 +1,325 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+% \usetheme[compress]{Singapore}
+% \useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Math?matiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux suppl?mentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% N?cessaires pour les tableaux de la macro Excel.
+
+% Outil suppl?mentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour ins?rer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour ins?rer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour ins?rer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En t?tes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour ins?rer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les diff?rents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+%\subtitle{Les premières données}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+\section{Les tracés pour chaque épidémie en 2014/2015}
+
+
+\section{Superposition des épisodes épidémiques}
+
+Les questions de cet exercice sont les suivantes~:
+
+\begin{enumerate}
+  \item Importer les données "Openhealth" pour les trois maladies
+  \item Fusionner les tableaux pour l'année pour n'en faire plus qu'un avec 
+  une variable par maladie (seulement pour l'année 2014/2015).
+  \item La fusion va permettre de représenter graphiquement l'incidence des
+  maladies sur un même graphique mois par mois
+\end{enumerate}
+  
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{gale} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(}\hlstr{"data/maladies/Openhealth_Gale_Regions.csv"}\hlstd{,}\hlkwc{stringsAsFactors} \hlstd{= F)}
+\hlstd{> }\hlstd{poux} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(}\hlstr{"data/maladies/Openhealth_poux_Regions.csv"}\hlstd{,}\hlkwc{stringsAsFactors} \hlstd{= F)}
+\hlstd{> }\hlstd{grippe} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(}\hlstr{"data/maladies/Openhealth_S-Grippal_Regions.csv"}\hlstd{,}\hlkwc{stringsAsFactors} \hlstd{= F)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{gale}\hlopt{$}\hlstd{gale_2014_2015} \hlkwb{<-} \hlstd{gale}\hlopt{$}\hlstd{Sais_2014_2015}
+\hlstd{> }\hlstd{poux}\hlopt{$}\hlstd{poux_2014_2015} \hlkwb{<-} \hlstd{poux}\hlopt{$}\hlstd{Sais_2014_2015}
+\hlstd{> }\hlstd{grippe}\hlopt{$}\hlstd{grippe_2014_2015} \hlkwb{<-} \hlstd{grippe}\hlopt{$}\hlstd{Sais_2014_2015}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{fusion} \hlkwb{<-} \hlkwd{merge}\hlstd{(gale[,}\hlkwd{c}\hlstd{(}\hlstr{"PERIODE"}\hlstd{,}\hlstr{"gale_2014_2015"}\hlstd{)],poux[,}\hlkwd{c}\hlstd{(}\hlstr{"PERIODE"}\hlstd{,}\hlstr{"poux_2014_2015"}\hlstd{)],}\hlkwc{all}\hlstd{=T)}
+\hlstd{> }\hlkwd{dim}\hlstd{(gale);}\hlkwd{dim}\hlstd{(poux);}\hlkwd{dim}\hlstd{(fusion)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{fusion} \hlkwb{<-} \hlkwd{merge}\hlstd{(fusion,grippe[,}\hlkwd{c}\hlstd{(}\hlstr{"PERIODE"}\hlstd{,}\hlstr{"grippe_2014_2015"}\hlstd{)],}\hlkwc{all}\hlstd{=T)}
+\hlstd{> }\hlkwd{dim}\hlstd{(fusion);}\hlkwd{dim}\hlstd{(grippe);}\hlkwd{dim}\hlstd{(fusion)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{fusion} \hlkwb{<-} \hlstd{fusion[}\hlopt{!}\hlkwd{is.na}\hlstd{(fusion}\hlopt{$}\hlstd{gale_2014_2015),]}
+\hlstd{> }
+\hlstd{> }\hlstd{fusion}\hlopt{$}\hlstd{date} \hlkwb{<-} \hlkwd{dmy}\hlstd{(fusion}\hlopt{$}\hlstd{PERIODE)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{ylim} \hlkwb{<-} \hlkwd{range}\hlstd{(} \hlkwd{c}\hlstd{(fusion}\hlopt{$}\hlstd{gale_2014_2015,fusion}\hlopt{$}\hlstd{grippe_2014_2015,fusion}\hlopt{$}\hlstd{poux_2014_2015) )}
+\hlstd{> }
+\hlstd{> }\hlstd{fusion} \hlkwb{<-} \hlstd{fusion[}\hlkwd{order}\hlstd{(fusion}\hlopt{$}\hlstd{date),]}
+\hlstd{> }
+\hlstd{> }\hlkwd{plot}\hlstd{(fusion}\hlopt{$}\hlstd{date, fusion}\hlopt{$}\hlstd{gale_2014_2015,} \hlkwc{col} \hlstd{=} \hlstr{"black"}\hlstd{,} \hlkwc{type}\hlstd{=}\hlstr{"l"}\hlstd{,} \hlkwc{ylim}\hlstd{=ylim)}
+\hlstd{> }\hlkwd{lines}\hlstd{(fusion}\hlopt{$}\hlstd{date, fusion}\hlopt{$}\hlstd{grippe_2014_2015,} \hlkwc{col} \hlstd{=} \hlstr{"red"}\hlstd{)}
+\hlstd{> }\hlkwd{lines}\hlstd{(fusion}\hlopt{$}\hlstd{date, fusion}\hlopt{$}\hlstd{poux_2014_2015,} \hlkwc{col} \hlstd{=} \hlstr{"blue"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\section{Représentation graphique des courbes épidémiques de la grippe pour toutes les années}
+
+\subsection{Partie 1}
+
+Les questions de cet exercice sont les suivantes~:
+
+\begin{enumerate}
+  \item Couper la variable PERIODE pour enlever l'année
+  \item Représenter deux années sur un même graphique
+  \item Faire une boucle pour représenter toutes les années
+\end{enumerate}
+  
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{grippe} \hlkwb{<-} \hlstd{grippe[}\hlopt{!}\hlkwd{is.na}\hlstd{(grippe}\hlopt{$}\hlstd{Sais_2014_2015),]}
+\hlstd{> }\hlstd{grippe}\hlopt{$}\hlstd{date} \hlkwb{<-} \hlkwd{substr}\hlstd{(grippe}\hlopt{$}\hlstd{PERIODE,}\hlnum{1}\hlstd{,}\hlnum{5}\hlstd{)}
+\hlstd{> }
+\hlstd{> }\hlstd{vars} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Sais_2014_2015"}\hlstd{,}\hlstr{"Sais_2013_2014"}\hlstd{,}\hlstr{"Sais_2012_2013"}\hlstd{,}\hlstr{"Sais_2011_2012"}\hlstd{,} \hlstr{"Sais_2010_2011"}\hlstd{)}
+\hlstd{> }
+\hlstd{> }\hlstd{ylim} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+\hlstd{> }\hlkwa{for} \hlstd{(var} \hlkwa{in} \hlstd{vars)}
+\hlstd{+ }  \hlstd{ylim} \hlkwb{<-} \hlkwd{range}\hlstd{(}\hlkwd{c}\hlstd{(ylim,grippe[[var]]),}\hlkwc{na.rm}\hlstd{=T)}
+\hlstd{> }
+\hlstd{> }\hlstd{couleurs} \hlkwb{<-} \hlkwd{rev}\hlstd{(}\hlkwd{brewer.pal}\hlstd{(}\hlkwd{length}\hlstd{(vars),}\hlstr{"YlOrBr"}\hlstd{))}
+\hlstd{> }
+\hlstd{> }\hlkwd{plot}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{nrow}\hlstd{(grippe),}\hlkwd{rep}\hlstd{(}\hlnum{0}\hlstd{,}\hlkwd{nrow}\hlstd{(grippe)),}\hlkwc{type}\hlstd{=}\hlstr{"n"}\hlstd{,}\hlkwc{ylab}\hlstd{=}\hlstr{"indice"}\hlstd{,}\hlkwc{xlab}\hlstd{=}\hlstr{"date"}\hlstd{,}\hlkwc{main}\hlstd{=}\hlstr{"Grippe"}\hlstd{,}\hlkwc{ylim}\hlstd{=ylim)}
+\hlstd{> }
+\hlstd{> }\hlkwa{for} \hlstd{(var} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(vars))}
+\hlstd{+ }  \hlkwd{lines}\hlstd{(grippe[[vars[var]]],}\hlkwc{col}\hlstd{=couleurs[[var]])}
+\hlstd{> }
+\hlstd{> }\hlkwd{legend}\hlstd{(}\hlstr{"topright"}\hlstd{,vars,}\hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{,}\hlkwc{col}\hlstd{=couleurs)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\section{Partie 2 (avancée)}
+
+Le but est de repérer les valeurs moyennes et maximums pour chaque saisons.
+
+Comme il y a plusieurs variables, on préfère utiliser \emph{melt} pour n'avoir qu'une
+variable. 
+
+Puis on utilise \emph{ddply} pour calculer les statistiques pour chaque saison.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{grippe2} \hlkwb{<-} \hlstd{grippe}
+\hlstd{> }
+\hlstd{> }\hlstd{grippe2} \hlkwb{<-} \hlstd{grippe[,}\hlkwd{grep}\hlstd{(}\hlstr{"Sais_|date"}\hlstd{,}\hlkwd{colnames}\hlstd{(grippe2))]}
+\hlstd{> }\hlkwd{colnames}\hlstd{(grippe2)}
+\hlstd{> }
+\hlstd{> }\hlstd{grippem} \hlkwb{<-} \hlkwd{melt}\hlstd{(grippe2,}\hlkwc{id.vars}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"date"}\hlstd{))}
+\hlstd{> }
+\hlstd{> }\hlkwd{colnames}\hlstd{(grippem)}
+\hlstd{> }
+\hlstd{> }\hlstd{grippem} \hlopt{%>%} \hlkwd{group_by}\hlstd{(variable)} \hlopt{%>%}
+\hlstd{+ }  \hlkwd{summarize}\hlstd{(}
+\hlstd{+ }      \hlkwc{mean}\hlstd{=}\hlkwd{mean}\hlstd{(value,}\hlkwc{na.rm}\hlstd{=T),}
+\hlstd{+ }      \hlkwc{sd}\hlstd{=}\hlkwd{sd}\hlstd{(value,}\hlkwc{na.rm}\hlstd{=T),}
+\hlstd{+ }      \hlkwc{max}\hlstd{=}\hlkwd{max}\hlstd{(value,}\hlkwc{na.rm}\hlstd{=T)}
+\hlstd{+ }  \hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{document}

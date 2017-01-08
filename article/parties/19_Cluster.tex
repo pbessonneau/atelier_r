@@ -1,0 +1,93 @@
+\section{Cluster}
+
+	\subsection{Le principe}
+
+  Le principe est à partir des variables de calculer la distance entre individus
+  et de grouper les individus les plus proches.
+  
+
+	\subsection{Température}
+
+Nous utilisons toujours les données sur la température.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{temp} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(}\hlstr{"data/temp.csv"}\hlstd{)}
+\hlkwd{colnames}\hlstd{(temp)}
+\end{alltt}
+\begin{verbatim}
+##  [1] "Ville"     "Janvier"   "Fevrier"  
+##  [4] "Mars"      "Avril"     "Mai"      
+##  [7] "Juin"      "Juillet"   "Aout"     
+## [10] "Septembre" "Octobre"   "Novembre" 
+## [13] "Decembre"  "lati"      "long"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+	\subsection{Préparation des données}
+
+Dans ce cas il faut centrer et réduire les données pour éviter les problèmes
+de différence d'unités.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{numerics} \hlkwb{<-} \hlkwd{sapply}\hlstd{(temp,is.numeric)}
+\hlkwa{for} \hlstd{(ii} \hlkwa{in} \hlkwd{which}\hlstd{(numerics))}
+  \hlstd{temp[[ii]]} \hlkwb{<-} \hlkwd{scale}\hlstd{(temp[[ii]])}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+  \subsection{Peut-on résumer les informations ?}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{hcpc} \hlkwb{<-} \hlkwd{HCPC}\hlstd{(temp[,}\hlnum{1}\hlopt{:}\hlnum{12}\hlstd{],}\hlkwc{nb.clust} \hlstd{=} \hlnum{3}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in FUN(data[x, , drop = FALSE], ...): 'x' doit être numérique}}\end{kframe}
+
+{\centering \includegraphics[width=\textwidth]{graphiques/beamer-unnamed-chunk-4-1} 
+
+}
+
+
+
+\end{knitrout}
+
+
+
+	\subsection{Résultats}
+
+Nous pouvons voir à la longueur des branches de l'arbre quelles sont les villes
+les plus proches les unes des autres. 
+
+Après l'algorithme nous propose une coupure optimale à 3 groupes.
+
+
+
+Nous avons 1 groupe qui réunit les villes les plus au sud, un cluster
+qui réunit les villes de Bretagne au climat peu continental avec 
+peu de variations entre les températures extrêmes et les villes au climat 
+plus continental et situé au nord de la Loire.
+  
+
+
+
+  
+  Le clustering fait partie des méthodes de \emph{Machine Learning} qui 
+  permettent d'analyser les comportements consomnateurs et du profilage
+  des individus sur internet.
+
+
+
+  
+
+

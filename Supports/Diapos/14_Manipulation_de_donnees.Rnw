@@ -1,0 +1,1030 @@
+\documentclass{beamer}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Mathématiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux supplémentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% Nécessaires pour les tableaux de la macro Excel.
+
+% Outil supplémentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour insérer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour insérer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+  \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+\lstset{breaklines=true}  % marche pas
+
+% Pour insérer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En têtes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour insérer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les différents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\dfs}{\emph{data.frames}\xspace}
+
+
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\factor}{\emph{factor}\xspace}
+\newcommand{\character}{\emph{character}\xspace}
+\newcommand{\logical}{\emph{logical}\xspace}
+
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+
+\subtitle{Manipulations de données}
+
+
+<<defaults,results='hide',echo=FALSE>>=
+require(MASS,quietly=T,warn.conflicts=FALSE)
+require(xtable,quietly=T,warn.conflicts=FALSE)
+require(stringr,quietly=T,warn.conflicts=FALSE)
+require(plyr,quietly=T,warn.conflicts=FALSE)
+require(reshape2,quietly=T,warn.conflicts=FALSE)
+#require(SweaveListingUtils,quietly=TRUE,warn.conflicts=FALSE)
+
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',
+               fig.height=7,fig.width=7,out.width="\\textwidth",resize.height="0.8\\textheight",
+               tidy=FALSE,prompt=TRUE
+               )
+options(width=50)
+
+xtfme <- read.csv("data/Xtfme_score.csv",strings=F)
+xtfmc <- read.csv("data/Xtfmc_score.csv",strings=F)
+
+eleves <- read.csv2("data/evaluation-eleves.csv")
+eleves$id <- as.character( eleves$id )
+scores <- read.csv2("data/evaluation-scores.csv")
+scores$id <- as.character( scores$id )
+@
+
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Concaténation de données (merge)}
+
+\begin{frame}[containsverbatim]
+  \frametitle{A ne pas faire (ou avec prudence)}
+  
+  R permet de concaténer des lignes (\textit{rbind}), des colonnes (\textit{cbind}), des \dfs (mêmes fonctions) ensemble. Toutefois il convient d'utiliser avec sagesse cette fonctionnalité.
+  
+  Si en sciences expérimentales faire une fusion de table avec une simple concaténation est très pratique, cette opération n'est pas raisonnable sur des tables plus complexes et surtout sur des tables contenant des identifiants qui permettent de réaliser une fusion plutôt qu'une concaténation.
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{A ne pas faire (ou avec prudence)}
+
+  En tout cas dès que \textit{cbind} est utilisé il faut vérifier~: 
+     \begin{itemize}
+       \item que les deux tableaux ont la même taille
+       \item chaque ligne identifie une observation 
+       \item que les observations sont strictement dans le même ordre dans les deux tableaux
+     \end{itemize}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{A ne pas faire (ou avec prudence)}
+
+  En tout cas dès que \textit{rbind} est utilisé il faut vérifier~: 
+\begin{itemize}
+  \item que le nombre de colonnes sont identiques
+   \item que le type de chaque colonnes sont identiques
+\end{itemize}
+
+  \textit{rbind} est un peu plus sûr car R généralement refuse d'opérer en cas de différence de noms et/ou de types de variables dans les deux tableaux de données.
+  
+\end{frame}
+
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{A ne pas faire (ou avec prudence)}
+
+  \textit{rbind} s'avère quand même pratique si on souhaite travailler par exemple sur une base
+public et une privé... et réassembler le tout à la fin du traitement.
+
+  C'est typiquement le cas par exemple quand on utilise \textit{split}.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusion avec une seule variable}
+  
+  Ce cas est en fait beaucoup plus fréquent qu'il n'y parait. On veux par exemple ajouter une variable avec une couleur pour les graphiques, le nombre d'élèves dans l'établissement, \dots
+  
+  Et ce type de fusion se fait avec un vecteur. 
+  
+<<SingleCouleur>>=
+couleurs <- c( "red", "green", "blue" )
+names(couleurs) <- levels(iris$Species)
+iris$couleur <- couleurs[as.character(iris$Species)]
+with( iris, table(couleur,Species) )
+@
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusion avec une seule variable}
+
+  Un exemple numérique, si on veut ajouter la longueur moyenne par espèce pour les orchidées~:
+  
+<<SingleMoy>>=
+longueur_par_spe <- tapply( iris$Sepal.Length, iris$Species, mean )
+iris$Sepal.Length.Moy <- longueur_par_spe[as.character(iris$Species)]
+with( iris, table(Sepal.Length.Moy,Species) )
+@
+  
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+La fonction \emph{merge} dans R permet de fusionner des tables avec un
+identifiant (clef) commun entre les tables.
+
+La fusion peut être réalisée en utilisant des variables \emph{factor}
+mais il est préférable de les transformer variable \emph{character} avant la fusion.
+
+Les fusions possibles sont des fusions de 1 à 1 ou de 1 à n.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  \begin{table}[h!]
+  \scalebox{0.8}{
+    \begin{tabular}{lp{10cm}}
+  { \bfseries x, y } & les 2 \emph{data.frames} que l'on veut fusionner\\
+  { \bfseries by } & si la variable porte le même nom dans les deux \emph{data.frame},
+  il suffit de préciser le nom de la variable précédé de \emph{by}\\
+  { \bfseries by.x, by.y } & dans ce cas on spécifie le nom de la
+  colonne pour \emph{x} (la première \emph{data.frame} et pour \emph{y}
+  (la deuxième).\\
+  \end{tabular}
+  }
+  \caption[position=bottom]{Les principaux arguments de \emph{merge}}
+  \end{table}
+  
+  Voilà l'essentiel de la fonction.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  Il faut noter qu'on a la possibilité de fusionner les tables non pas en utilisant le nom d'une variable de la \df mais les \emph{row.names}. Dans ce cas, l'argument que l'on passe à \emph{by}
+  est \emph{'row.names'}.
+
+<<mergesimple>>=
+res <- merge( eleves, scores, by="id" )
+dim(res)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  Dans le cas de l'utilisation des rownames~:
+
+<<mergerow>>=
+rownames(eleves) <- eleves$id
+rownames(scores) <- scores$id
+
+res <- merge( eleves, scores, by="row.names" )
+dim(res)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  Après la fusion, la fonction utile est \emph{dim} qui donne le nombre de lignes et de colonnes~:
+  
+<<MErgeDim>>=
+dim(eleves);dim(scores);dim(res)
+colnames(res)
+@  
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  La fonction \emph{merge} effectue une jointure naturelle. C'est-à-dire que seules les lignes présentes dans \emph{x} et dans \emph{y} seront présentes dans la \df finale.
+
+  Pour changer ce comportement, il existe trois arguments \emph{all}
+
+  \begin{table}
+  \begin{tabular}{lp{10cm}}
+  all & Si vrai alors toutes les lignes des deux \emph{data.frame}
+  seront conservées dans la \emph{data.frame} finale.\\
+  all.x & Si \emph{TRUE} alors toutes les lignes de la \emph{data.frame x}
+  seront conservées dans la \emph{data.frame} finale. Les lignes de
+  \emph{y} ne trouvant pas de correspondance seront éliminées.\\
+  all.y & Si \emph{TRUE} alors toutes les lignes de la \emph{data.frame x}
+  seront conservées dans la \emph{data.frame} finale. Les lignes de
+  \emph{y} ne trouvant pas de correspondance seront éliminées.\\
+  \end{tabular}
+  \caption[position=bottom]{Le type de jointure}
+  \end{table}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  \textbf{Jointure naturelle}
+
+<<naturelle>>=
+conatif <- read.csv2( "data/evaluation-conatif.csv" )
+conatif$id <- as.character( conatif$id )
+dim(conatif)
+
+ec <- merge( eleves, conatif, by="id" )
+dim(ec)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  \textbf{Fusion à gauche}
+
+<<agauche>>=
+ec <- merge( eleves, conatif, by="id", all.x = T )
+dim(ec)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  Si des colonnes de \emph{x} et de \emph{y} portent le
+  même nom, les colonnes provenant de \emph{x} seront suffixés avec
+  \emph{x}. Et pour \emph{y}, la colonne sera suffixés par \emph{y}.
+
+  Il est possible de spécifier des suffixes personnalisés plutôt que ces
+  suffixes par défaut avec l'argument \emph{suffixes}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  Il attends un vecteur \emph{character} de longueur 2 comme par exemple...
+
+<<suffixes>>=
+res <- merge( eleves, scores, by="row.names", 
+              suffixes=c(".eleves",".scores" ) 
+              )
+dim(res)
+colnames(res)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  Pour trouver les lignes qui n'ont pas été importées...
+  
+  La syntaxe et très simple et fait appel à l'opérateur \emph{\%in\%}.
+  
+  Ici on cherche les lignes, de \emph{eleves} pour lesquelles il n'y a pas de données pour la partie conative.
+
+<<manquants>>=
+res <- merge( eleves, conatif, by="id", all.x=T )
+(perdus <- res$id[ !(res$id %in% conatif$id) ])
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Fusions avec merge}
+
+  Il est possible de spécifier un vecteur de noms de variables pour l'argument \emph{by}.
+  
+  Mais les identifiants composite ne sont pas conseillés (dans l'absolu).
+
+\end{frame}
+
+
+\section{Un mot sur les fonctions\dots}
+
+\begin{frame}[containsverbatim]
+  \frametitle{R langage fonctionnel}
+
+  R est un langage fonctionnel. Si cela signifie que "tout est fonction dans R", cela signifie également qu'il faut privilégier le traitement des vecteurs au détriment des boucles. 
+  
+  Au début cela peut paraître contre-intuitif mais cela permet souvent de gagner en vitesse d'exécution, en possibilité de rendre le calcul parallèle et en lisibilité (si si...).
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{R langage fonctionnel}
+
+  Par exemple, sur un vecteur, il doit vous paraître évident que~:
+  
+<<vec>>=
+x <- 1:4
+x*4
+# n'est autre que l'équivalent implicite de 
+vreponse <- c()
+for ( ii in 1:length(x) ) vreponse <- c( vreponse, x[ii]*4 )
+vreponse
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{R langage fonctionnel}
+
+  L'utilisation et la production de statistiques va en grande partie utilisé ce principe illustré ici par un vecteur mais qui est utilisé dans les fonctions de type apply sur des objets plus complexes.
+  
+  Ici on utilise l'opérateur de multiplication qui est une fonction parmi d'autres.
+  
+<<FnMult>>=
+"*"(3,4)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{R langage fonctionnel}
+
+  Cela oblige à savoir utiliser les fonctions sous R. La définition se fait avec la syntaxe suivante~:
+  
+<<FNSyntaxe,eval=FALSE>>=
+mafonction <- function ( arg1, arg2, arg3=F, ... ) {
+  # code
+}
+@
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{R langage fonctionnel}
+
+  Mais souvent, dans les opérations de manipulations de données, 
+  des fonctions \textit{anonymes} seront utilisées. 
+  
+  C'est-à-dire directement des fonctions~: sans nom, jetables.
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{R langage fonctionnel}
+
+  Cela ressemble à ça par exemple~:
+  
+<<Lambdas>>=
+apply(iris[1:4],2,function(x){
+  c(mean(x),sd(x))
+})
+@
+
+\end{frame}
+
+\section{Aggrégation de données}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Considérations sur les aggrégations}
+  
+  Contrairement à d'autres logiciels, R peut paraître strict voire pénible lors 
+  des aggrégations. En fait, la pratique de R permet de réaliser que R impose 
+  cette syntaxe notamment pour éviter de réaliser des regroupements n'ayant pas 
+  de sens.
+  
+  Une exemple simple, cette requête SQL peut tout à fait renvoyer un résultat 
+  valide~:
+  
+\begin{verbatim}  
+SELECT *, uai FROM base_eleves GROUP BY uai ;
+\end{verbatim}
+
+Hors le sexe de l'élève, présent dans la ligne élève, va devenir une variable vide de sens. En effet elle a un sens au niveau individuel mais pas au niveau d'un établissement. 
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Considérations sur les aggrégations}
+  
+  R va rendre difficile ce type d'aggrégation. 
+  
+  L'aggrégation ne sera possible que si on obtient un vecteur cohérent avant aggrégation.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Pourquoi aggréger ?}
+  
+  Il existe de nombreuses façons d'aggréger des données sous R. L'utilisation de chacune dépend des goûts de chacun et surtout de la finalité de l'aggrégation.
+  
+  Par exemple, l'aggrégation peut servir à\dots
+  
+  \begin{itemize}
+    \item créer un enregistrement pour constituer un unité plus grande que celle d'origine (ex~: passer élève à établissement)
+    \item créer des statistiques pour des unités plus importantes (ex~: établissement, pays, \dots)
+    \item \dots
+  \end{itemize}
+  
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Aggrégations statistiques}
+  
+  Beaucoup de statistiques peuvent réalisées avec certaines fonctions de R qui appartiennet à la famille \emph{apply}.
+  
+  Par exemple, \emph{tapply} permet de réaliser des regroupements en fonction d'une ou plusieurs variables en calculant des statistiques sur une variable.
+  
+<<tapply1>>=
+res <- with( xtfme, tapply( vali_f, num_etab, mean, na.rm=T ) )
+res[1:5]
+@
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Aggrégations statistiques}
+  
+  Dans le cas précédent, on demande la moyenne (vecteur de longueur 1) et un variable de regroupement.  Mais \emph{tapply} permet de faire des choses plus complexes. Dans ce cas, il y a un résultat par croisement de modalité. Ce qui donne un tableau.
+    
+<<tapply2>>=
+with( xtfme, tapply( 
+  vali_f, 
+  list( strate=strate, sexe=sexe ), 
+  mean, 
+  na.rm=T
+  ) 
+)
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Aggrégations statistiques}
+  
+  C'est la limite (ou la puissance) de tapply. On peut ainsi s'amuser à obtenir des tableaux à k dimensions pour k variables de regroupement.
+    
+    Inversement on peut être limité par le nombre de valeurs renvoyées par la fonction de calcul.
+    
+<<tapply3,eval=FALSE>>=
+with( xtfme, tapply( 
+  vali_f, 
+  list(strate=strate), 
+  function(x,na.rm=T) { 
+    c( mean(x,na.rm=na.rm), sd(x,na.rm=na.rm) ) 
+    } 
+  ) 
+)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Aggrégations statistiques}
+  
+<<tapply4,echo=FALSE>>=
+with( xtfme, tapply( 
+  vali_f, 
+  list(strate=strate), 
+  function(x,na.rm=T) { 
+    c( mean(x,na.rm=na.rm), sd(x,na.rm=na.rm) ) 
+    } 
+  ) 
+)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Aggrégations statistiques}
+
+  Deux illustrations pour calculer le nombre d'élèves dans chaque strate~:
+
+<<count1>>=
+with(xtfme, tapply( rep(1,length(strate)), strate, sum) )
+with(xtfme, tapply( num_etab, strate, length) )
+@
+
+  et pour les poids\dots
+  
+<<poids>>=
+with(xtfme, tapply( poids, strate, sum) )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Aggrégations statistiques}
+
+  La fonction \emph{aggregate} permet des choses similaires ou un peu plus complexes.
+  
+<<agg0>>=  
+with( xtfme, aggregate( 
+  cbind(vali_f, vali_m), 
+  list(strate=strate), 
+  mean
+  ) 
+)
+@
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Aggrégations statistiques}
+
+<<agg0b>>=  
+with( xtfme, aggregate( 
+  cbind(vali_f, vali_m), 
+  list(strate=strate,sexe=sexe), 
+  mean
+  ) 
+)
+@
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Aggrégations statistiques}
+
+  Les indications de variables peuvent se faire en formule. 
+  
+<<agg2>>=  
+aggregate( 
+  vali_m ~ strate + sexe, 
+  data=xtfme, mean  
+  )
+@
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Aggrégations statistiques}
+
+  Ou comme dans l'aide\dots
+  
+<<agg3>>=  
+data(iris)
+aggregate( . ~ Species, data=iris, mean, na.rm=T  )
+@
+    
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{plyr}
+  
+  Un paquet de Hadley Wickham, \emph{plyr}, permet de réaliser ce type d'opérations assez facilement.
+  
+  Le paquet \emph{plyr} permet de traiter des \emph{array}, des vecteurs, des \dfs.
+  
+  Il offre des fonctions génériques permettant de créer, transformer ou faire des calculs sur des \dfs.
+  
+  Outre ce côté générique, il offre quelques avantages sur les fonctions de base.
+    
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{plyr}
+
+  Par exemple les statistiques sur une variable deviennent~:
+  
+<<plyr1>>=
+ddply( xtfme, .(strate), summarize, 
+       moy_f=mean(vali_f), sd_f=sd(vali_f),
+       moy_m=mean(vali_m), sd_m=sd(vali_m)
+       )
+@
+
+  On récupère une \df\dots
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{plyr}
+
+  Idem\dots
+  
+<<plyr2>>=
+head(
+  ddply( xtfme, .(strate,sexe), summarize, 
+       moy_f=mean(vali_f), sd_f=sd(vali_f),
+       moy_m=mean(vali_m), sd_m=sd(vali_m)
+       ), 4
+)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{plyr}
+
+  etc\dots
+  
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{aggrégation personnalisée}
+
+ Une fonction d'aggrégation complètement personnalisée par exemple\dots avec les fonctions classiques
+  
+<<AggrFail1,eval=FALSE>>=  
+agg <- lapply( split(xtfme,xtfme$num_etab), function(x) { 
+      data.frame( 
+        uai=unique(x$num_etab), vali_f=mean(x$vali_f), 
+        vali_m=mean(x$vali_m), poids=sum(x$poids),
+        prop_garcons=mean(ifelse(x$sexe==1,0,1))
+      )
+    }  
+  )
+head( do.call( rbind, agg), 3 )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{aggrégation personnalisée}
+
+<<AggrFail2,echo=FALSE>>=  
+agg <- lapply( split(xtfme,xtfme$num_etab), function(x) { 
+      data.frame( 
+        uai=unique(x$num_etab), vali_f=mean(x$vali_f), 
+        vali_m=mean(x$vali_m), poids=sum(x$poids),
+        prop_garcons=mean(ifelse(x$sexe==1,0,1))
+      )
+    }  
+  )
+head( do.call( rbind, agg), 3 )
+@
+
+\end{frame}
+
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{aggrégation personnalisée}
+
+<<AggrFail3,echo=FALSE>>=  
+agg <- lapply( split(xtfme,xtfme$num_etab), function(x) { 
+      data.frame( 
+        uai=unique(x$num_etab), vali_f=mean(x$vali_f), 
+        vali_m=mean(x$vali_m), poids=sum(x$poids),
+        prop_garcons=mean(ifelse(x$sexe==1,0,1))
+      )
+    }  
+  )
+head( do.call( rbind, agg), 3 )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{aggrégation personnalisée}
+
+  Quelque chose de discutable d'un point de vue méthodologique mais possible\dots
+
+<<Perso_lm,eval=FALSE>>=  
+elev <- merge(scores,eleves,by="id")
+elev$sexe <- as.character(elev$sexe)
+elev <- elev[elev$sexe!="M",]
+
+coef <- function(score,age3e,n) { coef(lm( score ~ age3e ))[n] }
+
+res <- ddply( 
+  elev, .( , secteur ), summarize, 
+  coef1_age3e = coef1(score,age3e,1),
+  coef2_age3e = coef2(score,age3e,2)
+)
+
+@
+
+\end{frame}
+
+\section{Transposition}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Transposition de matrices}
+  
+  La transposition simple d'une matrice ou d'une data.frame se fait avec la fonction \emph{t}~:
+
+<<t>>=
+(a = matrix( 1:16, nrow=4, ncol=4 ))
+t(a)  
+@
+
+\end{frame}  
+
+\begin{frame}[containsverbatim]
+  \frametitle{reshape2}
+  
+  Encore un paquet d'Hadley Wickham\dots
+
+  Il permet de faire un peu se qu'on veut au niveau des transpositions.
+  
+  Les deux fonctions centrales sont \emph{cast} et \emph{melt}.
+
+\end{frame}  
+
+\begin{frame}[containsverbatim]
+  \frametitle{\emph{melt}}
+  
+  Cette fonction permet de passer d'un tableau large à un tableau long\dots
+  
+<<air1>>=  
+names(airquality) <- tolower(names(airquality))
+head(airquality)
+@
+
+\end{frame}  
+
+\begin{frame}[containsverbatim]
+  \frametitle{\emph{melt}}
+  
+  Cette fonction permet de passer d'un tableau large à un tableau long\dots
+  
+<<air2>>=  
+head( 
+  melt( airquality, 
+        id=c("month", "day"), 
+        measure.vars=c("ozone"),
+        na.rm=TRUE
+        ) 
+  )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{\emph{melt}}
+  
+  On peux utiliser plusieurs variables comme variables de mesure.
+
+<<air3>>=  
+head( 
+  z <- melt( airquality, 
+        id=c("month", "day"), 
+        measure.vars=c("wind","ozone"),
+        na.rm=TRUE
+        ), 3
+  )
+table(z$variable)
+@
+
+\end{frame}  
+
+\begin{frame}[containsverbatim]
+  \frametitle{\emph{cast}}
+  
+  A l'inverse pour passer d'un tableau long à un tableau large\dots 
+
+<<air4>>=  
+head( 
+  dcast( z, month + day ~ variable )
+  )
+@
+
+\end{frame}  
+
+\begin{frame}[containsverbatim]
+
+  \frametitle{\emph{cast}}
+  
+  La fonction \emph{(a/d)cast} peut également être utilisé pour réaliser des statistiques...
+
+<<air5>>=  
+head( 
+  dcast( z, month ~ variable, mean, na.rm=T )
+  )
+@
+
+\end{frame}  
+
+\end{document}
+
+\begin{frame}[containsverbatim]
+  \frametitle{dplyr, data.table, \dots}
+  
+  Des paquets supplménetaires ont fait leur apparition ces dernières années.
+  
+  Ils changent notablemment la syntaxe de R. Par exemple avec \emph{dplyr} (ou à la \emph{magrittr}), la séquence des commandes est inversée. 
+  
+  Trois formes d'écriture de la même opération avec le paquet \emph{dplyr} (source~: une des vignettes du paquet).
+  
+\end{frame}  
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{dplyr, data.table, \dots}
+  
+  Version \emph{dplyr} façon \emph{plyr}~:
+
+<<dplyr1,eval=FALSE>>=
+a1 <- group_by(flights, year, month, day)
+a2 <- select(a1, arr_delay, dep_delay)
+a3 <- summarise(a2,
+  arr = mean(arr_delay, na.rm = TRUE),
+  dep = mean(dep_delay, na.rm = TRUE))
+a4 <- filter(a3, arr > 30 | dep > 30)
+@
+  
+
+\end{frame}  
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{dplyr, data.table, \dots}
+  
+  Version \emph{dplyr} sans variable intermédiaire~:
+  
+<<dplyr2,eval=FALSE>>=
+filter(
+  summarise(
+    select(
+      group_by(flights, year, month, day),
+      arr_delay, dep_delay
+    ),
+    arr = mean(arr_delay, na.rm = TRUE),
+    dep = mean(dep_delay, na.rm = TRUE)
+  ),
+  arr > 30 | dep > 30
+)
+@
+
+\end{frame}  
+
+\begin{frame}[containsverbatim]
+  \frametitle{dplyr, data.table, \dots}
+  
+  Version \emph{dplyr} (à la \emph{magrittr})~:
+  
+<<dplyr3,eval=FALSE>>=
+flights %>%
+  group_by(year, month, day) %>%
+  select(arr_delay, dep_delay) %>%
+  summarise(
+    arr = mean(arr_delay, na.rm = TRUE),
+    dep = mean(dep_delay, na.rm = TRUE)
+  ) %>%
+  filter(arr > 30 | dep > 30)
+@
+\end{frame}  
+
+\begin{frame}[containsverbatim]
+  \frametitle{dplyr, data.table, \dots}
+  
+  L'exemple plus haut deviendrait~:
+  
+<<AggrFail4>>=
+agg2 <- xtfme %>% group_by(num_etab) %>% 
+  summarize(vali_f=mean(vali_f),
+        vali_m=mean(vali_m), poids=sum(poids),
+        prop_garcons=mean(ifelse(sexe==1,0,1))
+  )               
+head( agg2 )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{dplyr, data.table, \dots}
+  
+  L'écriture est pour certains plus intuitives (\emph{dplyr},\emph{magrittr}. Le problème est que les objets manipulés ne sont pas tout à fait des objets standards de R (\emph{dplyr} et \emph{data.table}).
+  
+  Si certaines tâches (manipulation de données en base de données, manipulation de données dans R, ...) sont beaucoup facilités et/ou accélérées par ces paquets, il semble plus raisonnable de comprendre comment fonctione le langage R avant de passer à ces outils. 
+
+  Mais rapidement il faudra les maîtriser car~:
+  \begin{enumerate}
+    \item ils sont pratiques
+    \item beaucoup de paquets et de codes circulent avec cette syntaxe
+    \item probablement l'avenir de R
+  \end{enumerate}
+
+\end{frame}  
+
+\begin{frame}[containsverbatim]
+  \frametitle{dplyr, data.table, \dots}
+  
+  L'autre avantage rest que dplyr permet de faire les opérations indiquées 
+  ci-dessus dans une base de données en traduisant le code R en code SQL et 
+  récupère ensuite les résultats de la requête. 
+  
+  Vous avez un exemple sur cette \href{https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html}{vignette}.
+  
+\end{frame}  
+
+\end{document}
+

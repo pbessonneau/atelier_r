@@ -1,0 +1,595 @@
+\section{les objets de base}
+
+  \subsection{Vecteurs}
+
+  L'objet le plus courant est de loin le vecteur. il s'agit d'un tableau à 1 
+  dimension stockant un seul et unique type de données.
+  
+  La création d'un vecteur est soit implicite soit explicite.
+  
+  Implicite avec l'opérateur \emph{c}~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{6}\hlstd{,}\hlnum{7}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 2 3 4 6 7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Soit explicite en appelant un créateur qui porte le nom du type que l'on 
+  souhaite stocké et sa longueur~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{numeric}\hlstd{(}\hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 0 0 0 0
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{logical}\hlstd{(}\hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE FALSE FALSE FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  \subsection{Les fonctions associées aux types}
+  
+  Il existe deux familles de fonctions associées aux types~:
+  \begin{description}
+    \item[is.] les fonctions \emph{is.} renvoie un booléen indiquant si la valeur
+    appartient à un type donné
+    \item[as.] ces fonctions permettent de changer le type d'une valeur vers une
+    autre (cast)
+  \end{description}
+  
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.integer}\hlstd{(}\hlnum{2L}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{is.character}\hlstd{(}\hlnum{2.3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{as.character}\hlstd{(}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "2"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  \subsection{Matrices}
+
+  Ensuite viennent les matrices qui sont des tableaux à deux dimensions~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{matrix}\hlstd{(} \hlnum{0}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]    0    0
+## [2,]    0    0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+  Les matrices sont créés avec un premier argument qui contient les données et 
+  une (ou deux tailles, largeur et/ou longueur).
+
+
+
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{matrix}\hlstd{(} \hlnum{0}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]    0    0
+## [2,]    0    0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+  Les matrices sont créés avec un premier argument qui contient les données et 
+  une (ou deux tailles, largeur et/ou longueur).
+
+  Le type de données, \emph{unique}, stocké pour les matrices est le type de 
+  données par le premier argument.
+
+
+  \subsection{les \emph{data.frame}}
+
+  Les \dfs sont des tableaux comme les matrices mais qui permettent de stocker
+  des types de données différentes dans chaque colonne.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{head}\hlstd{(}\hlkwd{data.frame}\hlstd{(}\hlkwc{lettre}\hlstd{=LETTERS,}\hlkwc{numero}\hlstd{=}\hlnum{1}\hlopt{:}\hlnum{26}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##   lettre numero
+## 1      A      1
+## 2      B      2
+## 3      C      3
+## 4      D      4
+## 5      E      5
+## 6      F      6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Les \dfs sont de loin la structure la plus utilisée en faisant de la 
+  manipulation de données. 
+  
+  Mais ce type dérive en fait d'un autre type de base moins manipulable par les
+  débutants~: les listes.
+
+  
+
+\section{les objets moins courants}
+
+  \subsection{les \emph{list}}
+
+  Les \emph{list} sont la structure la plus pratique. Ce sont des vecteurs où
+  chaque élement du vecteur peut être un objet R quelconque y compris une liste.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a}\hlkwb{=}\hlkwd{list}\hlstd{(}\hlnum{1}\hlstd{, LETTERS,} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlstd{> }\hlkwd{str}\hlstd{(a)}
+\end{alltt}
+\begin{verbatim}
+## List of 3
+##  $ : num 1
+##  $ : chr [1:26] "A" "B" "C" "D" ...
+##  $ : num [1:2, 1:2] 0 0 0 0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+
+  Les \dfs sont en fait une liste avec comme condition que chaque élement soit
+  un vecteur de même longueur (pour obtenir un tableau).
+  
+  Ainsi les listes et les \dfs partagent beaucoup d'opérateurs en communs.
+
+
+  \subsection{les \emph{array}}
+
+  les \emph{array} sont des objets qui étendent les matrices à des tableaux
+  à \emph{k}-dimsions. 
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{array}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## , , 1
+## 
+##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4
+## 
+## , , 2
+## 
+##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  \subsection{les \emph{list}}
+
+  Les \dfs sont en fait une liste avec comme condition que chaque élement soit
+  un vecteur de même longueur (pour obtenir un tableau).
+  
+  Ainsi les listes et les \dfs partagent beaucoup d'opérateurs en communs.
+
+  Dans la programmation avancée, les \dfs sont souvent utilisées comme des 
+  listes.
+
+
+  \subsection{les séries temporelles}
+
+  Les séries temporelles sont des des élements pouvant stocker et avec des 
+  propriétés particulières des séries de date.
+  
+  C'est le type utilisé pour tous les analyses en séries temporelles.
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{ts}\hlstd{(}\hlkwd{date}\hlstd{())}
+\end{alltt}
+\begin{verbatim}
+## Time Series:
+## Start = 1 
+## End = 1 
+## Frequency = 1 
+## [1] Sat May 21 04:29:45 2016
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+
+  \subsection{Les fonctions de transformation}
+  
+  Il existe deux familles de fonctions associées aux types~:
+  \begin{description}
+    \item[is.] les fonctions \emph{is.} renvoie un booléen indiquant si la valeur
+    appartient à un objet donné
+    \item[as.] ces fonctions permettent de changer un objet dans un autre type
+  \end{description}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{str}\hlstd{(}\hlkwd{as.list}\hlstd{(iris))}
+\end{alltt}
+\begin{verbatim}
+## List of 5
+##  $ Sepal.Length: num [1:150] 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num [1:150] 3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num [1:150] 1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num [1:150] 0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{str}\hlstd{(}\hlkwd{as.matrix}\hlstd{(iris[,}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{]))}
+\end{alltt}
+\begin{verbatim}
+##  num [1:150, 1:4] 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  - attr(*, "dimnames")=List of 2
+##   ..$ : NULL
+##   ..$ : chr [1:4] "Sepal.Length" "Sepal.Width" "Petal.Length" "Petal.Width"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\section{Nommage des élements d'un objet}
+
+% à remplir
+
+
+\section{Les trois aspects de l'indexation}
+
+  \subsection{Dans cette partie\dots}
+  
+  \dots sont décrites les principales règles qui permettent de sélectionner une
+  partie des objets les plus courants (le langage objet S4 est exclus).
+  
+
+  \subsection{Pour un vecteur}
+
+    Pour un vecteur, l'opérateur d'extraction de valeurs sont des crochets.
+    simples.
+    
+    Comme on peut le voir sur les deux dernières lignes leur précédence n'est pas
+    très forte mais plus grande que les opérateurs de calcul.
+    
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{LETTERS[}\hlnum{1}\hlopt{:}\hlnum{10}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##  [1] "A" "B" "C" "D" "E" "F" "G" "H" "I" "J"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{)[}\hlnum{1}\hlopt{:}\hlnum{2}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{)[}\hlopt{-}\hlnum{4}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{)[}\hlopt{-}\hlnum{4}\hlstd{]} \hlopt{*} \hlnum{2}
+\end{alltt}
+\begin{verbatim}
+## [1] 2 4 6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  \subsection{Les trois aspects de l'indexation}
+
+    L'indexation sauf certaine exception peut se faire avec trois types de 
+    données sous R.
+    \begin{description}
+      \item[entiers] avec les entiers, les chiffres positifs indiquent les
+      positions des vecteurs qui seront extraits. Les chiffres négatifs indiquent
+      les positions à exclure. Attention on ne peux pas mélanger chiffre
+      positif et chiffres négatifs
+    \end{description}
+    
+    
+  \subsection{les entiers}
+
+  Avec les entiers, les chiffres positifs indiquent les positions des vecteurs 
+  qui seront extraits. Les chiffres négatifs indiquent les positions à exclure. 
+  
+  La longueur est quelconque (mais supérieur ou égal à 1). La longueur 
+  corresponds au nombre de d'éléments à extraire (ou à ne pas extraire).
+  
+  Attention on ne peux pas mélanger chiffres positifs et chiffres négatifs
+  
+  Attention Attention, amoureux du C et du perl, le zéro n'est jamais un indice 
+  valide en R.
+  
+
+  
+  
+  La longueur du vecteur retourné est la longueur du vecteur de sélection pour
+  les nombres d'entiers. 
+  
+  Pour les nombres négatifs, la longueur retournée est le total d'elements uniques
+  du vecteurs moins la longueur du vecteur de sélection.
+  
+
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{LETTERS[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## [1] "A" "B" "C" "D"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{LETTERS[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## [1] "B" "D"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{LETTERS[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{2}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## [1] "B" "D" "B"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{LETTERS[}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##  [1] "E" "F" "G" "H" "I" "J" "K" "L" "M" "N"
+## [11] "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X"
+## [21] "Y" "Z"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{LETTERS[}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##  [1] "A" "C" "E" "F" "G" "H" "I" "J" "K" "L"
+## [11] "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V"
+## [21] "W" "X" "Y" "Z"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{LETTERS[}\hlopt{-}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{2}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+##  [1] "A" "C" "E" "F" "G" "H" "I" "J" "K" "L"
+## [11] "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V"
+## [21] "W" "X" "Y" "Z"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+
+
+  \subsection{le vecteur logique}
+  
+  La grande différence avec les indices numériques est la longueur du vecteur.
+  
+  Pour chaque position, si la valeur est \emph{TRUE}, la valeur est retournée.
+  Si c'est \emph{FALSE}, la valeur n'est pas retourné.
+  
+  Par conséquent la longueur du vecteur de sélection est la longueur du vecteur
+  à séléctionner. Quant à la la longueur du vecteur de retour, c'est le nombre
+  de \emph{TRUE} (ie. la somme du vecteur logique).
+  
+  Attention au recyclage ! Si le recyclage n'est pas possible R génère une erreur
+  si la longueur des deux vecteurs ne coïncide pas.
+  
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{L} \hlkwb{<-} \hlstd{LETTERS[}\hlnum{1}\hlopt{:}\hlnum{6}\hlstd{]}
+\hlstd{> }\hlstd{L}
+\end{alltt}
+\begin{verbatim}
+## [1] "A" "B" "C" "D" "E" "F"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{L[}\hlkwd{c}\hlstd{(T,F,T,F,T,T)]}
+\end{alltt}
+\begin{verbatim}
+## [1] "A" "C" "E" "F"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{L[}\hlkwd{c}\hlstd{(T,F)]} \hlcom{# recyclage}
+\end{alltt}
+\begin{verbatim}
+## [1] "A" "C" "E"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  \subsection{les noms}
+
+  Les noms ont été évoqués brièvement\dots à peu près tout sous R peut porter un
+  noms. 
+  
+  On peut donc utiliser un vecteur \emph{character} avec le noms des élements
+  pour les récupérer.
+
+  Les noms peuvent être utilisés en lieu et place des numéros. La longueur du
+  vecteur de retour est alors le nombre de noms mis en arguments.
+  
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{(a} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 1 2 3 4
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{(}\hlkwd{names}\hlstd{(a)} \hlkwb{<-} \hlstd{LETTERS[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+## [1] "A" "B" "C" "D"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{a[}\hlkwd{c}\hlstd{(}\hlstr{"A"}\hlstd{,}\hlstr{"D"}\hlstd{,}\hlstr{"A"}\hlstd{,}\hlstr{"C"}\hlstd{)]}
+\end{alltt}
+\begin{verbatim}
+## A D A C 
+## 1 4 1 3
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  \subsection{Généralisation du système d'indexation}
+  
+  Une fois compris ce système d'indexation, le plus dur est   fait car c'est sur
+  ce système que se base pratiquement tout l'indexation des lignes et des
+  colonnes d'une matrice, des élements d'une liste, \dots
+  
+  Quand l'objet est composé de lignes et de colonnes il suffit d'indexer et 
+  d'ajouter une "," pour indiquer à R sur quel dimensions on travaille.
+  
+
+  \subsection{\dfs et matrices}
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{str}\hlstd{(iris[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{),])} \hlcom{# à gauche -> lignes}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	3 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.7 4.6
+##  $ Sepal.Width : num  3.5 3.2 3.1
+##  $ Petal.Length: num  1.4 1.3 1.5
+##  $ Petal.Width : num  0.2 0.2 0.2
+##  $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{str}\hlstd{(iris[,}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{5}\hlstd{)])} \hlcom{# à doirte -> colonnes}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	150 obs. of  3 variables:
+##  $ Sepal.Width: num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Width: num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species    : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{str}\hlstd{(iris[}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{5}\hlstd{),}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{5}\hlstd{)])} \hlcom{# les deux}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	3 obs. of  3 variables:
+##  $ Sepal.Width: num  3 3.1 3.6
+##  $ Petal.Width: num  0.2 0.2 0.2
+##  $ Species    : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  \subsection{Listes}
+  
+  Les listes sont proches des vecteurs. Les mêmes règles peuvent être appliquées.
+  
+  Il y a toutefois une subtilité. Entre crochets simples, les listes renvoie
+  une liste. Mais entre crochets doubles, un seul élement peut être renvoyé mais
+  l'élement n'est pas de type liste mais du type contenu dans la liste à cette 
+  position.
+  
+  C'est logique puisque vu l'hétérogénéité des élements pouvant être stockés
+  dans une liste, R ne peut déterminer la meilleure stratégie pour rendre une
+  série d'objets hétérogène.
+  
+  Par contre quand un seul objet est renvoyé ce problème ne se pose pas.
+  
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlnum{1}\hlstd{, LETTERS,} \hlkwd{matrix}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlstd{> }\hlstd{a[}\hlkwd{c}\hlstd{(T,F,T)]}
+\end{alltt}
+\begin{verbatim}
+## [[1]]
+## [1] 1
+## 
+## [[2]]
+##      [,1] [,2]
+## [1,]    0    0
+## [2,]    0    0
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{a[[}\hlnum{1}\hlstd{]]}
+\end{alltt}
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+

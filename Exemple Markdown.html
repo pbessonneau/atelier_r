@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Observations en France</title>
+
+<style type="text/css">
+markdown.css
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<p>L&#39;exemple choisi est le chant du Bruant_chingolo (<em>Zonotrichia capensis</em>).</p>
+
+<p>C&#39;est un oiseau très répandu en Amérique du Sud, que l&#39;on rencontre dans presque tous ses pays, et depuis la côte pacifique jusqu&#39;à la cordillère des Andes et la Terre de Feu ainsi que les îles Malouines mais aussi en Amérique Centrale et présent dans une bonne partie des îles de la mer des Caraïbes: résident commun par endroits à Hispaniola. <a href="http://fr.wikipedia.org/wiki/Bruant_chingolo">Source : Wikipedia</a></p>
+
+<h1>Observations en France</h1>
+
+<p>Dans le tableau suivant nous présentons des observations complètement fictives de specimen en France.</p>
+
+<!-- html table generated in R 3.0.0 by xtable 1.7-1 package -->
+
+<!-- Tue May 28 08:23:55 2013 -->
+
+<TABLE border=1>
+<TR> <TH>  </TH> <TH> Ville </TH> <TH> NombreObservations </TH>  </TR>
+  <TR> <TD align="right"> 1 </TD> <TD> Gif-sur-Yvette </TD> <TD align="right"> 5.00 </TD> </TR>
+  <TR> <TD align="right"> 2 </TD> <TD> Paris </TD> <TD align="right"> 2.00 </TD> </TR>
+  <TR> <TD align="right"> 3 </TD> <TD> Fontainebleau </TD> <TD align="right"> 22.00 </TD> </TR>
+  <TR> <TD align="right"> 4 </TD> <TD> Marseille </TD> <TD align="right"> 8.00 </TD> </TR>
+  <TR> <TD align="right"> 5 </TD> <TD> Nantes </TD> <TD align="right"> 15.00 </TD> </TR>
+  <TR> <TD align="right"> 6 </TD> <TD> Clermont-Ferrand </TD> <TD align="right"> 1.00 </TD> </TR>
+   </TABLE>
+
+<h1>Le son de l&#39;oiseau</h1>
+
+<p>Le chant de l&#39;oiseau tel qu&#39;il est présent dans les données du package <em>Seewave</em> :</p>
+
+<p><object id="sound" type="audio/wav" data="jerome.wav"/>Son</object></p>
+
+<p>Le son sous format <em>wav</em> peut être écouté via le navigateur et/ou les plugins installés.</p>
+
+<h1>Representations graphiques</h1>
+
+<p>Différentes représentations graphiques sont présentées.</p>
+
+<h2>Oscillograme</h2>
+
+<p><img src="figure/oscillo.png" alt="plot of chunk oscillo"/> </p>
+
+<h2>Representation oscillographique et de l&#39;enveloppe</h2>
+
+<p><img src="figure/enveloppe.png" alt="plot of chunk enveloppe"/> </p>
+
+<h2>Spectre complet et spectre moyen</h2>
+
+<p><img src="figure/fullspectrum.png" alt="plot of chunk fullspectrum"/> </p>
+
+<h1>Carte des observations</h1>
+
+<!-- GeoChart generated in R 3.0.0 by googleVis 0.4.2 package -->
+
+<!-- Tue May 28 08:23:57 2013 -->
+
+<!-- jsHeader -->
+
+<script type="text/javascript">
+ 
+// jsData 
+function gvisDataGeoChartID1623d183ec45f () {
+  var data = new google.visualization.DataTable();
+  var datajson =
+[
+ [
+ "Gif-sur-Yvette",
+5 
+],
+[
+ "Paris",
+2 
+],
+[
+ "Fontainebleau",
+22 
+],
+[
+ "Marseille",
+8 
+],
+[
+ "Nantes",
+15 
+],
+[
+ "Clermont-Ferrand",
+1 
+] 
+];
+data.addColumn('string','Ville');
+data.addColumn('number','NombreObservations');
+data.addRows(datajson);
+return(data);
+}
+ 
+// jsDrawChart
+function drawChartGeoChartID1623d183ec45f() {
+  var data = gvisDataGeoChartID1623d183ec45f();
+  var options = {};
+options["width"] =    556;
+options["height"] =    350;
+options["dataMode"] = "regions";
+options["region"] = "FR";
+options["displayMode"] = "markers";
+options["colorAxis"] = {colors: ['orange','blue']};
+
+     var chart = new google.visualization.GeoChart(
+       document.getElementById('GeoChartID1623d183ec45f')
+     );
+     chart.draw(data,options);
+    
+
+}
+  
+ 
+// jsDisplayChart
+(function() {
+  var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+  var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+  var chartid = "geochart";
+
+  // Manually see if chartid is in pkgs (not all browsers support Array.indexOf)
+  var i, newPackage = true;
+  for (i = 0; newPackage && i < pkgs.length; i++) {
+    if (pkgs[i] === chartid)
+      newPackage = false;
+  }
+  if (newPackage)
+    pkgs.push(chartid);
+
+  // Add the drawChart function to the global list of callbacks
+  callbacks.push(drawChartGeoChartID1623d183ec45f);
+})();
+function displayChartGeoChartID1623d183ec45f() {
+  var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+  var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+  window.clearTimeout(window.__gvisLoad);
+  // The timeout is set to 100 because otherwise the container div we are
+  // targeting might not be part of the document yet
+  window.__gvisLoad = setTimeout(function() {
+    var pkgCount = pkgs.length;
+    google.load("visualization", "1", { packages:pkgs, callback: function() {
+      if (pkgCount != pkgs.length) {
+        // Race condition where another setTimeout call snuck in after us; if
+        // that call added a package, we must not shift its callback
+        return;
+      }
+      while (callbacks.length > 0)
+        callbacks.shift()();
+    } });
+  }, 100);
+}
+ 
+// jsFooter
+ </script>
+ 
+
+<!-- jsChart -->  
+
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartGeoChartID1623d183ec45f"></script>
+ 
+
+<!-- divChart -->
+
+<div id="GeoChartID1623d183ec45f"
+  style="width: 556px; height: 350px;">
+</div>
+
+</body>
+
+</html>

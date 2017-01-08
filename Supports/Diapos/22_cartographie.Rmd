@@ -1,0 +1,222 @@
+---
+title: "Cartographie"
+author: "Pascal Bessonneau"
+date: "20 avril 2016"
+output: ioslides_presentation
+smaller: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+suppressPackageStartupMessages(require(sp,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(maptools,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(rgdal,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(maps,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(plyr,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(ggplot2,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(jsonlite,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(dplyr,quietly=T,warn.conflicts=FALSE))
+
+```
+
+## Via les fichiers vectoriels (IGN) | Introduction
+
+L'exemple est basé sur les fichiers IGN disponibles gratuitement [en ligne](http://professionnels.ign.fr/geofla) : ce 
+sont les fichiers appelés *GEOFLA*. 
+
+Il y a la nécessité des deux fusions pour récupérer une _data.frame_
+avec les couleurs et les noms de département. 
+
+Le paquet est _rgdal_. Sous Linux, il faut  installer les paquets 
+\emph{libgdal1-dev} et \emph{libproj-dev} pour pouvoir installer \emph{rgdal} si
+une machine Linux.
+
+## Via les fichiers vectoriels (IGN) | Chargement
+
+```{r, echo = FALSE}
+reserve <- fromJSON("data/reserve/2014_reserve_parlementaire.json")
+
+reserveD <- ddply(reserve,.(Département),summarize,moyenne=mean(Montant,na.rm=T))
+colnames(reserveD) <- c("Departement","Moyenne")
+
+reserveD$Departement[reserveD$Departement=="Réunion"] <- "La Réunion"
+reserveD$Departement[reserveD$Departement=="Territoire-de-Belfort"] <- "Territoire de Belfort"
+
+
+liste_depts <- read.delim("data/depts2016.txt",encoding = "latin1",stringsAsFactors = F)
+
+fusion <- merge(reserveD, liste_depts, by.x = "Departement", by.y = "NCCENR", all =T)
+
+long <- length(sort(unique(reserveD$Moyenne)))
+
+colfunc <- colorRampPalette(c("white","royalblue"))
+couleurs <- data.frame(
+  couleur = colfunc(long),
+  valeur = sort(unique(reserveD$Moyenne)),
+  stringsAsFactors = F
+)
+
+```
+
+La lecture se fait comme ci-dessous en spécifiant le répertoire avec les 
+fichiers _shapefiles_.
+
+```{r,eval=FALSE}
+dpts <- readOGR(
+  dsn="Cartes IGN/France/DEPARTEMENT", 
+  layer="DEPARTEMENT"
+)
+test <- match(dpts$CODE_DEPT,fusion$DEP)
+```
+
+Pour les couleurs on récupère les positions (l'ordre) des départements avec la 
+fonction _match_.
+
+## Via les fichiers vectoriels (IGN) | Impression
+
+```{r,eval=FALSE}
+par(mar=c(0,0,0,0))
+plot(dpts,col=couleurs$couleur[test])
+```
+
+## Via les fichiers vectoriels (IGN) | Impression RERS
+
+L'avantage c'est que des fichiers sont disponibles pour les DOM-TOMs. On peut 
+rajouter les départements sur une même page avec _layout_ :
+
+```{r,echo = FALSE}
+xmetro <- 9
+xdom <- 1
+mm <- matrix(
+    c(
+      rep( 7,xdom), rep( 1,xmetro),
+      rep( 7,xdom), rep( 1,xmetro),
+      rep( 7,xdom), rep( 1,xmetro),
+      rep( 2,xdom), rep( 1,xmetro),
+      rep( 3,xdom), rep( 1,xmetro),
+      rep( 4,xdom), rep( 1,xmetro),
+      rep( 0,xdom), rep( 1,xmetro),
+      rep( 0,xdom), rep( 1,xmetro),
+      rep( 0,xdom), rep( 1,xmetro),
+      rep( 0,xdom), rep(0,3), rep(5,1), rep(0,1), rep(6,1), rep(0,xmetro-6)
+    ),
+    ncol=10,
+    nrow=10,
+    byrow=T
+)
+mm
+```
+
+## Via les fichiers vectoriels (IGN) | Impression RERS
+
+Il suffit ensuite d'imprimer dans l'ordre les différentes cartes.
+
+
+```{r,echo = FALSE}
+plot_map <- function() {
+
+  fusion$DEP <- substr(fusion$DEP,1,2)
+  
+  dpts <- readOGR(
+    dsn="Cartes IGN/France/DEPARTEMENT", 
+    layer="DEPARTEMENT", verbose = FALSE
+  )
+  test <- match(dpts$CODE_DEPT,fusion$DEP)
+
+  par(mar=c(0,0,0,0))
+  plot(dpts,col=couleurs$couleur[test])
+
+  legend("topright",legend=round(couleurs$valeur[seq(0,nrow(couleurs),20)],0),
+         pch=15,
+         col=couleurs[seq(1,nrow(couleurs),20),1]
+         )
+  
+  dpts <- readOGR(
+    dsn="Cartes IGN/Guadeloupe/DEPARTEMENT", 
+    layer="DEPARTEMENT", verbose = FALSE
+  )
+  test <- match(dpts$CODE_DEPT,fusion$DEP)
+
+  par(mar=c(0,0,0,0))
+  plot(dpts,col=couleurs$couleur[test])
+
+  dpts <- readOGR(
+    dsn="Cartes IGN/Martinique/DEPARTEMENT", 
+    layer="DEPARTEMENT", verbose = FALSE
+  )
+  test <- match(dpts$CODE_DEPT,fusion$DEP)
+
+  par(mar=c(0,0,0,0))
+  plot(dpts,col=couleurs$couleur[test])
+
+  dpts <- readOGR(
+    dsn="Cartes IGN/Guyane/DEPARTEMENT", 
+    layer="DEPARTEMENT", verbose = FALSE
+  )
+  test <- match(dpts$CODE_DEPT,fusion$DEP)
+
+  par(mar=c(0,0,0,0))
+  plot(dpts,col=couleurs$couleur[test])
+
+  dpts <- readOGR(
+    dsn="Cartes IGN/Mayotte/DEPARTEMENT", 
+    layer="DEPARTEMENT", verbose = FALSE
+  )
+  test <- match(dpts$CODE_DEPT,fusion$DEP)
+  
+  par(mar=c(0,0,0,0))
+  plot(dpts,col=couleurs$couleur[test])
+
+  dpts <- readOGR(
+    dsn="Cartes IGN/Réunion/DEPARTEMENT", 
+    layer="DEPARTEMENT", verbose = FALSE
+  )
+  test <- match(dpts$CODE_DEPT,fusion$DEP)
+  
+  par(mar=c(0,0,0,0))
+  plot(dpts,col=couleurs$couleur[test])
+
+  # dpts <- readOGR(
+  #   dsn="Cartes IGN/France/GEOFLA/1_couleurs_LIVRAISON_2015/GEOFLA_2-1_SHP_LAMB93_FR-ED152/DEPARTEMENT", 
+  #   layer="DEPARTEMENT"
+  # )
+  # test <- match(dpts$CODE_DEPT,fusion$DEP)
+  # 
+  # par(mar=c(0,0,0,0))
+  # plot(dpts,col=couleurs$couleur[test],xlim=c(627826,679415),ylim=c(6836932,6884222))
+  # 
+}
+```
+
+
+## Via les fichiers vectoriels (IGN) | Impression RERS
+
+```{r, echo = FALSE, message=FALSE}
+
+# pdf("graphiques/cartes-pleines.pdf")
+layout(mm,respect = T)
+plot_map()
+# dev.off()
+
+```
+
+
+
+## Ressources
+
+[Aide à l'utilisation de R](https://sites.google.com/site/rgraphiques/5--applications/5--realiser-des-cartes-avec-le-logiciel-r/cartographie_departements)
+
+[R-bloggers](http://www.r-bloggers.com/mapping-with-ggplot-create-a-nice-choropleth-map-in-r/)
+
+[Keith Newman](https://www.students.ncl.ac.uk/keith.newman/r/maps-in-r)
+
+[Coulmont](http://coulmont.com/cartes/rcarto.pdf)
+
+[GIS Tutorial](https://pakillo.github.io/R-GIS-tutorial/)
+
+[Le livre de Bivand](https://www.springer.com/gp/book/9781461476177)
+
+
+

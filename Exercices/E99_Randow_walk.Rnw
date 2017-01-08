@@ -1,0 +1,211 @@
+\documentclass{article}
+% \usetheme[compress]{Singapore}
+% \useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Math?matiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux suppl?mentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% N?cessaires pour les tableaux de la macro Excel.
+
+% Outil suppl?mentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour ins?rer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour ins?rer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour ins?rer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En t?tes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour ins?rer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les diff?rents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+%\subtitle{Les premières données}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+<<defaults,results='hide',echo=FALSE>>=
+require(MASS,quietly=T,warn.conflicts=FALSE)
+require(xtable,quietly=T,warn.conflicts=FALSE)
+require(stringr,quietly=T,warn.conflicts=FALSE)
+require(RSQLite,quietly=T,warn.conflicts=FALSE)
+require(foreign,quietly=T,warn.conflicts=FALSE)
+require(jsonlite,quietly=T,warn.conflicts=FALSE)
+require(plyr,quietly=T,warn.conflicts=FALSE)
+require(dplyr,quietly=T,warn.conflicts=FALSE)
+
+# suppressPackageStartupMessages(require(sp,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maptools,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(rgdal,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maps,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(dplyr,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(ggplot2,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(jsonlite,quietly=T,warn.conflicts=FALSE))
+
+suppressPackageStartupMessages(require(XLConnect,quietly=T,warn.conflicts=FALSE))
+
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',
+               fig.height=7,fig.width=7,out.width="\\textwidth",resize.height="0.6\\textheight",
+               tidy=FALSE,prompt=TRUE
+               )
+
+options(width=45)
+
+correction <- FALSE
+
+@
+
+\begin{document}
+
+\begin{enumerate}
+
+\item Charger les données correspondantes au format JSON
+<<import>>=
+n <- 10000
+position.x <- c(0)
+position.y <- c(0)
+for (ii in 1:n) {
+  position.x <- c(position.x,position.x[ii-1]+rnorm(1))
+  position.y <- c(position.y,position.y[ii-1]+rnorm(1))
+}
+plot(0,0,type="n",xlim=range(position.x),ylim=range(position.y))
+lines(position.x,position.y)
+@
+
+
+<<>>=
+n <- 10000
+position.x <- cumsum(c( 0, rnorm(n)))
+position.y <- cumsum(c( 0, rnorm(n)))
+plot(0,0,type="n",xlim=range(position.x),ylim=range(position.y))
+lines(position.x,position.y)
+@
+
+<<>>=
+
+
+@
+
+
+
+
+
+
+\item Faire un tableau les contributions par groupe, avec minimum, maximum ,moyenne et la médiane
+
+<<results='asis',echo=correction>>=
+tableau <- ddply(reserve,.(Groupe),summarize,
+                 min=min(Montant,na.rm=T),
+                 max=max(Montant,na.rm=T),
+                 mean=mean(Montant,na.rm=T),
+                 sd=sd(Montant,na.rm=T),
+                 median=median(Montant,na.rm=T),
+                 N=length(Groupe)
+                 )
+print(xtable(tableau))
+@
+
+\item Faire un graphique en boites à moustache des versements par groupe
+
+<<echo=correction>>=
+boxplot(Montant~Groupe,data=reserve)
+@
+
+
+\end{document}
+
+

@@ -1,0 +1,978 @@
+\documentclass{beamer}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Mathématiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux supplémentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% Nécessaires pour les tableaux de la macro Excel.
+
+% Outil supplémentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour insérer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour insérer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour insérer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En têtes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+
+% Pour insérer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les différents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\dfs}{\emph{data.frames}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\listes}{\emph{lists}\xspace}
+
+\newcommand{\factor}{\emph{factor}\xspace}
+\newcommand{\character}{\emph{character}\xspace}
+\newcommand{\logical}{\emph{logical}\xspace}
+
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+
+
+\subtitle{Fonctions avancées}
+
+<<echo=F>>=
+options(width=50)
+#opts_chunk$set(height=3,fig.width=3,size="small")
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',fig.height=3.3,fig.width=3.3,out.width="\\textwidth")
+@
+
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Les fonctions}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les fonctions}
+
+Les fonctions sont un type d'objets R à part entière. Ainsi il existe comme pour les autres types d'objets une fonction \textit{is} correspondante~:
+
+<<Base>>=
+is.function( { function ( x ) {
+ x^2
+} } )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les fonctions}
+
+Ce qui peut être perturbant pour les débutants est l'utilisation que vous avez pu voir de fonctions anonymes~: les fonctions sont utilisées directement par exemple dans une fonction \textit{apply}.
+
+Mais les fonctions peuvent être également stockées pour être réutilisées plusieurs fois.
+
+<<BaseReturn>>=
+my.square <- function ( x ) {
+ return(x^2)
+}
+my.square(3)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les fonctions}
+
+Par défaut, si la dernière ligne renvoie une valeur, cette valeur est retournée par la fonction. Néanmoins pour rendre le code plus lisible et surtout plus robuste, il convient d'utiliser la fonction \textit{return} qui prend \textbf{un seul} argument qui est renvoyé comme valeur de retour de la fonction.
+
+Les fonctions en R ne renvoie qu'un seul objet. Par conséquent, il est souvent nécessaire de renvoyer des \listes ou des \dfs pour récupérer l'ensemble du matériel créé au sein de la fonction. 
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les fonctions}
+
+Il existe une autre fonction similaire à \emph{return}~:
+\emph{invisible}. Elle est utilisée abondamment dans R notamment par
+les commandes graphiques (ou \emph{t.test} par exemple).
+
+Elle permet de ne renvoyer une valeur que lorsque l'appel de la
+fonction est dans un contexte d'évaluation.
+
+<<BaseInvisible>>=
+my.square <- function ( x ) {
+ invisible(x^2)
+}
+my.square(3)
+(my.square(3))
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Portée des variables dans une fonction}
+
+  Dans R, les fonctions héritent de l'environnement père~: \cad que les objets disponibles dans l'environnement d'appel de la fonction le sont aussi au sein de la fonction.
+  
+  Mais les objets passés à la fonction sont des copies. Par conséquent, en R, toutes les modifications faîtes sur les objets au sein d'une fonction sont perdus. De plus si un objet est créé avec un nom existant dans l'environnement père, le nom de cet objet fait désormais référence à l'objet créé au sein de la fonction (et non à l'objet de même nom dans l'environnement père).
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Portée des variables dans une fonction}
+
+  Pour les personnes disposant d'un bagage informatique solide, R utilise des passages par valeurs (et non par références) et utilise un procédé d'évaluation dit \textit{lazy}\dots
+  
+  Pour simplifier, tout objet n'est évalué que si l'évaluation est effectivement nécessaire dans le code. Il en va de même pour les objets copiés. 
+  
+  Ce phénomène est bien expliqué dans les manuels de R et dans les ouvrages avancés sur R.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Portée des variables dans une fonction}
+
+On peut donc accéder à une valeur définie hors de la fonction.
+<<BaseEnv1>>=
+z <- 2
+ my.square <- function ( x ) {
+ return(z*x^2)
+}
+my.square(3)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Portée des variables dans une fonction}
+
+A l'intérieur de la fonction, l'objet peut être modifié mais les changements resteront locaux et seront
+perdus à la fermeture de la fonction.
+
+<<BaseEnv2>>=
+z <- 2
+ my.square <- function ( x ) {
+ z <- 4
+ return(z*x^2)
+}
+my.square(3)
+z
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Environnement}
+
+Les variables créées dans la fonction sont détruites après la fin de l'exécution.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments d'une fonction}
+
+Les arguments peuvent être soit obligatoires soit optionnels.
+
+Les arguments obligatoires ne prennent pas de valeur par défaut. C'est
+le cas pour le \emph{x} de la fonction présentée précédemment dans ce document.
+
+Les arguments sont avant tout positionnels. Mais pas seulement. Voyons
+la syntaxe de l'aide de la fonction \emph{t.test}...
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+\begin{verbatim}
+t.test(x, ...)
+
+## Default S3 method:
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, paired = FALSE, var.equal = FALSE,
+       conf.level = 0.95, ...)
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+La première ligne indique que la fonction n'attends qu'un paramètre
+obligatoire \emph{x}. On retrouve cette information dans la partie qui
+est réservée à l'appel par défaut de la fonction~: il n'y a pas de valeurs par défaut pour \emph{x}.
+
+Par contre, tous les autres arguments ont des valeurs par défaut ce
+qui indique qu'ils sont optionnels.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+On pourrait par exemple comparer la moyenne de deux vecteurs en
+appelant la fonction~:
+
+<<ttest1>>=
+t.test(rnorm(1000),y=rnorm(1000,2))
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+Mais les arguments étant en premier lieu positionnels, cet appel suffit~:
+
+<<ttest2>>=
+t.test(rnorm(1000),rnorm(1000,2))
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+Les arguments peuvent être passés de façon positionnels mais alourdirait le code. Aussi, on peux plus simplement préciser un couple \emph{nom}/\emph{valeur par défaut}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+<<ttest3>>=
+t.test(rnorm(1000),rnorm(1000,2),var.equal=TRUE)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+En temps normal lorsqu'un nom de paramètre incorrect est utilisé, R
+lève une exception.
+
+Toutefois, lors de la création de la fonction, on peut utiliser un argument spécial~: "\emph{...}".
+
+L'utilisation de cet argument indique à R que des arguments
+supplémentaires peuvent être passés à la fonction.
+
+R ne lèvera pas d'exception si la correspondance entre le nom des
+arguments d'appel et le nom des arguments définis n'est pas correct.
+
+Par contre il conserve les arguments supplémentaires et peut les passer à
+une autre fonction appelée au sein de la première fonction.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+C'est extrèmement pratique pour \emph{surcharger} une fonction
+existante. Le plus souvent pour des fonctions graphiques qui ont de
+nombreux paramètres.
+
+Par exemple, pour créer des \emph{barplot} différents des barplots
+par défaut...
+
+<<Barplot1,comment=NA>>=
+my.barplot <- function( x, horiz=T, ... ) {
+  barplot( x, horiz=horiz, ... )
+}
+#my.barplot( c(5,4,3,2,1), col="red" )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+<<Barplot2,echo=F,out.width="\\textheight",fig.width=3,fig.height=3>>=
+my.barplot( c(5,4,3,2,1), col="red" )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Changement dans l'environnement père...}
+
+En fait il existe une possibilité pour changer la valeur d'une variable dans l'environnement père.
+
+C'est pratique pour modifier une \df encombrante par exemple.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Changement dans l'environnement père...}
+
+<<Pere>>=
+i <- 1
+a <- function (x) { i <- 2 }
+i
+i <- 1
+a <- function (x) { i <<- 2 }
+a(7);i;
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Changement dans l'environnement père...}
+
+L'inconvénient est que cela rend la fonction dépendante de l'environnement père et du nom des variables dans celui-ci.
+
+Son utilisation est donc à limiter sauf cas particuliers.
+
+\end{frame}
+
+
+\section{Les structures de contrôle}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les boucles}
+
+  Les boucles sont à éviter car lentes à exécuter. Il faut leur préférer les fonctions de type \emph{apply}. La syntaxe d'une boucle est la suivante...
+
+\begin{verbatim}
+for ( mavar in sequence ) {
+       ... code R...
+}
+\end{verbatim}
+
+  la variable \emph{mavar} prend à chaque itération un élement de \emph{sequence} dans l'ordre. Les itérations peuvent se faire sur un type quelconque comme des entiers (usuels) mais également un vecteur de \character par exemple. Ou bien un vecteur de fonctions\dots 
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les tests}
+
+        Les tests ont la structure suivante~:
+
+<<if_test1,eval=FALSE>>=
+if ( valeur ) {
+       ... code R...
+}
+@
+        ou
+<<if_test2,eval=FALSE>>=
+if ( valeur ) {
+ ... code R...
+} else {
+... code R...
+}
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les tests}
+
+  La condition est executé si la valeur est \emph{TRUE}, \emph{T} ou différent de 0.
+
+  Attention, le vecteur booléen doit être de longueur 1. A
+  l'intérieur d'un test, R attend \emph{T} ou \emph{F} et pas \emph{c(T,F,T)}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les tests}
+
+        Les fonctions à connaître sont donc \emph{any} qui renvoie vrai si
+        au moins un élement est vrai dans le vecteur passé en argument.
+
+        Et la fonction \emph{all} qui renvoie vrai si toutes les valeurs du
+        vecteur passé en argument sont vrai.
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les tests}
+
+        Des opérations sur les booléens disponibles~:
+
+\begin{itemize}
+
+\item qui \textit{renvoient} des vecteurs de longueur plus grande que 1
+
+\begin{verbatim}
+& : et
+| : ou
+\end{verbatim}
+
+\item qui \textit{renvoient} des vecteurs de longueur 1
+
+\begin{verbatim}
+&& : et
+|| : ou
+\end{verbatim}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les tests}
+
+        Il y a une fonction à connaître car très rapide et très simple~:
+\begin{verbatim}
+ifelse( mavar, valeur_si_vrai, valeur_si_faux )
+\end{verbatim}
+
+        Par exemple~:
+<<IfElse>>=
+ifelse( rnorm(10) > 0, 1, -1 )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Stopper l'exécution}
+
+  La fonction \emph{stop} permet d'arrêter un script et
+  d'indiquer une erreur.
+
+\begin{verbatim}
+if ( class != "numeric" ) stop("Non numerique")
+\end{verbatim}
+
+\end{frame}
+
+\section{Les fonctions apply}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+        Dans la famille \emph{apply}, on a en fait~:
+
+\begin{verbatim}
+lapply(X, FUN, ...)
+sapply(X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE)
+vapply(X, FUN, FUN.VALUE, ..., USE.NAMES = TRUE)
+replicate(n, expr, simplify = TRUE)
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les différentes fonctions}
+
+    Par exemple, nous voulons par exemple récupérer les
+    quantiles de toutes les variables numériques. Pour cela, nous
+    utilisons la fonction \emph{apply}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+<<Stat5>>=
+(r <- apply(iris[,1:4],2,quantile))
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+        La fonction \emph{apply} permet d'appliquer une fonction sur une \df dans le sens~:
+        \begin{itemize}
+          \item des lignes, ligne par ligne, avec l'indice 1
+         \item des colonnes, colonne par colonne, avec l'indice 2
+         \item cellule par cellule avec l'indice \emph{1:2} (ou \emph{c(1,2)})
+       \end{itemize}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les fonctions apply}
+
+        Donc pour l'exemple précédent, calculer les quantiles, on demande à
+        R de passer chaque colonne à la fonction quantile.
+
+        La fonction quantile rend un vecteur et R se ``débrouille'' tout
+        seul avec les vecteurs résultats~: il les aggrège sous forme
+        de matrice.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+  Par exemple sapply, prends comme argument une \liste et renvoie
+  quelque chose de simplifié quand elle le peut.
+
+        Par exemple pour retrouver les colonnes numeric d'une \df...
+<<Iris1>>=
+sapply( iris, is.numeric )
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+  Pourquoi ça marche ?
+
+  Parce que \df peut être convertie en \liste puis la fonction est appliquée à chaque élement de la \liste.
+
+<<Iris>>=
+str(as.list(iris))
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+  L'avantage de \emph{sapply} est qu'elle renvoie un objet
+  simplifié par rapport à \emph{lapply}.
+
+  \emph{vapply} est identique avec un contrôle sur le type d'objet renvoyé.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+    \emph{replicate} est une fonction extrêmement utile. Un des
+    gros avantages de R est qu'il permet très aisement de simuler
+    des données.
+
+    \emph{replicate} est une des fonctions qui permet de le faire en répétant une boucle tout en générant des nombres aléatoires.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{les autres fonctions apply}
+
+  \textit{mapply} se distingue car elle peut prendre plusieurs arguments.
+  
+  \textit{vapply} est utilisé sur les vecteurs et permet la vérification du type en sortie.
+  
+  \dots
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+<<Replicate1,cache=TRUE>>=
+set.seed(42)
+system.time(
+res1 <- replicate( 10000, function() { return(mean(rnorm(1000))) } )
+)
+system.time({
+res2 <- numeric(10000)
+for ( ii in 1:10000 ) { res2[ii] <- mean(rnorm(1000)) }
+})
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+  Ce qu'il ne faut surtout pas faire~:
+
+<<Replicate1a,cache=TRUE>>=
+system.time({
+res2 <- c()
+for ( ii in 1:10000 ) { res2 <- c( res2, mean(rnorm(1000)) ) }
+})
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Un exemple, le bootstrap...}
+
+<<patientCharg,echo=FALSE>>=
+patient <- read.csv2("data/patient.csv")
+@
+
+<<Boot1,eval=FALSE>>=
+n <- 1000
+set.seed(42)
+b <- replicate( n, mean( sample( patient$totalechelle, 
+                                 length(patient$totalechelle), 
+                                 replace = T ), na.rm=T ) )
+mean((b-mean(b))^2)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les boucles}
+
+<<Boucle1>>=
+for ( ii in 1:4 ) { print(ii) }
+@
+
+<<Boucle2>>=
+for ( ww in LETTERS[1:4] ) { print(ww) }
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les boucles}
+
+En vrai, une boucle pourrait servir à ça~:
+<<Boucle3>>=
+a <- numeric(4)
+for ( ii in 1:4 ) { a[ii] <- mean(rnorm(1000)) }
+a
+@
+
+Ce qui s'écrit plus simplement et surtout beaucoup plus efficacement~:
+<<Boucle4>>=
+a <- vapply(1:4,function(x) mean(rnorm(x)),numeric(1))
+a
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les boucles}
+
+En vrai, une boucle pourrait servir à ça~:
+<<Boucle5>>=
+vars <- colnames(iris)[sapply(iris,is.numeric)]
+for ( ii in vars ) { iris[ii] <- scale(iris[ii]) }
+@
+
+Ce qui s'écrit plus simplement et surtout beaucoup plus efficacement~:
+<<Boucle6>>=
+vars <- colnames(iris)[sapply(iris,is.numeric)]
+iris[,vars] <- apply(iris[,vars],2,scale)
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les boucles}
+
+Une utilisation justifiée des boucles.
+
+<<Boucle7>>=
+for ( ww in c( function(x) {x^1}, function(x) {x^2}, function(x) {x^3} ) ) { print(ww(2)) }
+@
+
+En fait, non
+<<Boucle8>>=
+power <- function(n,x) {x^n}
+sapply(as.list(1:3),power,x=2)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Split...}
+
+  La fonction \emph{split} permet de découper une \df en
+  fonction des modalités d'une variable et de récupérer une
+  \liste en sortie avec pour chaque modalité la partie correspondante de la \df.
+
+<<PatientSplit>>=
+str(split(iris,factor(iris$Species)))
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{do.call}
+
+  \textit{do.call} est une fonction assez complexe. Elle permet notamment de définir l'environnement dans lequel exécuté une commande R. 
+  
+  Toutefois elle a une utilisation simple à connaître. Elle permet en une ligne d'aggréger des résultats provenant d'une commande lapply. 
+  
+<<ResAggr0>>=
+stats <- function (x) { c( 
+  quantile( x$Sepal.Length,probs=c(0,0.25,0.5,0.75,1)), 
+  mean(x$Sepal.Length), 
+  sd(x$Sepal.Length) ) 
+}
+res <- lapply( split(iris,iris$Species), stats )
+str(res)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{do.call}
+
+<<ResAggr1>>=
+do.call( rbind, res )
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{do.call}
+
+  Si l'exemple peut être réalisé par exemple avec plyr, il est bonne illustration de \textit{do.call}.
+  
+  Plutôt qu'une matrice, si les résultats sont de types différents, on peut écrire dans certains cas~:
+  
+<<ResAggrDF,eval=FALSE>>=
+do.call( data.frame, res )
+@  
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{lapply}
+
+  La fonction \textit{lapply} est une fonction dont l'utilisation doit croître avec l'expérience. Elle est centrale dans R et s'annonce de plus en plus indispensable car elle est à la base des fonctions de vectorisation des calculs dans R.
+  
+  Par exemple, un jackknife, est très facile à réaliser avec une fonction \textit{lapply}.
+
+<<Jack1,cache=TRUE>>=
+mm <- mean(iris[,"Sepal.Length"])
+res <- sapply( as.list(1:nrow(iris)), 
+               function (x) { 
+                 (mean(iris[-x,"Sepal.Length"])-mm)^2
+} )
+vv <- sqrt(sum(as.numeric(res))/(nrow(iris)*(nrow(iris)-1)))
+paste( "[", qt(0.025,nrow(iris)-1)*vv+mm, 
+       ":", qt(0.975,nrow(iris)-1)*vv+mm, "]" )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+  La vectorisation est pour l'instant assez peu documenté. Il existe l'ouvrage de McCallum (2012) et quelques ressources dans les blogs sur R.
+  
+  Sous les systèmes de type GNU/Linux, la vectorisation sur une même machine est d'une simplicité évangélique. Il suffit de charger le paquet \textit{parallel} et de spécifier le nombre de processeurs à utiliser et d'utiliser la fonction \textit{mclapply}.
+  
+  Ce qui donne pratiquement le même code que précedemment pour un jackknife\dots
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+<<Jack2,cache=TRUE,eval=FALSE>>=
+mm <- mean(iris[,"Sepal.Length"])
+res <- mclapply( as.list(1:nrow(iris)), function (x)
+  (mean(iris[-x,"Sepal.Length"])-mm)^2, 
+  mc.cores=4 
+)
+
+vv <- sqrt(sum(as.numeric(res))/(nrow(iris)*(nrow(iris)-1)))
+
+paste( "[", qt(0.025,nrow(iris))*vv+mm, ":", 
+       qt(0.975,nrow(iris))*vv+mm, "]" )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+  Avec ce mécanisme, 10 processus R vont être lancés en parallèle sur la machine. La mémoire nécessaire  à chaque processus doit être disponible. Ce qui revient à demander à la machine 4 fois la mémoire nécessaire à l'éxecution du processus.
+  
+  Le système utilise la commande \textit{fork} du système d'exploitation. Par conséquent, chaque processus récupère l'environnement (variables) et paquets de la session courante. Pratique.
+  
+  Dans le cas de simulation, il est nécessaire de bien lire l'aide du package pour obtenir selon ses besoins des seeds parallèles ou asynchrone.
+  
+\end{frame}  
+  
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+  Dans le cas de machine Windows, cette méthode ne fonctionne pas en raison du fonctionnement de Windows (quelque soit sa version).
+  
+  Aussi dans ce cas et pour faire du calcul parallèle en gérant plus finement les ressources matériels et plusieurs ordinateurs quelque soit leur système d'exploitation, il est nécessaire de passer plutôt par l'utilisation des framework SNOW et MPI par exemple.
+  
+  L'utilisation est plus délicate car l'utilisateur doit notamment indiquer quelles variables, quels paquets, \dots doivent être injectés dans les processus avant le lancement du calcul.
+  
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+  Une vue entière est dédiée au problème des calculs lourds\dots
+  
+  \vspace{0.1cm}
+  
+  \href{http://cran.r-project.org/web/views/HighPerformanceComputing.html}{High-Performance and Parallel Computing with R}
+  
+
+\end{frame}
+
+
+\section{L'automatisation des scripts}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Lancement d'un script automatiquement}
+
+  Pour lancer un script automatiquement, on peut le faire dans
+  un fichier \emph{batch}, c'est-à-dire un petit executable qui se
+  termine en \emph{.bat} sous \Windows.
+
+  Il est conseillé de mettre le chemin de R dans le PATH \Windows
+  pour ne pas avoir à taper le chemin complet d'accès à R.
+
+  On peut ainsi appeler un script~:
+
+\begin{verbatim}
+R -f Monscript.R
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Lancement d'un script automatiquement}
+
+  Mais R a une commande spécialement conçues pour réaliser des
+  opérations depuis des fichiers exécutables...
+
+\begin{verbatim}
+R CMD BATCH Monscript.R
+\end{verbatim}
+
+  Un fichier \emph{.Rout} est généré automatiquement et contient
+  tout ce qui est apparu dans la console.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{\emph{source}}
+
+  La fonction \emph{source} permet d'exécuter le contenu d'un
+  script depuis un autre script.
+
+  Cela permet par exemple de stocker des fonctions génériques
+  puis de les rappeler en suite sans faire de paquets...
+
+\begin{verbatim}
+source("MesFonctions.R")
+monbarplot(iris$Species)
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les règles de rédaction des scripts}
+
+  R est un langage de programmation...
+
+  {\textbf Pour la relecture et la lisibilité du code penser à commenter
+  et à indenter !}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les règles de rédaction des scripts}
+
+    Il est souvent plus simple d'utiliser un éditeur de texte tel
+    que \emph{emacs} ou \emph{notepad++} pour profiter de la coloration
+    syntaxique puis de copier-coller dans la console R.
+
+    ou \emph{RStudio}.
+
+\end{frame}
+
+
+
+\end{document}
+

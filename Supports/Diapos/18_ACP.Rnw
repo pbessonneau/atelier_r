@@ -1,0 +1,246 @@
+\documentclass{beamer}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Mathématiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux supplémentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% Nécessaires pour les tableaux de la macro Excel.
+
+% Outil supplémentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour insérer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour insérer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour insérer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En têtes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+
+% Pour insérer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les différents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\dfs}{\emph{data.frames}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\listes}{\emph{lists}\xspace}
+
+\newcommand{\factor}{\emph{factor}\xspace}
+\newcommand{\character}{\emph{character}\xspace}
+\newcommand{\logical}{\emph{logical}\xspace}
+
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+\subtitle{ACP}
+
+<<echo=F>>=
+require(FactoMineR)
+options(width=50)
+#opts_chunk$set(height=3,fig.width=3,size="small")
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',fig.height=3.3,fig.width=3.3,out.width="\\textwidth")
+@
+
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Analyse en composante principale}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Le principe}
+
+  Les détails mathématiques ne seront pas présentés. Il s'agit juste de montrer
+  comment on peut synthétiser un problème avec des variables artificielles
+  dont le nombre est inférieur ou très inférieure au nombre de variables
+  initiales qui décrivent les individus.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Température}
+
+<<>>=
+temp <- read.csv2("data/temp.csv")
+colnames(temp)
+
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Température}
+
+<<>>=
+head(temp)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les données}
+	
+	Ce sont donc les données qui correspondent aux températures moyennes
+	tout au long de l'année pour des villes de France.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Peut-on résumer les informations ?}
+
+Le principe de l'ACP est de chercher et de simplifier les corrélations qui existe
+entre les variables pour créer des variables synthétiques qui avec peu 
+de nouvelles variables résumeront le maximum d'informations possibles.
+
+Pour réaliser l'analyse on utilise le paquet FactoMineR.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Préparation des données}
+
+<<>>=
+rownames(temp) <- temp$Ville
+temp <- temp[,-1]
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Graphiques des variables}
+
+<<>>=
+pca <- PCA(temp,quanti.sup = c(13,14))
+@
+
+colnames(temp)  
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Graphique des  individus sur les deux premiers axes}
+
+<<>>=
+plot(pca,choix = "ind")
+@
+\end{frame}
+
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Graphique des  individus sur les deux premiers axes}
+
+<<>>=
+cor(pca$ind$coord[,1:2],temp[,c("lati","long")])
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Graphique des  individus sur les deux premiers axes}
+
+  A partir des données et des résultats de l'ACP, nous avons pu retrouver
+  la lattitude et la longitude approximative.
+  
+
+\end{frame}
+
+\end{document}
+

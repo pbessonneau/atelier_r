@@ -1,0 +1,478 @@
+\section{Les différentres méthodes}
+
+  \subsection{Les méthodes}
+  
+  Tout d'abord R fournit des fonctions permettant de produire des graphiques 
+  simples grâce à quelques fonctions de base.
+  
+  Ces graphiques dits "de base" sont assez simples à manipuler et à produire.
+  
+  Après des méthodes plus avancés mais demandant beaucoup plus de dextérité
+  sont disponibles dans les packages grid notamment. On parle de graphique
+  "grid" ou "treillis".
+  
+
+  
+  Les graphiques grid ne seront pas évoqués. Par contre il existe deux packages
+  réalisant de beaux graphiques simplement utilise en fait non les graphiques
+  de base mais le type "grid"~: \emph{lattice} et \emph{ggplot2}.
+  
+  \emph{lattice} est quelque peu passé de mode maintenant aussi il est préférable
+  d'utiliser le paquet \emph{ggplot2}. Sa belle esthétique est caractéristique
+  pour un connaisseur.
+  
+
+\section{Les graphiques de base}
+  \subsection{Les fonctions de base}
+  
+  \begin{description}
+    \item[hist] pour faire un histogramme
+    \item[barplot] pour faire un diagramme en barre
+    \item[boxplot] pour faire des boites à moustaches
+    \item[plot] pour faire des "scatterplots"
+    \item[sunflowerplot] pour faire des "scatterplots" quand les points se superposent
+    \item[...]
+  \end{description}
+
+
+  
+  La fonction \emph{plot} est polymorphe. C'est une fonction générique qui accepte
+  de nombreux types d'objets en entrée et dont le résultat varie selon
+  les arguments qui lui sont passés.
+  
+  C'est une fonction générique de R. 
+  
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{plot}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{))}
+\end{alltt}
+\end{kframe}
+
+{\centering \resizebox{!}{0.6\textheight}{\includegraphics[width=\textwidth]{graphiques/beamer-unnamed-chunk-1-1} } 
+
+}
+
+
+
+\end{knitrout}
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a}\hlkwb{=}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{)}
+\hlstd{> }\hlkwd{plot}\hlstd{(a,a}\hlopt{+}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{0.4}\hlstd{))}
+\end{alltt}
+\end{kframe}
+
+{\centering \resizebox{!}{0.6\textheight}{\includegraphics[width=\textwidth]{graphiques/beamer-unnamed-chunk-2-1} } 
+
+}
+
+
+
+\end{knitrout}
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{plot}\hlstd{(}\hlkwd{factor}\hlstd{(}\hlkwd{sample}\hlstd{(LETTERS[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{],}\hlnum{1000}\hlstd{,}\hlkwc{replace}\hlstd{=T)),}
+\hlstd{+ }            \hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{)}
+\hlstd{+ }            \hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \resizebox{!}{0.6\textheight}{\includegraphics[width=\textwidth]{graphiques/beamer-unnamed-chunk-3-1} } 
+
+}
+
+
+
+\end{knitrout}
+
+
+
+  
+  De nombreux packages utilisent la fonction \emph{plot} pour produire des 
+  graphiques en passant un argument propre au paquet.
+  
+  C'est le cas par exemple pour une régression linéaire dans le paquet de base.
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{)}
+\hlstd{> }\hlstd{dt} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}
+\hlstd{+ }  \hlkwc{a}\hlstd{=a,}
+\hlstd{+ }  \hlkwc{b}\hlstd{=a}\hlopt{+}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{0.4}\hlstd{)}
+\hlstd{+ }\hlstd{)}
+\hlstd{> }\hlstd{rl} \hlkwb{<-} \hlkwd{lm}\hlstd{(b} \hlopt{~} \hlstd{a)}
+\hlstd{> }\hlkwd{plot}\hlstd{(rl,}\hlkwc{ask}\hlstd{=F)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): objet 'b' introuvable}}\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{class}\hlstd{(rl)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in eval(expr, envir, enclos): objet 'rl' introuvable}}\end{kframe}
+\end{knitrout}
+
+La fonction \emph{plot} est une fonction générique. En fait la fonction spécialisé
+pour les objets de type \emph{lm} est appelé en lieu et place de la fonction
+usuelle.
+
+
+
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{methods}\hlstd{(}\hlkwc{class}\hlstd{=}\hlkwd{class}\hlstd{(rl))}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in methods(class = class(rl)): objet 'rl' introuvable}}\end{kframe}
+\end{knitrout}
+
+Cette commande est très pratique pour connaître les fonctions implémentées pour
+ce type d'objet. 
+
+
+  
+  C'est en partie la raison pour laquelle on dit que R est un langage objet car
+  c'est un langage dont certaines fonctions sont polymorphiques.
+  
+  En fait on parle dans ce cas de modèle S3. Le modèle S4 qui est plus proche 
+  d'un vrai langage objet est peu utilisé pour l'instant.
+  
+
+  
+  Dans le cas des fonctions graphiques de base, les coordonnées sont calculés
+  lors du première appel à la fonction.
+  
+  Ensuite on peut rajouter des points ou des surfaces et les coordonnées sont 
+  exprimées dans les mêmes unités que celles des données.
+  
+  Ce n'est pas le cas pour le paquet grid ce qui rend les manipulations
+  plus complexes.
+  
+
+
+  \subsection{Les arguments les plus fréquents}
+  
+  Les fonctions de base accepte des arguments par défaut très souvent les mêmes~:
+  \begin{description}
+    \item[xlim] un vecteur contenant le minimum et le maximum pour l'axe des 
+    abscisses
+  \item[ylim] un vecteur contenant le minimum et le maximum pour l'axe des 
+    ordonnées
+  \item[main] le titre du graphique
+  \item[xlab] le nom de l'axe des abscisses
+  \item[ylab] le nom de l'axe des ordonnées
+  \item[col] la couleur des poiunts ou des surfaces
+\end{description}
+
+
+  
+  Le nombre de paramètres graphiques est impressionnant et il varie malheureusement
+  un peu selon les fonctions.
+  
+  on peut les visualiser avec la commande \emph{par()}.
+  
+  
+
+  
+  Par exemple on peut réduire les marges~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{par}\hlstd{()}\hlopt{$}\hlstd{mar}
+\end{alltt}
+\begin{verbatim}
+## [1] 5.1 4.1 4.1 2.1
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{par}\hlstd{(}\hlkwc{mar}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{3.1}\hlstd{,}\hlnum{2.1}\hlstd{,}\hlnum{2.1}\hlstd{,}\hlnum{2.1}\hlstd{))}
+\hlstd{> }\hlkwd{plot}\hlstd{(dt}\hlopt{$}\hlstd{b,dt}\hlopt{$}\hlstd{a)}
+\end{alltt}
+\end{kframe}
+
+{\centering \resizebox{!}{0.6\textheight}{\includegraphics[width=\textwidth]{graphiques/beamer-unnamed-chunk-8-1} } 
+
+}
+
+
+
+\end{knitrout}
+  
+  
+  
+  On peut également faire plusieurs graphiques sur la même page~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlstd{> }\hlkwd{par}\hlstd{(}\hlkwc{mar}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{3.1}\hlstd{,}\hlnum{2.1}\hlstd{,}\hlnum{2.1}\hlstd{,}\hlnum{2.1}\hlstd{))}
+\hlstd{> }\hlkwd{plot}\hlstd{(dt}\hlopt{$}\hlstd{b,dt}\hlopt{$}\hlstd{a,}\hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{,}\hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{)}
+\hlstd{> }\hlkwd{plot}\hlstd{(dt}\hlopt{$}\hlstd{b,dt}\hlopt{$}\hlstd{a,}\hlkwc{col}\hlstd{=}\hlstr{"green"}\hlstd{,}\hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{)}
+\hlstd{> }\hlkwd{plot}\hlstd{(dt}\hlopt{$}\hlstd{b,dt}\hlopt{$}\hlstd{a,}\hlkwc{col}\hlstd{=}\hlstr{"yellow"}\hlstd{,}\hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{)}
+\hlstd{> }\hlkwd{plot}\hlstd{(dt}\hlopt{$}\hlstd{b,dt}\hlopt{$}\hlstd{a,}\hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{,}\hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  
+
+
+  
+  On peut également faire plusieurs graphiques sur la même page~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \resizebox{!}{0.6\textheight}{\includegraphics[width=\textwidth]{graphiques/beamer-unnamed-chunk-10-1} } 
+
+}
+
+
+
+\end{knitrout}
+  
+
+  
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \resizebox{!}{0.6\textheight}{\includegraphics[width=\textwidth]{graphiques/beamer-unnamed-chunk-11-1} } 
+
+}
+
+
+
+\end{knitrout}
+  
+
+
+  \subsection{Les fonctions de superposition}
+
+  Il faut distinguer deux types de fonctions~:
+  \begin{itemize}
+    \item les fonctions d'initialisation et de tracé
+    \item les fonctions de superpositions sur un tracé
+  \end{itemize}
+  
+  Un graphique R de base n'existe pas comme dit plus sans une échelle des X
+  et une échelle des Y. Les fonctions comme \emph{plot}, \emph{barplot}, 
+  \emph{hist}, \dots initialise le graphique et font tout ce qu'il faut 
+  pour tracer un graphique.
+
+
+
+
+  Les fonctions de superposition permettent de réaliser des tracés mais en utilisant
+  sur des graphiques existants.
+  
+  Soit il s'agit de fonctions distinctes~:
+  \begin{itemize}
+    \item \emph{lines}
+    \item \emph{points}
+    \item \emph{text}
+    \item \dots
+  \end{itemize}
+  
+
+
+  Les fonctions de superposition permettent de réaliser des tracés mais en utilisant
+  sur des graphiques existants.
+  
+  Soit il s'agit de fonctions d'initialisation mais avec un argument spécifique~:
+  généralement il s'agit de rajouter l'argument \emph{add}~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{plot}\hlstd{(x,y,}\hlkwc{add}\hlstd{=T)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+  \subsection{La notion de \emph{device}}
+  
+  La sortie par défaut sur R est une fenêtre graphique. Par exemple dans RStudio
+  l'onglet plot en bas à droite.
+  
+  Mais on peut créer des graphiques dans des devices différents tels que des fichiers.
+  Par exemple pour créer un fichier jpeg, il faut ouvrir un device \emph{jpeg} qui
+  va se substituer à la fenêtre graphique. Puis on va fermer le device pour finaliser
+  l'export.
+
+
+\section{Les devices}
+
+
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{jpeg}\hlstd{(}\hlstr{"graphiques/MonGraphique.jpeg"}\hlstd{)}
+\hlstd{> }\hlkwd{par}\hlstd{(}\hlkwc{mfrow}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{2}\hlstd{))}
+\hlstd{> }\hlkwd{par}\hlstd{(}\hlkwc{mar}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{3.1}\hlstd{,}\hlnum{2.1}\hlstd{,}\hlnum{2.1}\hlstd{,}\hlnum{2.1}\hlstd{))}
+\hlstd{> }\hlkwd{plot}\hlstd{(dt}\hlopt{$}\hlstd{b,dt}\hlopt{$}\hlstd{a,}\hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{,}\hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{)}
+\hlstd{> }\hlkwd{plot}\hlstd{(dt}\hlopt{$}\hlstd{b,dt}\hlopt{$}\hlstd{a,}\hlkwc{col}\hlstd{=}\hlstr{"green"}\hlstd{,}\hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{)}
+\hlstd{> }\hlkwd{plot}\hlstd{(dt}\hlopt{$}\hlstd{b,dt}\hlopt{$}\hlstd{a,}\hlkwc{col}\hlstd{=}\hlstr{"yellow"}\hlstd{,}\hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{)}
+\hlstd{> }\hlkwd{plot}\hlstd{(dt}\hlopt{$}\hlstd{b,dt}\hlopt{$}\hlstd{a,}\hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{,}\hlkwc{pch}\hlstd{=}\hlnum{20}\hlstd{)}
+\hlstd{> }\hlkwd{dev.off}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## pdf 
+##   2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Les formats sont nombreux~:
+  \begin{itemize}
+    \item png
+    \item pdf
+    \item svg
+    \item \dots
+  \end{itemize}
+  
+  Chaque device porte le nom du type de fichier qu'il va créé.
+  
+
+  
+  \subsection{La procédure avec les \emph{device}}
+
+  La procédure se fait avec les étapes suivantes~:
+  \begin{enumerate}
+      \item vous créez le device avec par exemple \emph{png("file")}
+      \item vous dessinez
+      \item vous refermez le device avec la commande \emph{dev.off()}
+  \end{enumerate}
+  
+  Quelque devices comme le pdf permet de produire plusieurs graphiques sur
+  plusieurs pages comme par exemple le format PDF.
+  
+
+  \subsection{Les arguments des \emph{device}}
+  
+  Les arguments varient, il suffit de regarder l'aide. Souvent on trouve
+  l'argument dpi qui permet de donner la résolution du graphique.
+  
+  Les arguments width et height donnent la taille dont l'unité dépend du device
+  choisi.
+
+
+
+  \subsection{Les options d'agencement avancée}
+  
+  L'option \emph{layout} permet de définir des agencements avancés comme sur le 
+  graphique ci-dessous.
+  
+  \includegraphics[scale=0.4]{graphiques/cartes_pleines}
+
+
+
+  
+  Il suffit de donner en entrée une matrice avec un numéro dans l'ordre de ce qui 
+  va être dessiner. Les fusions des cellules de la matrice donnent la taille
+  de chaque zone.
+
+  Dans l'exemple, on représente un grand graphique central pour la France
+  métropolitaine puis des petits carrés pour les DOMs.
+
+
+
+  
+  Il suffit de donner en entrée une matrice avec un numéro dans l'ordre de ce qui 
+  va être dessiner. Les fusions des cellules de la matrice donnent la taille
+  de chaque zone.
+
+  Dans l'exemple, on représente un grand graphique central pour la France
+  métropolitaine puis des petits carrés pour les DOMs.
+
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{xmetro} \hlkwb{<-} \hlnum{9}
+\hlstd{> }\hlstd{xdom} \hlkwb{<-} \hlnum{1}
+\hlstd{> }\hlstd{mm} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}
+\hlstd{+ }    \hlkwd{c}\hlstd{(}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{7}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(} \hlnum{1}\hlstd{,xmetro),}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{7}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(} \hlnum{1}\hlstd{,xmetro),}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{7}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(} \hlnum{1}\hlstd{,xmetro),}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{2}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(} \hlnum{1}\hlstd{,xmetro),}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{3}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(} \hlnum{1}\hlstd{,xmetro),}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{4}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(} \hlnum{1}\hlstd{,xmetro),}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{0}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(} \hlnum{1}\hlstd{,xmetro),}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{0}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(} \hlnum{1}\hlstd{,xmetro),}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{0}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(} \hlnum{1}\hlstd{,xmetro),}
+\hlstd{+ }      \hlkwd{rep}\hlstd{(} \hlnum{0}\hlstd{,xdom),} \hlkwd{rep}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{3}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{5}\hlstd{,}\hlnum{1}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{6}\hlstd{,}\hlnum{1}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{0}\hlstd{,xmetro}\hlopt{-}\hlnum{6}\hlstd{)}
+\hlstd{+ }    \hlstd{),}
+\hlstd{+ }    \hlkwc{ncol}\hlstd{=}\hlnum{10}\hlstd{,}
+\hlstd{+ }    \hlkwc{nrow}\hlstd{=}\hlnum{10}\hlstd{,}
+\hlstd{+ }    \hlkwc{byrow}\hlstd{=T}
+\hlstd{+ }\hlstd{)}
+\hlstd{> }\hlstd{mm}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+##       [,1] [,2] [,3] [,4] [,5] [,6] [,7]
+##  [1,]    7    1    1    1    1    1    1
+##  [2,]    7    1    1    1    1    1    1
+##  [3,]    7    1    1    1    1    1    1
+##  [4,]    2    1    1    1    1    1    1
+##  [5,]    3    1    1    1    1    1    1
+##  [6,]    4    1    1    1    1    1    1
+##  [7,]    0    1    1    1    1    1    1
+##  [8,]    0    1    1    1    1    1    1
+##  [9,]    0    1    1    1    1    1    1
+## [10,]    0    0    0    0    5    0    6
+##       [,8] [,9] [,10]
+##  [1,]    1    1     1
+##  [2,]    1    1     1
+##  [3,]    1    1     1
+##  [4,]    1    1     1
+##  [5,]    1    1     1
+##  [6,]    1    1     1
+##  [7,]    1    1     1
+##  [8,]    1    1     1
+##  [9,]    1    1     1
+## [10,]    0    0     0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+

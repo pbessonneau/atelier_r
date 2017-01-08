@@ -1,0 +1,259 @@
+\documentclass{article}
+% \usetheme[compress]{Singapore}
+% \useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Math?matiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux suppl?mentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% N?cessaires pour les tableaux de la macro Excel.
+
+% Outil suppl?mentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour ins?rer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour ins?rer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour ins?rer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En t?tes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour ins?rer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les diff?rents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+% Titre
+\title{Introduction à R\\Délai médecins}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+%\subtitle{}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+<<defaults,results='hide',echo=FALSE>>=
+require(MASS,quietly=T,warn.conflicts=FALSE)
+require(xtable,quietly=T,warn.conflicts=FALSE)
+require(stringr,quietly=T,warn.conflicts=FALSE)
+require(RSQLite,quietly=T,warn.conflicts=FALSE)
+require(foreign,quietly=T,warn.conflicts=FALSE)
+require(lubridate,quietly=T,warn.conflicts=FALSE)
+require(reshape2,quietly=T,warn.conflicts=FALSE)
+require(plyr,quietly=T,warn.conflicts=FALSE)
+require(dplyr,quietly=T,warn.conflicts=FALSE)
+require(knitr,quietly=T,warn.conflicts=FALSE)
+
+# suppressPackageStartupMessages(require(sp,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maptools,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(rgdal,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maps,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(dplyr,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(ggplot2,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(jsonlite,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(RColorBrewer,quietly=T,warn.conflicts=FALSE))
+
+suppressPackageStartupMessages(require(XLConnect,quietly=T,warn.conflicts=FALSE))
+
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',
+               fig.height=7,fig.width=7,out.width="\\textwidth",resize.height="0.6\\textheight",
+               tidy=FALSE,prompt=TRUE
+               )
+
+options(width=45)
+
+
+
+
+@
+
+\begin{document}
+
+	\maketitle
+
+  \clearpage
+	\tableofcontents
+
+
+\section{Délai de rendez-vous médecins}
+
+\begin{enumerate}
+  \item Faire un dataset avec toutes les données avec un champ pour le type de 
+  médecins 
+  \item Calculer le temps moyens d'attente pour chaque spécialité
+  \item Tracer le temps d'attente temps d'attente vs tarifs
+\end{enumerate}
+
+\subsection{Faire un dataset avec toutes les données avec un champ pour le type de 
+  médecins}
+
+
+<<Q1>>=
+require(readxl)
+ophtalmo <- read_excel("data/delai_rdv/Delai_rdv_ophtalmos_2012.xlsx")
+ophtalmo$spécialité <- "ophtalmo"
+
+gynecos <- read_excel("data/delai_rdv/Delai_rdv_gynecos_2012.xlsx")
+gynecos$spécialité <- "gynecos"
+
+medecins <- rbind(ophtalmo,gynecos)
+
+@
+
+
+\subsection{Calculer le temps moyens d'attente pour chaque spécialité}
+<<>>=
+tapply(medecins$"Délai rendez-vous",medecins$"spécialité",mean)
+
+@
+
+
+\subsection{Tracer le temps d'attente temps d'attente vs tarifs}
+
+<<>>=
+plot(medecins$Tarif, medecins$`Délai rendez-vous`, pch=20, col="blue",
+     xlab="Tarifs (euros)",ylab="Délai (jours)", main="Délai d'attente et tarifs")
+@
+
+\subsection{Calculer le prix moyen, le délai moyen par ville et spécialité}
+
+<<>>=
+colnames(medecins)
+medecins$Délai <- medecins$`Délai rendez-vous`
+med <- ddply(medecins,.(Ville,spécialité),summarize, 
+             Délai = mean(Délai), Tarif = mean(Tarif))
+@
+
+\subsection{Carte des médecins}
+
+Le but est de faire deux axes, un avec le tarif l'autre avec le délai et regarder
+comment se positionne les villes.
+
+
+<<>>=
+plot(0,0,xlim=range(med$Délai),ylim=range(med$Tarif),
+     type="n",xlab="Délai (jours)", ylab="Tarif (euros)"
+     )
+abline(v=mean(med$Délai)); abline(h=mean(med$Tarif))
+
+text(med$Délai,med$Tarif,med$Ville,cex=0.6)
+@
+
+
+Le but est de faire deux axes, un avec le tarif l'autre avec le délai et regarder
+comment se positionne les villes. Pour les deux spécialités, deux graphiques
+séparés.
+
+
+<<>>=
+
+med.old <- med
+med <- med[med$spécialité=="gynecos",]
+plot(0,0,xlim=range(med$Délai),ylim=range(med$Tarif),
+     type="n",xlab="Délai (jours)", ylab="Tarif (euros)",
+     main="Gynéco"
+     )
+abline(v=mean(med$Délai)); abline(h=mean(med$Tarif))
+
+text(med$Délai,med$Tarif,med$Ville,cex=0.6)
+@
+
+
+<<>>=
+
+med <- med.old
+med <- med[med$spécialité=="ophtalmo",]
+plot(0,0,xlim=range(med$Délai),ylim=range(med$Tarif),
+     type="n",xlab="Délai (jours)", ylab="Tarif (euros)",
+     main="Gynéco"
+     )
+abline(v=mean(med$Délai)); abline(h=mean(med$Tarif))
+
+text(med$Délai,med$Tarif,med$Ville,cex=0.6)
+@

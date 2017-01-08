@@ -1,0 +1,258 @@
+\section{Recherche directe sur une fonction}
+
+	\subsection{Recherche directe sur une fonction}
+
+        La recherche se fait à l'aide de la syntaxe \emph{?fonction} ou bien \emph{help(fonction)}.
+
+        La syntaxe de l'aide obtenue est théoriquement assez constante d'un paquet à un
+        autre car elle est basée sur un format
+        standard~:\emph{.Rd}. Ce format ressemble à un fichier \latex.
+
+
+
+        Dans l'aide, on trouvera les parties suivantes~:
+        \begin{description}
+          \item[Début] le nom de la fonction et le nom du paquet auquelle elle appartient
+          \item[Description] une description sommaire de la fonction
+          \item[Usage] la façon d'appeler la fonction
+          \item[Arguments] les arguments possibles pour la fonction
+          \item[Details] les détails sur le fonctionnement de la fonction
+        \end{description}
+
+
+
+        \begin{description}
+          \item[Value] le type d'objet et/ou les valeurs retournées
+          \item[Note] des remarques générales
+          \item[References] les références bibliographiques
+          \item[See also] des liens vers des fonctions connexes
+          \item[Examples] des exemples fonctionnels de la fonction
+        \end{description}
+
+
+
+        La partie la plus difficile est la partie \emph{Usage}. En
+        effet c'est dans cette partie qu'on va lire la façon d'appeler
+        la fonction selon le type de l'objet passé.
+
+
+	\subsection{La partie Usage de t.test}
+
+\begin{verbatimtab}
+Usage
+
+t.test(x, ...)
+
+## Default S3 method:
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, paired = FALSE, var.equal = FALSE,
+       conf.level = 0.95, ...)
+
+## S3 method for class 'formula'
+t.test(formula, data, subset, na.action, ...)
+\end{verbatimtab}
+
+
+	\subsection{Recherche directe sur une fonction}
+
+        La première description indique l'appel minimal.
+
+        Dans le second cas, la syntaxe indiquée correspond à l'appel de la
+        fonction lorsque l'objet est tel que précisé dans l'aide.
+
+        Le troisième cas indique le comportement de la fonction si
+        l'objet est type \emph{formula}.
+
+
+	\subsection{La partie \emph{Usage} de \emph{t.test}}
+
+        C'est dans cette partie qu'on retrouve les arguments possibles
+        de la fonction. Parfois, ils ne sont pas tous listés.
+
+        Les arguments sans valeurs par défaut sont des arguments obligatoires.
+
+        Les arguments avec une valeur par exemple \emph{paired =
+          FALSE} sont des arguments facultatifs car ils prennent
+        comme valeurs par défaut la valeur indiquée.
+
+
+
+        Les arguments sont positionnels, \cad
+        qu'on peut les passer à la fonction dans l'ordre où ils sont
+        cités dans la rubrique \emph{Usage}.
+
+        Toutefois on peut aussi utiliser un mécanisme d'appel par nom~: dans ce
+        cas on passe le nom de l'argument suivi de sa valeur.
+
+
+
+        Dans les spécifications d'un paquet R, il est indiqué que les
+        exemples doivent être fonctionnels (sauf si \emph{Not run} est précisé en commentaire).
+
+        D'ailleurs on peut les exécuter en tapant \emph{example(fonction)}
+
+
+
+        Toutes ces syntaxes suivantes sont équivalentes~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{x} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{)}
+\hlkwd{t.test}\hlstd{(x,}\hlkwc{conf.level}\hlstd{=}\hlnum{0.8}\hlstd{)}
+\hlkwd{t.test}\hlstd{(}\hlkwc{conf}\hlstd{=}\hlnum{0.8}\hlstd{,}\hlkwc{x}\hlstd{=x)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+        Il est à noter que l'aide de R est parfois cryptique dans les
+        paquets de base. C'est notamment le cas de la fonction
+        \emph{plot}. La fonction a tellement de possibilités que l'aide ne fournit
+        que les éléments de base.
+
+
+	\subsection{\emph{S3} et fonctions}
+
+        R est un langage pseudo-objet pour le \emph{S3}. C'est-à-dire que certaines fonctions vont se comporter
+        différemment selon le type d'objet qu'on lui passe.
+
+        Cela repose sur l'évaluation de la classe de l'objet au niveau
+        de l'appel ou de l'affichage...
+
+
+
+        Pour connaître la classe d'un objet il faut taper~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{class}\hlstd{(iris)}
+\end{alltt}
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+        Pour connaître les fonctions génériques utilisables avec un type d'objet
+        donné, il suffit de taper la commande~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{methods}\hlstd{(}\hlkwc{class}\hlstd{=}\hlstr{"data.frame"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##  [1] aggregate     anyDuplicated as.data.frame
+##  [4] as.list       as.matrix     by           
+##  [7] cbind         coerce        [<-          
+## [10] [             [[<-          [[           
+## [13] $<-           $             dim          
+## [16] dimnames<-    dimnames      droplevels   
+## [19] duplicated    edit          format       
+## [22] formula       head          initialize   
+## [25] is.na         Math          merge        
+## [28] na.exclude    na.omit       Ops          
+## [31] plot          print         prompt       
+## [34] rbind         row.names<-   row.names    
+## [37] rowsum        show          slotsFromS3  
+## [40] split<-       split         stack        
+## [43] str           subset        summary      
+## [46] Summary       tail          t            
+## [49] transform     unique        unstack      
+## [52] within       
+## see '?methods' for accessing help and source code
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\section{La recherche sur une fonctionnalité}
+
+	\subsection{La recherche par mots clefs via la console}
+
+        R permet dans la console de chercher les fonctions associées à
+        un mot-clef à l'aide la commande \emph{help.search} ou \emph{??}.
+
+        Cette fonction ne cherche que les occurences des mots dans les
+        champs \emph{noms} et \emph{description} et seulement pour les paquets {\bf installés}.
+
+        Pour réponse, R renvoie les noms des fonctions suivis des
+        paquets correspondants et enfin d'un description brève des fonctions.
+
+
+	\subsection{La recherche par mots clefs sur internet}
+
+        Sur la \href{http://cran.at.r-project.org/}{page} des packages
+        du CRAN, on peut déjà chercher et trouver beaucoup d'informations.
+
+        L'autre méthode est d'utiliser le moteur de recherche
+        \href{http://www.rseek.org/}{RSeek} qui
+        ne référencie que les pages sur R. Le moteur cherche dans les
+        newsgroups de R, les documents, ...
+
+
+
+        Outre les newsgroups, des sites de type Quora,
+        dédiés à R ou aux statistiques, existent et permettent de
+        poser des questions. On citera par exemple~:
+        \begin{description}
+          \item
+            [\href{http://stats.stackexchange.com/}{StatExchange ou
+              Cross Validated}]
+            orienté statistiques
+          \item
+            [\href{http://stackoverflow.com/questions/tagged/r}{StackOverFlow}]
+            orienté programmation
+
+       \end{description}
+
+
+\section{Les documents sur R}
+
+	\subsection{La recherche de tutoriels et de documents}
+
+        Un gros volume de documentation est disponible sur la
+        \href{http://www.r-project.org/}{page} du projet dans la
+        partie \emph{Documentation}.
+
+        On trouvera également un journal sur le site de R.
+
+        Enfin beaucoup de paquets sont décrits dans le \href{http://www.jstatsoft.org/}{Journal of statistical software}.
+
+
+\section{Les RUGs}
+
+	\subsection{Les groupes d'utilisateurs}
+
+        Les R Users Groups ou \emph{RUGs} sont très actifs... Deux
+        sont présents dans la région parisienne~:
+        \begin{description}
+          \item [\href{http://rug.mnhn.fr/semin-r/}{Semin-R}] INED, MNHN, ...
+          \item [\href{https://fltaur.wordpress.com/}{FLtauR}] INSEE, ...
+        \end{description}
+
+        De nombreux documents, issus des conférences notamment, sont
+        disponibles sur leurs sites. Le groupe \emph{Semin-R} a une mailing-list pour poser des questions ainsi que les utilisateurs de R en sciences sociales \href{http://alea.fr.eu.org/pages/R-soc}{R-soc}.
+
+
+
+  Le groupe \emph{Semin-R} a une mailing-list pour poser des questions ainsi que les utilisateurs de R en sciences sociales \href{http://alea.fr.eu.org/pages/R-soc}{R-soc}.
+  
+  Les réponses à ces groupes seront \og~plus douces~\fg si vous posez une question qui a déjà été posé (que sur les \href{http://www.r-project.org/mail.html}{mailing-list officielles de R}).
+  
+  A noter que de nombreux paquets ont une mailing-lists ou un groupe Google pour obtenir de l'aide sur un paquet précis~: \href{https://groups.google.com/forum/#!forum/knitr}{knitr}, \href{https://groups.google.com/forum/#!forum/factominer-users}{FactoMineR}, \href{https://groups.google.com/forum/#!forum/ggplot2}{ggplot2}, \dots
+
+
+	\subsection{Les conférences}
+
+        Une réunion des utilisateurs français est organisé maintenant
+        chaque année. Cette année (2015) à \href{http://r2015-grenoble.sciencesconf.org/}{Grenoble} sur les jours de la formation.
+
+        Les conférences { \bfseries UseR! } sont mondiales. En 2015,
+        début juillet en \href{http://user2015.math.aau.dk/}{Aalborg} qui comme chacun sait est au Danemark.
+
+

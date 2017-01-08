@@ -1,0 +1,421 @@
+\documentclass{beamer}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Mathématiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux supplémentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% Nécessaires pour les tableaux de la macro Excel.
+
+% Outil supplémentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour insérer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour insérer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour insérer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En têtes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour insérer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les différents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+
+
+\subtitle{Comprendre et trouver de l'aide}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+<<echo=F>>=
+options(width=50)
+#opts_chunk$set(height=3,fig.width=3,size="small")
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize')
+@
+
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<Write.CSV2a,echo=F>>=
+write.csv2(iris,"iris.csv",row.names=F)
+@
+
+\section{Recherche directe sur une fonction}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Recherche directe sur une fonction}
+
+        La recherche se fait à l'aide de la syntaxe \emph{?fonction} ou bien \emph{help(fonction)}.
+
+        La syntaxe de l'aide obtenue est théoriquement assez constante d'un paquet à un
+        autre car elle est basée sur un format
+        standard~:\emph{.Rd}. Ce format ressemble à un fichier \latex.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Recherche directe sur une fonction}
+
+        Dans l'aide, on trouvera les parties suivantes~:
+        \begin{description}
+          \item[Début] le nom de la fonction et le nom du paquet auquelle elle appartient
+          \item[Description] une description sommaire de la fonction
+          \item[Usage] la façon d'appeler la fonction
+          \item[Arguments] les arguments possibles pour la fonction
+          \item[Details] les détails sur le fonctionnement de la fonction
+        \end{description}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Recherche directe sur une fonction}
+
+        \begin{description}
+          \item[Value] le type d'objet et/ou les valeurs retournées
+          \item[Note] des remarques générales
+          \item[References] les références bibliographiques
+          \item[See also] des liens vers des fonctions connexes
+          \item[Examples] des exemples fonctionnels de la fonction
+        \end{description}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Recherche directe sur une fonction}
+
+        La partie la plus difficile est la partie \emph{Usage}. En
+        effet c'est dans cette partie qu'on va lire la façon d'appeler
+        la fonction selon le type de l'objet passé.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La partie Usage de t.test}
+
+\begin{verbatimtab}
+Usage
+
+t.test(x, ...)
+
+## Default S3 method:
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, paired = FALSE, var.equal = FALSE,
+       conf.level = 0.95, ...)
+
+## S3 method for class 'formula'
+t.test(formula, data, subset, na.action, ...)
+\end{verbatimtab}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Recherche directe sur une fonction}
+
+        La première description indique l'appel minimal.
+
+        Dans le second cas, la syntaxe indiquée correspond à l'appel de la
+        fonction lorsque l'objet est tel que précisé dans l'aide.
+
+        Le troisième cas indique le comportement de la fonction si
+        l'objet est type \emph{formula}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La partie \emph{Usage} de \emph{t.test}}
+
+        C'est dans cette partie qu'on retrouve les arguments possibles
+        de la fonction. Parfois, ils ne sont pas tous listés.
+
+        Les arguments sans valeurs par défaut sont des arguments obligatoires.
+
+        Les arguments avec une valeur par exemple \emph{paired =
+          FALSE} sont des arguments facultatifs car ils prennent
+        comme valeurs par défaut la valeur indiquée.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La partie \emph{Usage} de \emph{t.test}}
+
+        Les arguments sont positionnels, \cad
+        qu'on peut les passer à la fonction dans l'ordre où ils sont
+        cités dans la rubrique \emph{Usage}.
+
+        Toutefois on peut aussi utiliser un mécanisme d'appel par nom~: dans ce
+        cas on passe le nom de l'argument suivi de sa valeur.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La partie \emph{Usage} de \emph{t.test}}
+
+        Dans les spécifications d'un paquet R, il est indiqué que les
+        exemples doivent être fonctionnels (sauf si \emph{Not run} est précisé en commentaire).
+
+        D'ailleurs on peut les exécuter en tapant \emph{example(fonction)}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La partie \emph{Usage} de \emph{t.test}}
+
+        Toutes ces syntaxes suivantes sont équivalentes~:
+
+<<cocode,eval=FALSE>>=
+x <- rnorm(1000)
+t.test(x,conf.level=0.8)
+t.test(conf=0.8,x=x)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La partie \emph{Usage} de \emph{t.test}}
+
+        Il est à noter que l'aide de R est parfois cryptique dans les
+        paquets de base. C'est notamment le cas de la fonction
+        \emph{plot}. La fonction a tellement de possibilités que l'aide ne fournit
+        que les éléments de base.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{\emph{S3} et fonctions}
+
+        R est un langage pseudo-objet pour le \emph{S3}. C'est-à-dire que certaines fonctions vont se comporter
+        différemment selon le type d'objet qu'on lui passe.
+
+        Cela repose sur l'évaluation de la classe de l'objet au niveau
+        de l'appel ou de l'affichage...
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{\emph{S3} et fonctions}
+
+        Pour connaître la classe d'un objet il faut taper~:
+<<S3_1>>=
+class(iris)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{\emph{S3} et fonctions}
+
+        Pour connaître les fonctions génériques utilisables avec un type d'objet
+        donné, il suffit de taper la commande~:
+<<S3_2a,eval=TRUE>>=
+methods(class="data.frame")
+@
+
+\end{frame}
+
+\section{La recherche sur une fonctionnalité}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La recherche par mots clefs via la console}
+
+        R permet dans la console de chercher les fonctions associées à
+        un mot-clef à l'aide la commande \emph{help.search} ou \emph{??}.
+
+        Cette fonction ne cherche que les occurences des mots dans les
+        champs \emph{noms} et \emph{description} et seulement pour les paquets {\bf installés}.
+
+        Pour réponse, R renvoie les noms des fonctions suivis des
+        paquets correspondants et enfin d'un description brève des fonctions.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La recherche par mots clefs sur internet}
+
+        Sur la \href{http://cran.at.r-project.org/}{page} des packages
+        du CRAN, on peut déjà chercher et trouver beaucoup d'informations.
+
+        L'autre méthode est d'utiliser le moteur de recherche
+        \href{http://www.rseek.org/}{RSeek} qui
+        ne référencie que les pages sur R. Le moteur cherche dans les
+        newsgroups de R, les documents, ...
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La recherche par mots clefs sur internet}
+
+        Outre les newsgroups, des sites de type Quora,
+        dédiés à R ou aux statistiques, existent et permettent de
+        poser des questions. On citera par exemple~:
+        \begin{description}
+          \item
+            [\href{http://stats.stackexchange.com/}{StatExchange ou
+              Cross Validated}]
+            orienté statistiques
+          \item
+            [\href{http://stackoverflow.com/questions/tagged/r}{StackOverFlow}]
+            orienté programmation
+
+       \end{description}
+
+\end{frame}
+
+\section{Les documents sur R}
+
+\begin{frame}[containsverbatim]
+	\frametitle{La recherche de tutoriels et de documents}
+
+        Un gros volume de documentation est disponible sur la
+        \href{http://www.r-project.org/}{page} du projet dans la
+        partie \emph{Documentation}.
+
+        On trouvera également un journal sur le site de R.
+
+        Enfin beaucoup de paquets sont décrits dans le \href{http://www.jstatsoft.org/}{Journal of statistical software}.
+
+\end{frame}
+
+\section{Les RUGs}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les groupes d'utilisateurs}
+
+        Les R Users Groups ou \emph{RUGs} sont très actifs... Deux
+        sont présents dans la région parisienne~:
+        \begin{description}
+          \item [\href{http://rug.mnhn.fr/semin-r/}{Semin-R}] INED, MNHN, ...
+          \item [\href{https://fltaur.wordpress.com/}{FLtauR}] INSEE, ...
+        \end{description}
+
+        De nombreux documents, issus des conférences notamment, sont
+        disponibles sur leurs sites. Le groupe \emph{Semin-R} a une mailing-list pour poser des questions ainsi que les utilisateurs de R en sciences sociales \href{http://alea.fr.eu.org/pages/R-soc}{R-soc}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les groupes d'utilisateurs}
+
+  Le groupe \emph{Semin-R} a une mailing-list pour poser des questions ainsi que les utilisateurs de R en sciences sociales \href{http://alea.fr.eu.org/pages/R-soc}{R-soc}.
+  
+  Les réponses à ces groupes seront \og~plus douces~\fg si vous posez une question qui a déjà été posé (que sur les \href{http://www.r-project.org/mail.html}{mailing-list officielles de R}).
+  
+  A noter que de nombreux paquets ont une mailing-lists ou un groupe Google pour obtenir de l'aide sur un paquet précis~: \href{https://groups.google.com/forum/#!forum/knitr}{knitr}, \href{https://groups.google.com/forum/#!forum/factominer-users}{FactoMineR}, \href{https://groups.google.com/forum/#!forum/ggplot2}{ggplot2}, \dots
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les conférences}
+
+        Une réunion des utilisateurs français est organisé maintenant
+        chaque année. Cette année (2015) à \href{http://r2015-grenoble.sciencesconf.org/}{Grenoble} sur les jours de la formation.
+
+        Les conférences { \bfseries UseR! } sont mondiales. En 2015,
+        début juillet en \href{http://user2015.math.aau.dk/}{Aalborg} qui comme chacun sait est au Danemark.
+
+\end{frame}
+
+\end{document}

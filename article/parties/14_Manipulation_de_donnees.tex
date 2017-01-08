@@ -1,0 +1,1092 @@
+\section{Concaténation de données (merge)}
+
+  \subsection{A ne pas faire (ou avec prudence)}
+  
+  R permet de concaténer des lignes (\textit{rbind}), des colonnes (\textit{cbind}), des \dfs (mêmes fonctions) ensemble. Toutefois il convient d'utiliser avec sagesse cette fonctionnalité.
+  
+  Si en sciences expérimentales faire une fusion de table avec une simple concaténation est très pratique, cette opération n'est pas raisonnable sur des tables plus complexes et surtout sur des tables contenant des identifiants qui permettent de réaliser une fusion plutôt qu'une concaténation.
+    
+
+
+  En tout cas dès que \textit{cbind} est utilisé il faut vérifier~: 
+     \begin{itemize}
+       \item que les deux tableaux ont la même taille
+       \item chaque ligne identifie une observation 
+       \item que les observations sont strictement dans le même ordre dans les deux tableaux
+     \end{itemize}
+
+
+
+  En tout cas dès que \textit{rbind} est utilisé il faut vérifier~: 
+\begin{itemize}
+  \item que le nombre de colonnes sont identiques
+   \item que le type de chaque colonnes sont identiques
+\end{itemize}
+
+  \textit{rbind} est un peu plus sûr car R généralement refuse d'opérer en cas de différence de noms et/ou de types de variables dans les deux tableaux de données.
+  
+
+
+
+
+  \textit{rbind} s'avère quand même pratique si on souhaite travailler par exemple sur une base
+public et une privé... et réassembler le tout à la fin du traitement.
+
+  C'est typiquement le cas par exemple quand on utilise \textit{split}.
+  
+
+  \subsection{Fusion avec une seule variable}
+  
+  Ce cas est en fait beaucoup plus fréquent qu'il n'y parait. On veux par exemple ajouter une variable avec une couleur pour les graphiques, le nombre d'élèves dans l'établissement, \dots
+  
+  Et ce type de fusion se fait avec un vecteur. 
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{couleurs} \hlkwb{<-} \hlkwd{c}\hlstd{(} \hlstr{"red"}\hlstd{,} \hlstr{"green"}\hlstd{,} \hlstr{"blue"} \hlstd{)}
+\hlstd{> }\hlkwd{names}\hlstd{(couleurs)} \hlkwb{<-} \hlkwd{levels}\hlstd{(iris}\hlopt{$}\hlstd{Species)}
+\hlstd{> }\hlstd{iris}\hlopt{$}\hlstd{couleur} \hlkwb{<-} \hlstd{couleurs[}\hlkwd{as.character}\hlstd{(iris}\hlopt{$}\hlstd{Species)]}
+\hlstd{> }\hlkwd{with}\hlstd{( iris,} \hlkwd{table}\hlstd{(couleur,Species) )}
+\end{alltt}
+\begin{verbatim}
+##        Species
+## couleur setosa versicolor virginica
+##   blue       0          0        50
+##   green      0         50         0
+##   red       50          0         0
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+
+
+  Un exemple numérique, si on veut ajouter la longueur moyenne par espèce pour les orchidées~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{longueur_par_spe} \hlkwb{<-} \hlkwd{tapply}\hlstd{( iris}\hlopt{$}\hlstd{Sepal.Length, iris}\hlopt{$}\hlstd{Species, mean )}
+\hlstd{> }\hlstd{iris}\hlopt{$}\hlstd{Sepal.Length.Moy} \hlkwb{<-} \hlstd{longueur_par_spe[}\hlkwd{as.character}\hlstd{(iris}\hlopt{$}\hlstd{Species)]}
+\hlstd{> }\hlkwd{with}\hlstd{( iris,} \hlkwd{table}\hlstd{(Sepal.Length.Moy,Species) )}
+\end{alltt}
+\begin{verbatim}
+##                 Species
+## Sepal.Length.Moy setosa versicolor virginica
+##            5.006     50          0         0
+##            5.936      0         50         0
+##            6.588      0          0        50
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+
+
+  \subsection{Fusions avec merge}
+
+La fonction \emph{merge} dans R permet de fusionner des tables avec un
+identifiant (clef) commun entre les tables.
+
+La fusion peut être réalisée en utilisant des variables \emph{factor}
+mais il est préférable de les transformer variable \emph{character} avant la fusion.
+
+Les fusions possibles sont des fusions de 1 à 1 ou de 1 à n.
+
+
+
+  \begin{table}[h!]
+  \scalebox{0.8}{
+    \begin{tabular}{lp{10cm}}
+  { \bfseries x, y } & les 2 \emph{data.frames} que l'on veut fusionner\\
+  { \bfseries by } & si la variable porte le même nom dans les deux \emph{data.frame},
+  il suffit de préciser le nom de la variable précédé de \emph{by}\\
+  { \bfseries by.x, by.y } & dans ce cas on spécifie le nom de la
+  colonne pour \emph{x} (la première \emph{data.frame} et pour \emph{y}
+  (la deuxième).\\
+  \end{tabular}
+  }
+  \caption[position=bottom]{Les principaux arguments de \emph{merge}}
+  \end{table}
+  
+  Voilà l'essentiel de la fonction.
+
+
+
+  Il faut noter qu'on a la possibilité de fusionner les tables non pas en utilisant le nom d'une variable de la \df mais les \emph{row.names}. Dans ce cas, l'argument que l'on passe à \emph{by}
+  est \emph{'row.names'}.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{res} \hlkwb{<-} \hlkwd{merge}\hlstd{( eleves, scores,} \hlkwc{by}\hlstd{=}\hlstr{"id"} \hlstd{)}
+\hlstd{> }\hlkwd{dim}\hlstd{(res)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5000    7
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Dans le cas de l'utilisation des rownames~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{rownames}\hlstd{(eleves)} \hlkwb{<-} \hlstd{eleves}\hlopt{$}\hlstd{id}
+\hlstd{> }\hlkwd{rownames}\hlstd{(scores)} \hlkwb{<-} \hlstd{scores}\hlopt{$}\hlstd{id}
+\hlstd{> }
+\hlstd{> }\hlstd{res} \hlkwb{<-} \hlkwd{merge}\hlstd{( eleves, scores,} \hlkwc{by}\hlstd{=}\hlstr{"row.names"} \hlstd{)}
+\hlstd{> }\hlkwd{dim}\hlstd{(res)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5000    9
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Après la fusion, la fonction utile est \emph{dim} qui donne le nombre de lignes et de colonnes~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{dim}\hlstd{(eleves);}\hlkwd{dim}\hlstd{(scores);}\hlkwd{dim}\hlstd{(res)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5000    6
+## [1] 5000    2
+## [1] 5000    9
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{colnames}\hlstd{(res)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Row.names" "id.x"      "sexe"     
+## [4] "age3e"     "retard"    "secteur"  
+## [7] "acad"      "id.y"      "score"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+
+
+  La fonction \emph{merge} effectue une jointure naturelle. C'est-à-dire que seules les lignes présentes dans \emph{x} et dans \emph{y} seront présentes dans la \df finale.
+
+  Pour changer ce comportement, il existe trois arguments \emph{all}
+
+  \begin{table}
+  \begin{tabular}{lp{10cm}}
+  all & Si vrai alors toutes les lignes des deux \emph{data.frame}
+  seront conservées dans la \emph{data.frame} finale.\\
+  all.x & Si \emph{TRUE} alors toutes les lignes de la \emph{data.frame x}
+  seront conservées dans la \emph{data.frame} finale. Les lignes de
+  \emph{y} ne trouvant pas de correspondance seront éliminées.\\
+  all.y & Si \emph{TRUE} alors toutes les lignes de la \emph{data.frame x}
+  seront conservées dans la \emph{data.frame} finale. Les lignes de
+  \emph{y} ne trouvant pas de correspondance seront éliminées.\\
+  \end{tabular}
+  \caption[position=bottom]{Le type de jointure}
+  \end{table}
+
+
+
+
+  \textbf{Jointure naturelle}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{conatif} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(} \hlstr{"data/evaluation-conatif.csv"} \hlstd{)}
+\hlstd{> }\hlstd{conatif}\hlopt{$}\hlstd{id} \hlkwb{<-} \hlkwd{as.character}\hlstd{( conatif}\hlopt{$}\hlstd{id )}
+\hlstd{> }\hlkwd{dim}\hlstd{(conatif)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4987    8
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{ec} \hlkwb{<-} \hlkwd{merge}\hlstd{( eleves, conatif,} \hlkwc{by}\hlstd{=}\hlstr{"id"} \hlstd{)}
+\hlstd{> }\hlkwd{dim}\hlstd{(ec)}
+\end{alltt}
+\begin{verbatim}
+## [1] 4987   13
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  \textbf{Fusion à gauche}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{ec} \hlkwb{<-} \hlkwd{merge}\hlstd{( eleves, conatif,} \hlkwc{by}\hlstd{=}\hlstr{"id"}\hlstd{,} \hlkwc{all.x} \hlstd{= T )}
+\hlstd{> }\hlkwd{dim}\hlstd{(ec)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5000   13
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Si des colonnes de \emph{x} et de \emph{y} portent le
+  même nom, les colonnes provenant de \emph{x} seront suffixés avec
+  \emph{x}. Et pour \emph{y}, la colonne sera suffixés par \emph{y}.
+
+  Il est possible de spécifier des suffixes personnalisés plutôt que ces
+  suffixes par défaut avec l'argument \emph{suffixes}.
+
+
+
+  Il attends un vecteur \emph{character} de longueur 2 comme par exemple...
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{res} \hlkwb{<-} \hlkwd{merge}\hlstd{( eleves, scores,} \hlkwc{by}\hlstd{=}\hlstr{"row.names"}\hlstd{,}
+\hlstd{+ }              \hlkwc{suffixes}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{".eleves"}\hlstd{,}\hlstr{".scores"} \hlstd{)}
+\hlstd{+ }              \hlstd{)}
+\hlstd{> }\hlkwd{dim}\hlstd{(res)}
+\end{alltt}
+\begin{verbatim}
+## [1] 5000    9
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{colnames}\hlstd{(res)}
+\end{alltt}
+\begin{verbatim}
+## [1] "Row.names" "id.eleves" "sexe"     
+## [4] "age3e"     "retard"    "secteur"  
+## [7] "acad"      "id.scores" "score"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Pour trouver les lignes qui n'ont pas été importées...
+  
+  La syntaxe et très simple et fait appel à l'opérateur \emph{\%in\%}.
+  
+  Ici on cherche les lignes, de \emph{eleves} pour lesquelles il n'y a pas de données pour la partie conative.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{res} \hlkwb{<-} \hlkwd{merge}\hlstd{( eleves, conatif,} \hlkwc{by}\hlstd{=}\hlstr{"id"}\hlstd{,} \hlkwc{all.x}\hlstd{=T )}
+\hlstd{> }\hlstd{(perdus} \hlkwb{<-} \hlstd{res}\hlopt{$}\hlstd{id[} \hlopt{!}\hlstd{(res}\hlopt{$}\hlstd{id} \hlopt{%in%} \hlstd{conatif}\hlopt{$}\hlstd{id) ])}
+\end{alltt}
+\begin{verbatim}
+##  [1] "e014161" "e03592"  "e041612" "e044139"
+##  [5] "e1123"   "e121165" "e151894" "e162289"
+##  [9] "e184897" "e213974" "e242770" "e243719"
+## [13] "e251862"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Il est possible de spécifier un vecteur de noms de variables pour l'argument \emph{by}.
+  
+  Mais les identifiants composite ne sont pas conseillés (dans l'absolu).
+
+
+
+\section{Un mot sur les fonctions\dots}
+
+  \subsection{R langage fonctionnel}
+
+  R est un langage fonctionnel. Si cela signifie que "tout est fonction dans R", cela signifie également qu'il faut privilégier le traitement des vecteurs au détriment des boucles. 
+  
+  Au début cela peut paraître contre-intuitif mais cela permet souvent de gagner en vitesse d'exécution, en possibilité de rendre le calcul parallèle et en lisibilité (si si...).
+  
+
+
+  Par exemple, sur un vecteur, il doit vous paraître évident que~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{x} \hlkwb{<-} \hlnum{1}\hlopt{:}\hlnum{4}
+\hlstd{> }\hlstd{x}\hlopt{*}\hlnum{4}
+\end{alltt}
+\begin{verbatim}
+## [1]  4  8 12 16
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlcom{# n'est autre que l'équivalent implicite de }
+\hlstd{> }\hlstd{vreponse} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+\hlstd{> }\hlkwa{for} \hlstd{( ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hlstd{(x) ) vreponse} \hlkwb{<-} \hlkwd{c}\hlstd{( vreponse, x[ii]}\hlopt{*}\hlnum{4} \hlstd{)}
+\hlstd{> }\hlstd{vreponse}
+\end{alltt}
+\begin{verbatim}
+## [1]  4  8 12 16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+
+  L'utilisation et la production de statistiques va en grande partie utilisé ce principe illustré ici par un vecteur mais qui est utilisé dans les fonctions de type apply sur des objets plus complexes.
+  
+  Ici on utilise l'opérateur de multiplication qui est une fonction parmi d'autres.
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstr{"*"}\hlstd{(}\hlnum{3}\hlstd{,}\hlnum{4}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 12
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Cela oblige à savoir utiliser les fonctions sous R. La définition se fait avec la syntaxe suivante~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{mafonction} \hlkwb{<-} \hlkwa{function} \hlstd{(} \hlkwc{arg1}\hlstd{,} \hlkwc{arg2}\hlstd{,} \hlkwc{arg3}\hlstd{=F,} \hlkwc{...} \hlstd{) \{}
+\hlstd{+ }  \hlcom{# code}
+\hlstd{+ }\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  
+
+
+  Mais souvent, dans les opérations de manipulations de données, 
+  des fonctions \textit{anonymes} seront utilisées. 
+  
+  C'est-à-dire directement des fonctions~: sans nom, jetables.
+    
+
+
+  Cela ressemble à ça par exemple~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{apply}\hlstd{(iris[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{],}\hlnum{2}\hlstd{,}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)\{}
+\hlstd{+ }  \hlkwd{c}\hlstd{(}\hlkwd{mean}\hlstd{(x),}\hlkwd{sd}\hlstd{(x))}
+\hlstd{+ }\hlstd{\})}
+\end{alltt}
+\begin{verbatim}
+##      Sepal.Length Sepal.Width Petal.Length
+## [1,]    5.8433333   3.0573333     3.758000
+## [2,]    0.8280661   0.4358663     1.765298
+##      Petal.Width
+## [1,]   1.1993333
+## [2,]   0.7622377
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\section{Aggrégation de données}
+
+  \subsection{Considérations sur les aggrégations}
+  
+  Contrairement à d'autres logiciels, R peut paraître strict voire pénible lors 
+  des aggrégations. En fait, la pratique de R permet de réaliser que R impose 
+  cette syntaxe notamment pour éviter de réaliser des regroupements n'ayant pas 
+  de sens.
+  
+  Une exemple simple, cette requête SQL peut tout à fait renvoyer un résultat 
+  valide~:
+  
+\begin{verbatim}  
+SELECT *, uai FROM base_eleves GROUP BY uai ;
+\end{verbatim}
+
+Hors le sexe de l'élève, présent dans la ligne élève, va devenir une variable vide de sens. En effet elle a un sens au niveau individuel mais pas au niveau d'un établissement. 
+    
+
+  
+  R va rendre difficile ce type d'aggrégation. 
+  
+  L'aggrégation ne sera possible que si on obtient un vecteur cohérent avant aggrégation.
+  
+
+  \subsection{Pourquoi aggréger ?}
+  
+  Il existe de nombreuses façons d'aggréger des données sous R. L'utilisation de chacune dépend des goûts de chacun et surtout de la finalité de l'aggrégation.
+  
+  Par exemple, l'aggrégation peut servir à\dots
+  
+  \begin{itemize}
+    \item créer un enregistrement pour constituer un unité plus grande que celle d'origine (ex~: passer élève à établissement)
+    \item créer des statistiques pour des unités plus importantes (ex~: établissement, pays, \dots)
+    \item \dots
+  \end{itemize}
+  
+
+
+  \subsection{Aggrégations statistiques}
+  
+  Beaucoup de statistiques peuvent réalisées avec certaines fonctions de R qui appartiennet à la famille \emph{apply}.
+  
+  Par exemple, \emph{tapply} permet de réaliser des regroupements en fonction d'une ou plusieurs variables en calculant des statistiques sur une variable.
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{res} \hlkwb{<-} \hlkwd{with}\hlstd{( xtfme,} \hlkwd{tapply}\hlstd{( vali_f, num_etab, mean,} \hlkwc{na.rm}\hlstd{=T ) )}
+\hlstd{> }\hlstd{res[}\hlnum{1}\hlopt{:}\hlnum{5}\hlstd{]}
+\end{alltt}
+\begin{verbatim}
+##  0010529V  0010560D  0011110B  0011238R  0011289W 
+## 0.9500000 0.9444444 0.6521739 0.8709677 0.8750000
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+
+  
+  Dans le cas précédent, on demande la moyenne (vecteur de longueur 1) et un variable de regroupement.  Mais \emph{tapply} permet de faire des choses plus complexes. Dans ce cas, il y a un résultat par croisement de modalité. Ce qui donne un tableau.
+    
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{with}\hlstd{( xtfme,} \hlkwd{tapply}\hlstd{(}
+\hlstd{+ }  \hlstd{vali_f,}
+\hlstd{+ }  \hlkwd{list}\hlstd{(} \hlkwc{strate}\hlstd{=strate,} \hlkwc{sexe}\hlstd{=sexe ),}
+\hlstd{+ }  \hlstd{mean,}
+\hlstd{+ }  \hlkwc{na.rm}\hlstd{=T}
+\hlstd{+ }  \hlstd{)}
+\hlstd{+ }\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##       sexe
+## strate         1         2
+##      1 0.8695652 0.9317269
+##      2 0.7598647 0.8289183
+##      3 0.6610360 0.7807487
+##      4 0.8760246 0.9536935
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  
+  C'est la limite (ou la puissance) de tapply. On peut ainsi s'amuser à obtenir des tableaux à k dimensions pour k variables de regroupement.
+    
+    Inversement on peut être limité par le nombre de valeurs renvoyées par la fonction de calcul.
+    
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{with}\hlstd{( xtfme,} \hlkwd{tapply}\hlstd{(}
+\hlstd{+ }  \hlstd{vali_f,}
+\hlstd{+ }  \hlkwd{list}\hlstd{(}\hlkwc{strate}\hlstd{=strate),}
+\hlstd{+ }  \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{,}\hlkwc{na.rm}\hlstd{=T) \{}
+\hlstd{+ }    \hlkwd{c}\hlstd{(} \hlkwd{mean}\hlstd{(x,}\hlkwc{na.rm}\hlstd{=na.rm),} \hlkwd{sd}\hlstd{(x,}\hlkwc{na.rm}\hlstd{=na.rm) )}
+\hlstd{+ }    \hlstd{\}}
+\hlstd{+ }  \hlstd{)}
+\hlstd{+ }\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+## $`1`
+## [1] 0.9003984 0.2995427
+## 
+## $`2`
+## [1] 0.7947574 0.4039915
+## 
+## $`3`
+## [1] 0.7224355 0.4479202
+## 
+## $`4`
+## [1] 0.9134360 0.2812698
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Deux illustrations pour calculer le nombre d'élèves dans chaque strate~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{with}\hlstd{(xtfme,} \hlkwd{tapply}\hlstd{(} \hlkwd{rep}\hlstd{(}\hlnum{1}\hlstd{,}\hlkwd{length}\hlstd{(strate)), strate, sum) )}
+\end{alltt}
+\begin{verbatim}
+##    1    2    3    4 
+## 2008 1793 1823 1883
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{with}\hlstd{(xtfme,} \hlkwd{tapply}\hlstd{( num_etab, strate, length) )}
+\end{alltt}
+\begin{verbatim}
+##    1    2    3    4 
+## 2008 1793 1823 1883
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+  et pour les poids\dots
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{with}\hlstd{(xtfme,} \hlkwd{tapply}\hlstd{( poids, strate, sum) )}
+\end{alltt}
+\begin{verbatim}
+##      1      2      3      4 
+## 5220.8  537.9  182.3  941.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  La fonction \emph{aggregate} permet des choses similaires ou un peu plus complexes.
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{with}\hlstd{( xtfme,} \hlkwd{aggregate}\hlstd{(}
+\hlstd{+ }  \hlkwd{cbind}\hlstd{(vali_f, vali_m),}
+\hlstd{+ }  \hlkwd{list}\hlstd{(}\hlkwc{strate}\hlstd{=strate),}
+\hlstd{+ }  \hlstd{mean}
+\hlstd{+ }  \hlstd{)}
+\hlstd{+ }\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   strate    vali_f    vali_m
+## 1      1 0.9003984 0.9213147
+## 2      2 0.7947574 0.8315672
+## 3      3 0.7224355 0.7761931
+## 4      4 0.9134360 0.9373340
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{with}\hlstd{( xtfme,} \hlkwd{aggregate}\hlstd{(}
+\hlstd{+ }  \hlkwd{cbind}\hlstd{(vali_f, vali_m),}
+\hlstd{+ }  \hlkwd{list}\hlstd{(}\hlkwc{strate}\hlstd{=strate,}\hlkwc{sexe}\hlstd{=sexe),}
+\hlstd{+ }  \hlstd{mean}
+\hlstd{+ }  \hlstd{)}
+\hlstd{+ }\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   strate sexe    vali_f    vali_m
+## 1      1    1 0.8695652 0.9268775
+## 2      2    1 0.7598647 0.8410372
+## 3      3    1 0.6610360 0.7815315
+## 4      4    1 0.8760246 0.9344262
+## 5      1    2 0.9317269 0.9156627
+## 6      2    2 0.8289183 0.8222958
+## 7      3    2 0.7807487 0.7711230
+## 8      4    2 0.9536935 0.9404631
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+
+
+  Les indications de variables peuvent se faire en formule. 
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{aggregate}\hlstd{(}
+\hlstd{+ }  \hlstd{vali_m} \hlopt{~} \hlstd{strate} \hlopt{+} \hlstd{sexe,}
+\hlstd{+ }  \hlkwc{data}\hlstd{=xtfme, mean}
+\hlstd{+ }  \hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   strate sexe    vali_m
+## 1      1    1 0.9268775
+## 2      2    1 0.8410372
+## 3      3    1 0.7815315
+## 4      4    1 0.9344262
+## 5      1    2 0.9156627
+## 6      2    2 0.8222958
+## 7      3    2 0.7711230
+## 8      4    2 0.9404631
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+
+
+  Ou comme dans l'aide\dots
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{data}\hlstd{(iris)}
+\hlstd{> }\hlkwd{aggregate}\hlstd{( .} \hlopt{~} \hlstd{Species,} \hlkwc{data}\hlstd{=iris, mean,} \hlkwc{na.rm}\hlstd{=T  )}
+\end{alltt}
+\begin{verbatim}
+##      Species Sepal.Length Sepal.Width
+## 1     setosa        5.006       3.428
+## 2 versicolor        5.936       2.770
+## 3  virginica        6.588       2.974
+##   Petal.Length Petal.Width
+## 1        1.462       0.246
+## 2        4.260       1.326
+## 3        5.552       2.026
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+
+
+  \subsection{plyr}
+  
+  Un paquet de Hadley Wickham, \emph{plyr}, permet de réaliser ce type d'opérations assez facilement.
+  
+  Le paquet \emph{plyr} permet de traiter des \emph{array}, des vecteurs, des \dfs.
+  
+  Il offre des fonctions génériques permettant de créer, transformer ou faire des calculs sur des \dfs.
+  
+  Outre ce côté générique, il offre quelques avantages sur les fonctions de base.
+    
+
+
+  Par exemple les statistiques sur une variable deviennent~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{ddply}\hlstd{( xtfme,} \hlkwd{.}\hlstd{(strate), summarize,}
+\hlstd{+ }       \hlkwc{moy_f}\hlstd{=}\hlkwd{mean}\hlstd{(vali_f),} \hlkwc{sd_f}\hlstd{=}\hlkwd{sd}\hlstd{(vali_f),}
+\hlstd{+ }       \hlkwc{moy_m}\hlstd{=}\hlkwd{mean}\hlstd{(vali_m),} \hlkwc{sd_m}\hlstd{=}\hlkwd{sd}\hlstd{(vali_m)}
+\hlstd{+ }       \hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   strate     moy_f      sd_f     moy_m      sd_m
+## 1      1 0.9003984 0.2995427 0.9213147 0.2693140
+## 2      2 0.7947574 0.4039915 0.8315672 0.3743546
+## 3      3 0.7224355 0.4479202 0.7761931 0.4169085
+## 4      4 0.9134360 0.2812698 0.9373340 0.2424255
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+  On récupère une \df\dots
+
+
+
+  Idem\dots
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{head}\hlstd{(}
+\hlstd{+ }  \hlkwd{ddply}\hlstd{( xtfme,} \hlkwd{.}\hlstd{(strate,sexe), summarize,}
+\hlstd{+ }       \hlkwc{moy_f}\hlstd{=}\hlkwd{mean}\hlstd{(vali_f),} \hlkwc{sd_f}\hlstd{=}\hlkwd{sd}\hlstd{(vali_f),}
+\hlstd{+ }       \hlkwc{moy_m}\hlstd{=}\hlkwd{mean}\hlstd{(vali_m),} \hlkwc{sd_m}\hlstd{=}\hlkwd{sd}\hlstd{(vali_m)}
+\hlstd{+ }       \hlstd{),} \hlnum{4}
+\hlstd{+ }\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   strate sexe     moy_f      sd_f     moy_m
+## 1      1    1 0.8695652 0.3369477 0.9268775
+## 2      1    2 0.9317269 0.2523407 0.9156627
+## 3      2    1 0.7598647 0.4274065 0.8410372
+## 4      2    2 0.8289183 0.3767883 0.8222958
+##        sd_m
+## 1 0.2604662
+## 2 0.2780327
+## 3 0.3658477
+## 4 0.3824747
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  etc\dots
+  
+
+
+  \subsection{aggrégation personnalisée}
+
+ Une fonction d'aggrégation complètement personnalisée par exemple\dots avec les fonctions classiques
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{agg} \hlkwb{<-} \hlkwd{lapply}\hlstd{(} \hlkwd{split}\hlstd{(xtfme,xtfme}\hlopt{$}\hlstd{num_etab),} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+\hlstd{+ }      \hlkwd{data.frame}\hlstd{(}
+\hlstd{+ }        \hlkwc{uai}\hlstd{=}\hlkwd{unique}\hlstd{(x}\hlopt{$}\hlstd{num_etab),} \hlkwc{vali_f}\hlstd{=}\hlkwd{mean}\hlstd{(x}\hlopt{$}\hlstd{vali_f),}
+\hlstd{+ }        \hlkwc{vali_m}\hlstd{=}\hlkwd{mean}\hlstd{(x}\hlopt{$}\hlstd{vali_m),} \hlkwc{poids}\hlstd{=}\hlkwd{sum}\hlstd{(x}\hlopt{$}\hlstd{poids),}
+\hlstd{+ }        \hlkwc{prop_garcons}\hlstd{=}\hlkwd{mean}\hlstd{(}\hlkwd{ifelse}\hlstd{(x}\hlopt{$}\hlstd{sexe}\hlopt{==}\hlnum{1}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{))}
+\hlstd{+ }      \hlstd{)}
+\hlstd{+ }    \hlstd{\}}
+\hlstd{+ }  \hlstd{)}
+\hlstd{> }\hlkwd{head}\hlstd{(} \hlkwd{do.call}\hlstd{( rbind, agg),} \hlnum{3} \hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+##               uai    vali_f    vali_m poids
+## 0010529V 0010529V 0.9500000 0.9500000  52.0
+## 0010560D 0010560D 0.9444444 0.9444444  46.8
+## 0011110B 0011110B 0.6521739 0.8260870   2.3
+##          prop_garcons
+## 0010529V    0.4500000
+## 0010560D    0.5000000
+## 0011110B    0.5217391
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+##               uai    vali_f    vali_m poids
+## 0010529V 0010529V 0.9500000 0.9500000  52.0
+## 0010560D 0010560D 0.9444444 0.9444444  46.8
+## 0011110B 0011110B 0.6521739 0.8260870   2.3
+##          prop_garcons
+## 0010529V    0.4500000
+## 0010560D    0.5000000
+## 0011110B    0.5217391
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  Quelque chose de discutable d'un point de vue méthodologique mais possible\dots
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{elev} \hlkwb{<-} \hlkwd{merge}\hlstd{(scores,eleves,}\hlkwc{by}\hlstd{=}\hlstr{"id"}\hlstd{)}
+\hlstd{> }\hlstd{elev}\hlopt{$}\hlstd{sexe} \hlkwb{<-} \hlkwd{as.character}\hlstd{(elev}\hlopt{$}\hlstd{sexe)}
+\hlstd{> }\hlstd{elev} \hlkwb{<-} \hlstd{elev[elev}\hlopt{$}\hlstd{sexe}\hlopt{!=}\hlstr{"M"}\hlstd{,]}
+\hlstd{> }
+\hlstd{> }\hlstd{coef} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{score}\hlstd{,}\hlkwc{age3e}\hlstd{,}\hlkwc{n}\hlstd{) \{} \hlkwd{coef}\hlstd{(}\hlkwd{lm}\hlstd{( score} \hlopt{~} \hlstd{age3e ))[n] \}}
+\hlstd{> }
+\hlstd{> }\hlstd{res} \hlkwb{<-} \hlkwd{ddply}\hlstd{(}
+\hlstd{+ }  \hlstd{elev,} \hlkwd{.}\hlstd{( , secteur ), summarize,}
+\hlstd{+ }  \hlkwc{coef1_age3e} \hlstd{=} \hlkwd{coef1}\hlstd{(score,age3e,}\hlnum{1}\hlstd{),}
+\hlstd{+ }  \hlkwc{coef2_age3e} \hlstd{=} \hlkwd{coef2}\hlstd{(score,age3e,}\hlnum{2}\hlstd{)}
+\hlstd{+ }\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\section{Transposition}
+
+  \subsection{Transposition de matrices}
+  
+  La transposition simple d'une matrice ou d'une data.frame se fait avec la fonction \emph{t}~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{(a} \hlkwb{=} \hlkwd{matrix}\hlstd{(} \hlnum{1}\hlopt{:}\hlnum{16}\hlstd{,} \hlkwc{nrow}\hlstd{=}\hlnum{4}\hlstd{,} \hlkwc{ncol}\hlstd{=}\hlnum{4} \hlstd{))}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    5    9   13
+## [2,]    2    6   10   14
+## [3,]    3    7   11   15
+## [4,]    4    8   12   16
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{t}\hlstd{(a)}
+\end{alltt}
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    5    6    7    8
+## [3,]    9   10   11   12
+## [4,]   13   14   15   16
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  \subsection{reshape2}
+  
+  Encore un paquet d'Hadley Wickham\dots
+
+  Il permet de faire un peu se qu'on veut au niveau des transpositions.
+  
+  Les deux fonctions centrales sont \emph{cast} et \emph{melt}.
+
+
+  \subsection{\emph{melt}}
+  
+  Cette fonction permet de passer d'un tableau large à un tableau long\dots
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{names}\hlstd{(airquality)} \hlkwb{<-} \hlkwd{tolower}\hlstd{(}\hlkwd{names}\hlstd{(airquality))}
+\hlstd{> }\hlkwd{head}\hlstd{(airquality)}
+\end{alltt}
+\begin{verbatim}
+##   ozone solar.r wind temp month day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5
+## 6    28      NA 14.9   66     5   6
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  
+  Cette fonction permet de passer d'un tableau large à un tableau long\dots
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{head}\hlstd{(}
+\hlstd{+ }  \hlkwd{melt}\hlstd{( airquality,}
+\hlstd{+ }        \hlkwc{id}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"month"}\hlstd{,} \hlstr{"day"}\hlstd{),}
+\hlstd{+ }        \hlkwc{measure.vars}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"ozone"}\hlstd{),}
+\hlstd{+ }        \hlkwc{na.rm}\hlstd{=}\hlnum{TRUE}
+\hlstd{+ }        \hlstd{)}
+\hlstd{+ }  \hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   month day variable value
+## 1     5   1    ozone    41
+## 2     5   2    ozone    36
+## 3     5   3    ozone    12
+## 4     5   4    ozone    18
+## 6     5   6    ozone    28
+## 7     5   7    ozone    23
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  
+  On peux utiliser plusieurs variables comme variables de mesure.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{head}\hlstd{(}
+\hlstd{+ }  \hlstd{z} \hlkwb{<-} \hlkwd{melt}\hlstd{( airquality,}
+\hlstd{+ }        \hlkwc{id}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"month"}\hlstd{,} \hlstr{"day"}\hlstd{),}
+\hlstd{+ }        \hlkwc{measure.vars}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"wind"}\hlstd{,}\hlstr{"ozone"}\hlstd{),}
+\hlstd{+ }        \hlkwc{na.rm}\hlstd{=}\hlnum{TRUE}
+\hlstd{+ }        \hlstd{),} \hlnum{3}
+\hlstd{+ }  \hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   month day variable value
+## 1     5   1     wind   7.4
+## 2     5   2     wind   8.0
+## 3     5   3     wind  12.6
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{table}\hlstd{(z}\hlopt{$}\hlstd{variable)}
+\end{alltt}
+\begin{verbatim}
+## 
+##  wind ozone 
+##   153   116
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  \subsection{\emph{cast}}
+  
+  A l'inverse pour passer d'un tableau long à un tableau large\dots 
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{head}\hlstd{(}
+\hlstd{+ }  \hlkwd{dcast}\hlstd{( z, month} \hlopt{+} \hlstd{day} \hlopt{~} \hlstd{variable )}
+\hlstd{+ }  \hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   month day wind ozone
+## 1     5   1  7.4    41
+## 2     5   2  8.0    36
+## 3     5   3 12.6    12
+## 4     5   4 11.5    18
+## 5     5   5 14.3    NA
+## 6     5   6 14.9    28
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  
+  La fonction \emph{(a/d)cast} peut également être utilisé pour réaliser des statistiques...
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{head}\hlstd{(}
+\hlstd{+ }  \hlkwd{dcast}\hlstd{( z, month} \hlopt{~} \hlstd{variable, mean,} \hlkwc{na.rm}\hlstd{=T )}
+\hlstd{+ }  \hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##   month      wind    ozone
+## 1     5 11.622581 23.61538
+## 2     6 10.266667 29.44444
+## 3     7  8.941935 59.11538
+## 4     8  8.793548 59.96154
+## 5     9 10.180000 31.44828
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+  \subsection{dplyr, data.table, \dots}
+  
+  Des paquets supplménetaires ont fait leur apparition ces dernières années.
+  
+  Ils changent notablemment la syntaxe de R. Par exemple avec \emph{dplyr} (ou à la \emph{magrittr}), la séquence des commandes est inversée. 
+  
+  Trois formes d'écriture de la même opération avec le paquet \emph{dplyr} (source~: une des vignettes du paquet).
+  
+
+
+  
+  Version \emph{dplyr} façon \emph{plyr}~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a1} \hlkwb{<-} \hlkwd{group_by}\hlstd{(flights, year, month, day)}
+\hlstd{> }\hlstd{a2} \hlkwb{<-} \hlkwd{select}\hlstd{(a1, arr_delay, dep_delay)}
+\hlstd{> }\hlstd{a3} \hlkwb{<-} \hlkwd{summarise}\hlstd{(a2,}
+\hlstd{+ }  \hlkwc{arr} \hlstd{=} \hlkwd{mean}\hlstd{(arr_delay,} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{),}
+\hlstd{+ }  \hlkwc{dep} \hlstd{=} \hlkwd{mean}\hlstd{(dep_delay,} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{))}
+\hlstd{> }\hlstd{a4} \hlkwb{<-} \hlkwd{filter}\hlstd{(a3, arr} \hlopt{>} \hlnum{30} \hlopt{|} \hlstd{dep} \hlopt{>} \hlnum{30}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  
+
+
+
+  
+  Version \emph{dplyr} sans variable intermédiaire~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{filter}\hlstd{(}
+\hlstd{+ }  \hlkwd{summarise}\hlstd{(}
+\hlstd{+ }    \hlkwd{select}\hlstd{(}
+\hlstd{+ }      \hlkwd{group_by}\hlstd{(flights, year, month, day),}
+\hlstd{+ }      \hlstd{arr_delay, dep_delay}
+\hlstd{+ }    \hlstd{),}
+\hlstd{+ }    \hlkwc{arr} \hlstd{=} \hlkwd{mean}\hlstd{(arr_delay,} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{),}
+\hlstd{+ }    \hlkwc{dep} \hlstd{=} \hlkwd{mean}\hlstd{(dep_delay,} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{+ }  \hlstd{),}
+\hlstd{+ }  \hlstd{arr} \hlopt{>} \hlnum{30} \hlopt{|} \hlstd{dep} \hlopt{>} \hlnum{30}
+\hlstd{+ }\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+  
+  Version \emph{dplyr} (à la \emph{magrittr})~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{flights} \hlopt{%>%}
+\hlstd{+ }  \hlkwd{group_by}\hlstd{(year, month, day)} \hlopt{%>%}
+\hlstd{+ }  \hlkwd{select}\hlstd{(arr_delay, dep_delay)} \hlopt{%>%}
+\hlstd{+ }  \hlkwd{summarise}\hlstd{(}
+\hlstd{+ }    \hlkwc{arr} \hlstd{=} \hlkwd{mean}\hlstd{(arr_delay,} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{),}
+\hlstd{+ }    \hlkwc{dep} \hlstd{=} \hlkwd{mean}\hlstd{(dep_delay,} \hlkwc{na.rm} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{+ }  \hlstd{)} \hlopt{%>%}
+\hlstd{+ }  \hlkwd{filter}\hlstd{(arr} \hlopt{>} \hlnum{30} \hlopt{|} \hlstd{dep} \hlopt{>} \hlnum{30}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+  
+  L'exemple plus haut deviendrait~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{agg2} \hlkwb{<-} \hlstd{xtfme} \hlopt{%>%} \hlkwd{group_by}\hlstd{(num_etab)} \hlopt{%>%}
+\hlstd{+ }  \hlkwd{summarize}\hlstd{(}\hlkwc{vali_f}\hlstd{=}\hlkwd{mean}\hlstd{(vali_f),}
+\hlstd{+ }        \hlkwc{vali_m}\hlstd{=}\hlkwd{mean}\hlstd{(vali_m),} \hlkwc{poids}\hlstd{=}\hlkwd{sum}\hlstd{(poids),}
+\hlstd{+ }        \hlkwc{prop_garcons}\hlstd{=}\hlkwd{mean}\hlstd{(}\hlkwd{ifelse}\hlstd{(sexe}\hlopt{==}\hlnum{1}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{1}\hlstd{))}
+\hlstd{+ }  \hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in function\_list[[i]](value): impossible de trouver la fonction "{}group\_by"{}}}\begin{alltt}
+\hlstd{> }\hlkwd{head}\hlstd{( agg2 )}
+\end{alltt}
+
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in head(agg2): objet 'agg2' introuvable}}\end{kframe}
+\end{knitrout}
+
+
+  
+  L'écriture est pour certains plus intuitives (\emph{dplyr},\emph{magrittr}. Le problème est que les objets manipulés ne sont pas tout à fait des objets standards de R (\emph{dplyr} et \emph{data.table}).
+  
+  Si certaines tâches (manipulation de données en base de données, manipulation de données dans R, ...) sont beaucoup facilités et/ou accélérées par ces paquets, il semble plus raisonnable de comprendre comment fonctione le langage R avant de passer à ces outils. 
+
+  Mais rapidement il faudra les maîtriser car~:
+  \begin{enumerate}
+    \item ils sont pratiques
+    \item beaucoup de paquets et de codes circulent avec cette syntaxe
+    \item probablement l'avenir de R
+  \end{enumerate}
+
+
+  
+  L'autre avantage rest que dplyr permet de faire les opérations indiquées 
+  ci-dessus dans une base de données en traduisant le code R en code SQL et 
+  récupère ensuite les résultats de la requête. 
+  
+  Vous avez un exemple sur cette \href{https://cran.r-project.org/web/packages/dplyr/vignettes/databases.html}{vignette}.
+  
+
+

@@ -1,0 +1,338 @@
+\documentclass{beamer}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Math?matiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux suppl?mentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% N?cessaires pour les tableaux de la macro Excel.
+
+% Outil suppl?mentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour ins?rer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour ins?rer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour ins?rer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En t?tes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour ins?rer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les diff?rents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-?-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+\subtitle{Exercices sur les données des mairies}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+<<defaults,results='hide',echo=FALSE>>=
+require(MASS,quietly=T,warn.conflicts=FALSE)
+require(xtable,quietly=T,warn.conflicts=FALSE)
+require(stringr,quietly=T,warn.conflicts=FALSE)
+require(RSQLite,quietly=T,warn.conflicts=FALSE)
+require(foreign,quietly=T,warn.conflicts=FALSE)
+
+# suppressPackageStartupMessages(require(sp,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maptools,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(rgdal,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maps,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(dplyr,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(ggplot2,quietly=T,warn.conflicts=FALSE))
+
+suppressPackageStartupMessages(require(XLConnect,quietly=T,warn.conflicts=FALSE))
+
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',
+               fig.height=7,fig.width=7,out.width="\\textwidth",resize.height="0.6\\textheight",
+               tidy=FALSE,prompt=TRUE
+               )
+
+options(width=45)
+
+@
+
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+\section{La sécurité informatique dans les mairies}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Source}
+
+  Ces données proviennent du site \href{data.gouv.fr}{data.gouv.fr}.
+  
+  Ce sont des données sur la sécurisation des sites web des mairies.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Chargement}
+
+<<>>=
+mairies <- read.csv("data/ville_secu_informatique_centroide.csv"
+                    , fileEncoding = "UTF8"
+                    , stringsAsFactors = F
+                    )
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Résumé}
+
+<<>>=
+summary(mairies)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Résumé}
+
+<<>>=
+prop.table(table(mairies$Site))
+prop.table(table(mairies$Site))*100
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+  
+  \begin{itemize}
+    \item Quelle est la proportion de mairies avec un accès HTTPS ? 
+    \item Quelle est la proportion de chaque catégorie ?
+    \item Quelle est la proportion de chaque type de serveur ?
+    \item Faire le tableau croisé HTTPS/Serveur.
+    \item Faire le tableau croisé Serveur/catégorie.
+    \item Est-ce que la taille moyenne de la population varie selon le type de serveur ?
+    \item Est-ce que la taille moyenne de la population varie en fonction du type de langage ?
+    \item Est-ce que la taille moyenne de la population varie en fonction du type de langage ?
+  \end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+  
+Quelle est la proportion de mairies avec un accès HTTPS ? 
+<<>>=
+prop.table(table(mairies$https))*100
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+
+Quelle est la proportion de chaque catégorie ?
+<<>>=
+prop.table(table(mairies$Catégorie))*100
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+
+Quelle est la proportion de chaque catégorie ?
+<<>>=
+prop.table(table(mairies$Catégorie))*100
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+
+Quelle est la proportion de chaque type de serveur ?
+<<>>=
+prop.table(table(mairies$Serveur))*100
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+
+Quelle est la proportion de chaque type de serveur ?
+<<>>=
+prop.table(table(mairies$Serveur,mairies$https))*100
+prop.table(table(mairies$Serveur,mairies$https),1)*100
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+
+Quelle est la proportion de chaque type de serveur ?
+<<>>=
+prop.table(table(mairies$Serveur,mairies$Catégorie))*100
+res <- prop.table(table(mairies$Serveur,mairies$Catégorie),1)*100
+write.csv2(as.data.frame.matrix(res),file="data/resultats1.csv")
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+
+Est-ce que la taille moyenne de la population varie selon le type de serveur ?
+<<>>=
+(tmp <- tapply(mairies$Population,mairies$Serveur,mean))
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+
+Est-ce que la taille moyenne de la population varie selon le type de serveur ?
+<<>>=
+barplot(tmp,las=3)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+
+Est-ce que la taille moyenne de la population varie selon le type de serveur ?
+<<>>=
+boxplot(mairies$Population ~ mairies$Serveur,las=3)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Questions}
+
+Est-ce que la taille moyenne de la population varie selon le type de serveur ?
+<<>>=
+boxplot(mairies$Population ~ mairies$Serveur,las=3,ylim=c(0,50000))
+@
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Création de la variable département}
+  
+  substr est une fonction qui permet de sélectionner une partie de la chaine 
+  de caractère.
+  
+<<>>=
+mairies$dept <- substr(mairies$Code.Insee,1,2)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Création de la variable département}
+  
+<<>>=
+prop.table(table(mairies$dept,mairies$Catégorie),1)*100
+mairies$a.jour <- mairies$Catégorie == "À jour"
+(res <- prop.table(table(mairies$dept,mairies$a.jour),1)*100)
+write.csv2(as.data.frame.matrix(res),file="data/resultats2.csv")
+@
+
+\end{frame}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,209 @@
+\section{Qu'est ce que le langage R~?}
+
+  \subsection{Le type de langage}
+  
+  R est un langage interprété. C'est-à-dire qu'il va lire le code instructions
+  par instructions et exécuté chacune d'elles à chaque fin de ligne.
+  
+  La fin de ligne peut être au clavier la touche \emph{entrée} ou la fin de ligne
+  dans un fichier texte. 
+  
+  Il existe la possibilité de mettre plusieurs commandes sur la ligne avec le 
+  caractère ";". Mais cela est déconseillé.
+  
+
+  \subsection{La casse}
+  
+  Le langage est casse-dépendant ce qui signifie que ~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{A}\hlkwb{=}\hlnum{5}
+\hlstd{> }\hlstd{a}\hlkwb{=}\hlnum{4}
+\hlstd{> }\hlstd{A}
+\end{alltt}
+\begin{verbatim}
+## [1] 5
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{a}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  
+  Cela est vrai pour les commandes, le nom des variables, \dots mais également
+  dans les comparaisons de chaîne de caractère. 
+  
+  Si on teste l'égalité de deux chaînes on obtient~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstr{"A"}\hlopt{==}\hlstr{"a"}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstr{"A"}\hlopt{==}\hlstr{"A"}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\section{L'environnement de travail}
+
+  \subsection{La gestion de la mémoire (1)}
+  
+  Directement en tapant dans la console ou un programme généralement, les 
+  variables créées atterissent dans un "environnement" de base (\emph{GlobalEnv}).
+  
+  Sauf exception, les variables vont automatiquement être ajoutées à cet 
+  environnement. 
+  
+  Cet environnement comme tous les autres sont en mémoire vive contrairement
+  à d'autres logiciels de statistiques.
+  
+  De plus il n'y a pas de ramasse-miettes. Les variables ne sont supprimées que
+  sur la demande de l'utilisateur/programmeur.
+
+
+
+    
+  La place en mémoire vive est à la fois une force de R et une faiblesse.
+  
+  Force car la vitesse d'exéuction en mémoire vive permet généralement des 
+  performances meilleures que dans d'autres logiciels.
+  
+  Faiblesse car cela est problématique pour les gros volumes de données.
+  
+
+
+
+  \subsection{La gestion de la mémoire (2)}
+    
+  Il existe d'autres environnements que l'environnement de base. Par exemple
+  quand on charge un paquet, les variables de ce paquet n'entre pas en conflit
+  avec ses propres variables car les variables (et certaines fonctions) du 
+  paquet n'atterisse pas dans l'environnement global. 
+  
+  La création d'environnement est soit automatisé soit volontaire. Automatisé
+  par exemple lorsqu'on crée une fonction, les variables de la fonction ne sont
+  pas accessibles de l'extérieur.
+  
+  Volontaire par exemple en appelant la fonction \emph{new.env}.
+  
+
+  \subsection{Les opérateurs}
+    
+  Les opérateurs vont permettre l'assignation mais également les comparaisons
+  et les opérations mathématiques.
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlkwb{<-} \hlnum{3} \hlcom{# Assignation}
+\hlstd{> }\hlstd{a} \hlkwb{=} \hlnum{3} \hlcom{# Assignation (déconseillé)}
+\hlstd{> }\hlstd{a} \hlopt{==} \hlnum{3} \hlcom{# Comparaison}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlopt{!=} \hlnum{3} \hlcom{# Différent de}
+\end{alltt}
+\begin{verbatim}
+## [1] FALSE
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlopt{+} \hlnum{4}  \hlcom{# somme}
+\end{alltt}
+\begin{verbatim}
+## [1] 7
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlopt{|} \hlnum{TRUE} \hlcom{# Ou}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+  \dots
+  
+
+\section{Opérateurs et variables}
+
+    
+  Comme tout langage les règles de précédence entre les arguments sont parfois
+  complexes. Les parenthèses permettent de forcer la précédence.
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlkwb{<-} \hlnum{3}\hlopt{+}\hlnum{1}
+\hlstd{> }\hlstd{(a} \hlkwb{<-} \hlnum{3}\hlstd{)} \hlopt{+} \hlnum{1}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+  
+
+  \subsection{Les variables}
+    
+  Les variables permettent de stocker les informations. Leur nom ne doit pas 
+  commencer par un nombre et ne pas contenir de caractères spéciaux tels que
+  les blancs.
+  
+  En vrai, c'est un peu plus compliqué. Il est possible d'avoir un nom de 
+  variable non standard en utilisant guillemets et/ou des guillemets inversés.
+  
+
+
+    
+  Vous pouvez utiliser des mots réservés par R. Cela ne soulève pas d'erreurs.
+  
+  Par contre le mot réservé est "masqué". Il est possible de le faire mais cela
+  est déconseillé. Notamment car la procédure de masquage/démasquage peut
+  amener à des bugs subtils.
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{min} \hlkwb{<-} \hlnum{3}  \hlcom{# min est une fonction de base}
+\hlstd{> }\hlstd{min}       \hlcom{# on récupère bien le contenu de la variable}
+\end{alltt}
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlkwd{min}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{6}\hlstd{))} \hlcom{# il y a "dé"masquage car R cherche une }
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }              \hlcom{# fonction et non un nombre}
+\hlstd{> }\hlstd{base}\hlopt{::}\hlkwd{min}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,}\hlnum{5}\hlstd{,}\hlnum{6}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+

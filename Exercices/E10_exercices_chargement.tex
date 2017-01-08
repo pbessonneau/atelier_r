@@ -1,0 +1,236 @@
+\documentclass[a4paper,11pt,twoside]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt} % type et caractéristique du document
+\usepackage[utf8]{inputenc} % encodage (attention: adapter les options de TeXmaker)
+\usepackage[T1]{fontenc} % encodage des polices
+\usepackage[numbers]{natbib} % pour avoir des references style Plos
+
+\usepackage[french]{babel} % 
+\usepackage[hmargin=2.5cm,vmargin=3cm]{geometry} % marges du document
+\usepackage{graphicx} % package pour inserer des images
+%\graphicspath{{logo/}} 
+\usepackage{multirow} % package permettant la fusion des lignes dans un tableau
+\usepackage{pdfpages}
+\usepackage[pdftex]{hyperref}
+
+\hypersetup{
+	unicode=false, % non-Latin characters bookmarks
+	pdftoolbar=false, % show Acrobat's toolbar?
+	pdfmenubar=false, % show Acrobat's menu?
+	pdffitwindow=true, % page fit to window when opened
+	pdftitle={Formation R}, % title
+	pdfauthor={Bessonneau}, % author
+	pdfsubject={s'entraîner avec R}, % subject of the document
+	pdfnewwindow=true, % links in new window
+	colorlinks=true, % false: boxed links; true: colored links
+	linkcolor=blue, % color of internal links
+	citecolor=red, % color of links to bibliography
+	filecolor=magenta, % color of file links
+	urlcolor=blue % color of external links
+}
+
+
+\usepackage{tocbibind} % pour que les differentes tables apparaissent 
+\usepackage{makeidx}
+\usepackage{gensymb} 
+
+\usepackage{verbatim}
+
+\newcommand{\R}{\includegraphics[scale=0.1]{Rlogo}}
+
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+
+\title{\Huge{Il faut s'ent\R aîne\R...}\\ \large{Importation}}
+
+\date{juin 2015}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\maketitle
+
+\section{Fichiers texte}
+
+  Basique mais indispensable, le changement de répertoire de travail.
+
+  \begin{enumerate}
+    \item utilisez l’interface graphique pour changer le répertoire courant
+    \item vérifiez le répertoire courant dans le terminal
+    \item utilisez le terminal pour changer le répertoire courant et vérifiez
+  \end{enumerate}
+  
+  Sur le fichier texte, on va travailler sur la data.frame des Iris de Fisher. Ce fichier est très bien connu de tous les statisticiens car pris en exemple pour les analyses factorielles et les analyses discriminantes. 
+  
+  Le fichier est assez simple et le data.frame existe en mémoire. Vous pourrez comparer l'importation avec le data.frame stocké dans la collection d'examples de R.
+  
+  Pour récupérer une data.frame \emph{exemple}, il faut taper~:
+  
+
+
+  \begin{enumerate}
+	\item Regarder le fichier avec un éditeur de texte (utilisez NotePad++, clic-droit sur le fichier)
+	\item Une fois répérer les caractéristiques du fichier~: séparateur de décimales, séparateurs de champ, ...
+	\item Choisir la bonne fonction et les bonnes options pour R.
+\end{enumerate}
+
+  Lors de l'importation, essayer d'importer en transformant les variables caractère tantôt en \emph{character} tantôt en \emph{factor}.
+
+  \begin{enumerate}
+    \item Iris.csv
+    
+
+    
+    \item Iris.txt
+    
+
+    
+  \end{enumerate}
+
+
+  Maintenant même exercice sur les deux fichiers~:
+  \begin{enumerate}
+    \item patient.dat
+
+
+
+    \item patient.csv
+    
+
+    
+    
+    \item pour des raisons de traitement de données, importer les \emph{ACP},	\emph{peridurale} et   \emph{periACP} sous forme \emph{character} et non \emph{numeric/integer}.
+
+
+
+  \end{enumerate}
+  
+\subsection{Exportation}    
+
+  Le but est d'exporter le data.frame mtcars dans les data.frame exemples~:
+  \begin{enumerate}
+    \item pour Excel
+    
+
+    
+    \item pour SAS (sans les row.names)
+  
+
+
+  \end{enumerate}  
+  
+  
+\section{Format SPSS}
+
+  Il faudra~: 
+  \begin{enumerate}
+    \item charger le paquet foreign
+    \item utiliser la bonne commande pour charger le paquet SPSS
+  \end{enumerate}
+
+
+
+\section{Importation de fichier Excel}
+
+Dans cette partie, on utilise \emph{XLConnect} pour importer un fichier Excel.
+
+Les \href{http://www.inside-r.org/packages/cran/AER/docs/TeachingRatings}{données} sont les appréciations d'enseignants par des élèves d'un collège américain.
+
+Il est au format Excel 2010.
+
+\begin{enumerate}
+  \item charger le fichier
+
+
+  
+  \item Tranformer le fichier "xslx" en fichier Excel 2003
+  
+
+
+  \item Charger correctement le patient.xlsx en évitant d'importer les descriptions des variables
+  
+
+  
+  \end{enumerate}
+
+\section{En supplément\dots}
+
+\begin{enumerate}
+  \item Il faut charger le fichier texte avec un format fixe \emph{Iris-fixed.txt}
+
+
+
+
+  \item Importation des données ESLC depuis une base SQLite. Pour des questions de taille, faites une requête SQL pour n'importer que les données pour la France (condition 1). Puis importer les données pour les élèves français qui ont passé l'anglais (condition 1 et 2)
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlcom{# 1) country_id = \textbackslash{}'FR\textbackslash{}'}
+\hlstd{> }
+\hlstd{> }\hlcom{# 2) targetLanguage_id=\textbackslash{}'EN\textbackslash{}'}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  
+
+
+  \item insérer une nouvelle table dans la base de données SQLite avec seulement les données pour les élèves français. Le nom de la table sera "fr"
+
+
+
+\end{enumerate}
+
+
+\end{document}

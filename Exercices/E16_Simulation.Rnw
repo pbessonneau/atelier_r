@@ -1,0 +1,414 @@
+\documentclass{beamer}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Math?matiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux suppl?mentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% N?cessaires pour les tableaux de la macro Excel.
+
+% Outil suppl?mentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour ins?rer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour ins?rer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour ins?rer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En t?tes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour ins?rer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les diff?rents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{05/2016}
+\subtitle{Exercices, Simulation}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+<<defaults,results='hide',echo=FALSE>>=
+require(MASS,quietly=T,warn.conflicts=FALSE)
+require(xtable,quietly=T,warn.conflicts=FALSE)
+require(stringr,quietly=T,warn.conflicts=FALSE)
+require(RSQLite,quietly=T,warn.conflicts=FALSE)
+require(foreign,quietly=T,warn.conflicts=FALSE)
+
+# suppressPackageStartupMessages(require(sp,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maptools,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(rgdal,quietly=T,warn.conflicts=FALSE))
+# suppressPackageStartupMessages(require(maps,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(dplyr,quietly=T,warn.conflicts=FALSE))
+suppressPackageStartupMessages(require(ggplot2,quietly=T,warn.conflicts=FALSE))
+
+suppressPackageStartupMessages(require(XLConnect,quietly=T,warn.conflicts=FALSE))
+
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',
+               fig.height=7,fig.width=7,out.width="\\textwidth",resize.height="0.6\\textheight",
+               tidy=FALSE,prompt=TRUE,eval=FALSE
+               )
+
+options(width=45)
+
+correction <- TRUE
+@
+
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+\section{Exercices sur la loi normale}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La loi normale}
+
+  La fonction \emph{rnorm} permet de créer un vecteur contenant des nombres tirés
+  de la loi normale~:
+
+<<echo=correction>>=
+a <- rnorm(10000)
+plot(a)
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{La loi normale}
+
+  La fonction \emph{rnorm} permet de créer un vecteur contenant des nombres tirés
+  de la loi normale~:
+
+<<echo=correction>>=
+hist(a)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La loi normale}
+
+  La fonction \emph{rnorm} permet de créer un vecteur contenant des nombres tirés
+  de la loi normale~:
+
+<<echo=correction>>=
+a <- rnorm(10000,mean=2,sd=4)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La loi normale}
+
+  La fonction \emph{rnorm} permet de créer un vecteur contenant des nombres tirés
+  de la loi normale~:
+
+<<echo=correction>>=
+hist(a)
+@
+
+\end{frame}
+
+\section{Simulation de tirage de dés}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les dés}
+
+  On peut aisement sous R simuler un tirage d'une pièce~:
+  
+<<echo=correction>>=
+a <- rbinom(10000,size = 1, prob = 1 / 2 )
+mean(a)
+sd(a)
+table(a)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+  On peut simuler k tirages de n pièces~:
+  
+<<echo=correction>>=
+k <- 10
+n <- 10
+m <- c()
+for (ii in 1:k) {
+  m <- c( m, mean( rbinom(n, size = 1, prob = 1/2 ) ) )
+}
+m
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+<<echo=correction>>=
+hist(m)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+<<echo=correction>>=
+k <- 10000
+n <- 10
+m <- c()
+for (ii in 1:k) {
+  m <- c( m, mean(rbinom(10,size = 1, prob = 1 / 2 )) )
+}
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+<<echo=correction>>=
+hist(m)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+  On dit en statistiques qu'il y a convergence vers la loi normale.
+  
+  Quand on tire une pièce, la valeur obtenu suit une loi binomiale. C'est lié à la
+  méthode de tirage et au \emph{design} de l'expérience. 
+  
+  Cette moyenne varie car on tire un échantillon des valeurs possibles. En conséquence
+  la moyenne obtenue va varier pour chaque échantillon. Et la valeur de la moyenne
+  va varier en suivant une loi normale.  
+  
+\end{frame}
+
+
+\section{Coding Challenge}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Simuler une matrice de k x k nombres aléatoires}
+  
+  la loi peut être la loi uniforme, la loi normale, \dots
+  
+  Le but, obtenir une matrice de k x k avec $k^2$ nombres aléatoires.
+  
+  Etonnez moi ! 
+  
+  Un conseil commencez avec k égal 10 ou 50. Puis avec k égal à 1000.
+  
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Simuler une matrice de k x k nombres aléatoires}
+  
+  Pour créer une matrice la commande est~:
+  
+<<echo=correction>>=
+matrix(valeurs,nrow=k,ncol=k)
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Proposition 1}
+
+<<echo=FALSE>>=
+k <- 1000
+@
+
+  
+<<echo=correction>>=
+matrice <- matrix(NA,nrow=k,ncol=k) 
+for (ii in 1:k) {
+  for (jj in 1:k) {
+    matrice[ii,jj] <- rnorm(1)
+  }
+}
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Proposition 2}
+  
+<<echo=correction>>=
+matrice <- matrix(NA,nrow=k,ncol=k) 
+for (ii in 1:k) {
+  matrice[ii,] <- rnorm(k)
+}
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Proposition 3}
+  
+  
+<<echo=correction>>=
+matrice <- matrix(1,nrow=k,ncol=k) 
+matrice <- apply(matrice,1:2,rnorm)
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Proposition 4}
+  
+<<echo=correction>>=
+matrice <- rnorm(k^2) 
+dim(matrice) <- c(k,k)
+
+# je sais, c'est pas esthétique.
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Mouvements brownien}
+  
+Random walking: un homme avance de pas en pas à chaque fois d'une valeur
+tiré dans une loi normale dans la direction x et idem pour la direction y.
+Réaliser les simulations pour n points
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Mouvements brownien}
+  
+<<eval=FALSE>>=
+n <- 10000
+position.x <- c(0)
+position.y <- c(0)
+for (ii in 1:n) {
+  position.x <- c(position.x,position.x[ii-1]+rnorm(1))
+  position.y <- c(position.y,position.y[ii-1]+rnorm(1))
+}
+plot(0,0,type="n",xlim=range(position.x),ylim=range(position.y))
+lines(position.x,position.y)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Mouvements brownien}
+  
+<<eval=FALSE>>=
+n <- 10000
+position.x <- cumsum(c( 0, rnorm(n)))
+position.y <- cumsum(c( 0, rnorm(n)))
+plot(0,0,type="n",xlim=range(position.x),ylim=range(position.y))
+lines(position.x,position.y)
+@
+
+\end{frame}
+
+
+
+
+
+
+\end{document}

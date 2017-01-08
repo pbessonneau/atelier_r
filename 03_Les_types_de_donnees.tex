@@ -1,0 +1,309 @@
+\documentclass{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Mathématiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux supplémentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% Nécessaires pour les tableaux de la macro Excel.
+
+% Outil supplémentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour insérer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour insérer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour insérer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En têtes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour insérer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les différents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\dfs}{\emph{data.frames}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+\subtitle{Les types de données}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Les types de données}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Typage}
+  
+  En informatique, toutes les informations sont stockées en binaire. 
+  
+  00111001 peut représenter aussi bien un nombre qu'un caractère.
+  
+  Les types sont la nature des données que l'on peut stocker.
+  
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Typage}
+  
+  En R, il n'existe pas de typage fort, c'est-à-dire qu'une nouvelle variable
+  est défini comme caractère, numérique en fonction de la première valeur qu'on
+  mets dedans (la plupart du temps). 
+  
+  De plus une variable peut changer de type simplement en remplaçant le contenu
+  par un autre. 
+  
+  Toutefois il existe des exceptions.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les types de base}
+  
+  Les différents types sont les suivants~:
+  \begin{description}
+    \item[integer] ou entier en français. Il permettent de sauvegarder des 
+    nombres non décimaux
+    \item[numeric] ce type sert à stocker des nombres décimaux
+    \item[complex] ce type permet de stocker des nombres avec partie entière et 
+    partie imaginaire des complexes
+    \item[character] permet de stocker des chaines de caractères
+    \item[logical] permet de stocker des booléens (Vrai/Faux)
+  \end{description}
+
+\end{frame}  
+    
+\begin{frame}[containsverbatim]
+
+  \frametitle{Les types de base}
+    \begin{description}
+      \item[les dates], comme souvent les dates sont des objets délicats à 
+      manipuler. Les termes qui font référence à des type différents sont~:
+      \emph{POSIXct},\emph{POSIXlt}, \dots
+      \item[factor] les \emph{factor} ce sont des modalités de variable ordinale ou 
+      qualitative      
+      \item[AsIs] permet de stocker des données en utilisant l'opérateur 
+      \emph{I()}. En pratique il se rencontre dans des fusions souvent c'est un 
+      signe que vous devriez vous inquiéter des résultats obtenus par la fusion
+
+      \item[utilisateurs] des packages (ou vous même) vous pouvez créer des types
+      nouveaux
+  \end{description}
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les booléens}
+
+  Les booléens sont des \emph{TRUE} ou \emph{FALSE} qui sont deux mots clefs
+  de R. Ils peuvent être abrégés en \emph{T} ou \emph{F}.
+  
+  Les booléens peuvent convertis en numériques naturellement ou explicitement.
+  
+  Dans ce cas leurs valeurs sont 0 pour FALSE et 1 pour TRUE. Ce qui autorise
+  de faire des sommes de booléen.
+  
+\end{frame}
+
+
+\section{Compléments sur les types de base}
+\begin{frame}[containsverbatim]
+  \frametitle{Les \emph{factor}}
+
+      Les \emph{factor} permettent de stocker des variables ayant peu de 
+      modalités. C'est par exemple le cas pour stocker~: expérience A ou B, 
+      médicament Placebo ou Actif. L'étiquette est stockée sous forme de texte 
+      mais les facteurs sont aussi manipulables sous forme de nombres.
+      
+      Cette dualité qui est très utile dans un laboratoire pour faire des ANOVA
+      est un vrai problème quand on stocke des données complexes. 
+      
+      Si les facteurs sont indispensables pour faire certaines analyses comme
+      les tests de Tukeyn certains auteurs font tout ( ou presque) pour éviter
+      leur utilisation comme H. Wickham.
+      
+
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La précision des nombres}
+    
+    Souvent, par exemple pour des entiers lors de sondages, il est nécessaire
+    de s'inquiéter de la précision des types numériques. Ces limites peuvent
+    dépendre de la machine utilisée.
+    
+    Ces informations sont contenues dans l'objet \emph{.Machine} que l'on peut
+    taper directement ou on peut appeler seulement une partie.
+    
+    Par exemple pour trouver les entiers maximums que l'on peut stocker sur la
+    machine qui a compilé ce document~:
+    
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{.Machine}\hlopt{$}\hlstd{integer.max}
+\end{alltt}
+\begin{verbatim}
+## [1] 2147483647
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+    
+\end{frame}
+
+\end{document}

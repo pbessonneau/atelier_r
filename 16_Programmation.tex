@@ -1,0 +1,1347 @@
+\documentclass{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Mathématiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux supplémentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% Nécessaires pour les tableaux de la macro Excel.
+
+% Outil supplémentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour insérer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour insérer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour insérer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En têtes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+
+% Pour insérer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les différents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\dfs}{\emph{data.frames}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\listes}{\emph{lists}\xspace}
+
+\newcommand{\factor}{\emph{factor}\xspace}
+\newcommand{\character}{\emph{character}\xspace}
+\newcommand{\logical}{\emph{logical}\xspace}
+
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+
+
+\subtitle{Fonctions avancées}
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Les fonctions}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les fonctions}
+
+Les fonctions sont un type d'objets R à part entière. Ainsi il existe comme pour les autres types d'objets une fonction \textit{is} correspondante~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{is.function}\hlstd{( \{} \hlkwa{function} \hlstd{(} \hlkwc{x} \hlstd{) \{}
+ \hlstd{x}\hlopt{^}\hlnum{2}
+\hlstd{\} \} )}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les fonctions}
+
+Ce qui peut être perturbant pour les débutants est l'utilisation que vous avez pu voir de fonctions anonymes~: les fonctions sont utilisées directement par exemple dans une fonction \textit{apply}.
+
+Mais les fonctions peuvent être également stockées pour être réutilisées plusieurs fois.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{my.square} \hlkwb{<-} \hlkwa{function} \hlstd{(} \hlkwc{x} \hlstd{) \{}
+ \hlkwd{return}\hlstd{(x}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlstd{\}}
+\hlkwd{my.square}\hlstd{(}\hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 9
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les fonctions}
+
+Par défaut, si la dernière ligne renvoie une valeur, cette valeur est retournée par la fonction. Néanmoins pour rendre le code plus lisible et surtout plus robuste, il convient d'utiliser la fonction \textit{return} qui prend \textbf{un seul} argument qui est renvoyé comme valeur de retour de la fonction.
+
+Les fonctions en R ne renvoie qu'un seul objet. Par conséquent, il est souvent nécessaire de renvoyer des \listes ou des \dfs pour récupérer l'ensemble du matériel créé au sein de la fonction. 
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les fonctions}
+
+Il existe une autre fonction similaire à \emph{return}~:
+\emph{invisible}. Elle est utilisée abondamment dans R notamment par
+les commandes graphiques (ou \emph{t.test} par exemple).
+
+Elle permet de ne renvoyer une valeur que lorsque l'appel de la
+fonction est dans un contexte d'évaluation.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{my.square} \hlkwb{<-} \hlkwa{function} \hlstd{(} \hlkwc{x} \hlstd{) \{}
+ \hlkwd{invisible}\hlstd{(x}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlstd{\}}
+\hlkwd{my.square}\hlstd{(}\hlnum{3}\hlstd{)}
+\hlstd{(}\hlkwd{my.square}\hlstd{(}\hlnum{3}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] 9
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Portée des variables dans une fonction}
+
+  Dans R, les fonctions héritent de l'environnement père~: \cad que les objets disponibles dans l'environnement d'appel de la fonction le sont aussi au sein de la fonction.
+  
+  Mais les objets passés à la fonction sont des copies. Par conséquent, en R, toutes les modifications faîtes sur les objets au sein d'une fonction sont perdus. De plus si un objet est créé avec un nom existant dans l'environnement père, le nom de cet objet fait désormais référence à l'objet créé au sein de la fonction (et non à l'objet de même nom dans l'environnement père).
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Portée des variables dans une fonction}
+
+  Pour les personnes disposant d'un bagage informatique solide, R utilise des passages par valeurs (et non par références) et utilise un procédé d'évaluation dit \textit{lazy}\dots
+  
+  Pour simplifier, tout objet n'est évalué que si l'évaluation est effectivement nécessaire dans le code. Il en va de même pour les objets copiés. 
+  
+  Ce phénomène est bien expliqué dans les manuels de R et dans les ouvrages avancés sur R.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Portée des variables dans une fonction}
+
+On peut donc accéder à une valeur définie hors de la fonction.
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{z} \hlkwb{<-} \hlnum{2}
+ \hlstd{my.square} \hlkwb{<-} \hlkwa{function} \hlstd{(} \hlkwc{x} \hlstd{) \{}
+ \hlkwd{return}\hlstd{(z}\hlopt{*}\hlstd{x}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlstd{\}}
+\hlkwd{my.square}\hlstd{(}\hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 18
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Portée des variables dans une fonction}
+
+A l'intérieur de la fonction, l'objet peut être modifié mais les changements resteront locaux et seront
+perdus à la fermeture de la fonction.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{z} \hlkwb{<-} \hlnum{2}
+ \hlstd{my.square} \hlkwb{<-} \hlkwa{function} \hlstd{(} \hlkwc{x} \hlstd{) \{}
+ \hlstd{z} \hlkwb{<-} \hlnum{4}
+ \hlkwd{return}\hlstd{(z}\hlopt{*}\hlstd{x}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlstd{\}}
+\hlkwd{my.square}\hlstd{(}\hlnum{3}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 36
+\end{verbatim}
+\begin{alltt}
+\hlstd{z}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Environnement}
+
+Les variables créées dans la fonction sont détruites après la fin de l'exécution.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments d'une fonction}
+
+Les arguments peuvent être soit obligatoires soit optionnels.
+
+Les arguments obligatoires ne prennent pas de valeur par défaut. C'est
+le cas pour le \emph{x} de la fonction présentée précédemment dans ce document.
+
+Les arguments sont avant tout positionnels. Mais pas seulement. Voyons
+la syntaxe de l'aide de la fonction \emph{t.test}...
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+\begin{verbatim}
+t.test(x, ...)
+
+## Default S3 method:
+t.test(x, y = NULL,
+       alternative = c("two.sided", "less", "greater"),
+       mu = 0, paired = FALSE, var.equal = FALSE,
+       conf.level = 0.95, ...)
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+La première ligne indique que la fonction n'attends qu'un paramètre
+obligatoire \emph{x}. On retrouve cette information dans la partie qui
+est réservée à l'appel par défaut de la fonction~: il n'y a pas de valeurs par défaut pour \emph{x}.
+
+Par contre, tous les autres arguments ont des valeurs par défaut ce
+qui indique qu'ils sont optionnels.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+On pourrait par exemple comparer la moyenne de deux vecteurs en
+appelant la fonction~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{t.test}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{),}\hlkwc{y}\hlstd{=}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,}\hlnum{2}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  rnorm(1000) and rnorm(1000, 2)
+## t = -46.404, df = 1996.6, p-value < 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -2.164571 -1.989029
+## sample estimates:
+##   mean of x   mean of y 
+## -0.07859808  1.99820182
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+Mais les arguments étant en premier lieu positionnels, cet appel suffit~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{t.test}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{),}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,}\hlnum{2}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  rnorm(1000) and rnorm(1000, 2)
+## t = -45.875, df = 1994.6, p-value < 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -2.132258 -1.957425
+## sample estimates:
+##   mean of x   mean of y 
+## -0.02428612  2.02055538
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+Les arguments peuvent être passés de façon positionnels mais alourdirait le code. Aussi, on peux plus simplement préciser un couple \emph{nom}/\emph{valeur par défaut}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{t.test}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{),}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{,}\hlnum{2}\hlstd{),}\hlkwc{var.equal}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## 
+## 	Two Sample t-test
+## 
+## data:  rnorm(1000) and rnorm(1000, 2)
+## t = -43.926, df = 1998, p-value < 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -2.109948 -1.929595
+## sample estimates:
+##   mean of x   mean of y 
+## -0.04069228  1.97907916
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+En temps normal lorsqu'un nom de paramètre incorrect est utilisé, R
+lève une exception.
+
+Toutefois, lors de la création de la fonction, on peut utiliser un argument spécial~: "\emph{...}".
+
+L'utilisation de cet argument indique à R que des arguments
+supplémentaires peuvent être passés à la fonction.
+
+R ne lèvera pas d'exception si la correspondance entre le nom des
+arguments d'appel et le nom des arguments définis n'est pas correct.
+
+Par contre il conserve les arguments supplémentaires et peut les passer à
+une autre fonction appelée au sein de la première fonction.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+C'est extrèmement pratique pour \emph{surcharger} une fonction
+existante. Le plus souvent pour des fonctions graphiques qui ont de
+nombreux paramètres.
+
+Par exemple, pour créer des \emph{barplot} différents des barplots
+par défaut...
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{my.barplot} \hlkwb{<-} \hlkwa{function}\hlstd{(} \hlkwc{x}\hlstd{,} \hlkwc{horiz}\hlstd{=T,} \hlkwc{...} \hlstd{) \{}
+  \hlkwd{barplot}\hlstd{( x,} \hlkwc{horiz}\hlstd{=horiz, ... )}
+\hlstd{\}}
+\hlcom{#my.barplot( c(5,4,3,2,1), col="red" )}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les arguments}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\textheight]{graphiques/beamer-Barplot2-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Changement dans l'environnement père...}
+
+En fait il existe une possibilité pour changer la valeur d'une variable dans l'environnement père.
+
+C'est pratique pour modifier une \df encombrante par exemple.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Changement dans l'environnement père...}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{i} \hlkwb{<-} \hlnum{1}
+\hlstd{a} \hlkwb{<-} \hlkwa{function} \hlstd{(}\hlkwc{x}\hlstd{) \{ i} \hlkwb{<-} \hlnum{2} \hlstd{\}}
+\hlstd{i}
+\end{alltt}
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+\begin{alltt}
+\hlstd{i} \hlkwb{<-} \hlnum{1}
+\hlstd{a} \hlkwb{<-} \hlkwa{function} \hlstd{(}\hlkwc{x}\hlstd{) \{ i} \hlkwb{<<-} \hlnum{2} \hlstd{\}}
+\hlkwd{a}\hlstd{(}\hlnum{7}\hlstd{);i;}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Changement dans l'environnement père...}
+
+L'inconvénient est que cela rend la fonction dépendante de l'environnement père et du nom des variables dans celui-ci.
+
+Son utilisation est donc à limiter sauf cas particuliers.
+
+\end{frame}
+
+
+\section{Les structures de contrôle}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les boucles}
+
+  Les boucles sont à éviter car lentes à exécuter. Il faut leur préférer les fonctions de type \emph{apply}. La syntaxe d'une boucle est la suivante...
+
+\begin{verbatim}
+for ( mavar in sequence ) {
+       ... code R...
+}
+\end{verbatim}
+
+  la variable \emph{mavar} prend à chaque itération un élement de \emph{sequence} dans l'ordre. Les itérations peuvent se faire sur un type quelconque comme des entiers (usuels) mais également un vecteur de \character par exemple. Ou bien un vecteur de fonctions\dots 
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les tests}
+
+        Les tests ont la structure suivante~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{if} ( valeur ) \{
+       ... code R...
+\}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+        ou
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{if} ( valeur ) \{
+ ... code R...
+\} else \{
+... code R...
+\}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les tests}
+
+  La condition est executé si la valeur est \emph{TRUE}, \emph{T} ou différent de 0.
+
+  Attention, le vecteur booléen doit être de longueur 1. A
+  l'intérieur d'un test, R attend \emph{T} ou \emph{F} et pas \emph{c(T,F,T)}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les tests}
+
+        Les fonctions à connaître sont donc \emph{any} qui renvoie vrai si
+        au moins un élement est vrai dans le vecteur passé en argument.
+
+        Et la fonction \emph{all} qui renvoie vrai si toutes les valeurs du
+        vecteur passé en argument sont vrai.
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les tests}
+
+        Des opérations sur les booléens disponibles~:
+
+\begin{itemize}
+
+\item qui \textit{renvoient} des vecteurs de longueur plus grande que 1
+
+\begin{verbatim}
+& : et
+| : ou
+\end{verbatim}
+
+\item qui \textit{renvoient} des vecteurs de longueur 1
+
+\begin{verbatim}
+&& : et
+|| : ou
+\end{verbatim}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les tests}
+
+        Il y a une fonction à connaître car très rapide et très simple~:
+\begin{verbatim}
+ifelse( mavar, valeur_si_vrai, valeur_si_faux )
+\end{verbatim}
+
+        Par exemple~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ifelse}\hlstd{(} \hlkwd{rnorm}\hlstd{(}\hlnum{10}\hlstd{)} \hlopt{>} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{,} \hlopt{-}\hlnum{1} \hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##  [1]  1 -1  1  1 -1  1  1 -1  1  1
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Stopper l'exécution}
+
+  La fonction \emph{stop} permet d'arrêter un script et
+  d'indiquer une erreur.
+
+\begin{verbatim}
+if ( class != "numeric" ) stop("Non numerique")
+\end{verbatim}
+
+\end{frame}
+
+\section{Les fonctions apply}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+        Dans la famille \emph{apply}, on a en fait~:
+
+\begin{verbatim}
+lapply(X, FUN, ...)
+sapply(X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE)
+vapply(X, FUN, FUN.VALUE, ..., USE.NAMES = TRUE)
+replicate(n, expr, simplify = TRUE)
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les différentes fonctions}
+
+    Par exemple, nous voulons par exemple récupérer les
+    quantiles de toutes les variables numériques. Pour cela, nous
+    utilisons la fonction \emph{apply}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{(r} \hlkwb{<-} \hlkwd{apply}\hlstd{(iris[,}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{],}\hlnum{2}\hlstd{,quantile))}
+\end{alltt}
+\begin{verbatim}
+##      Sepal.Length Sepal.Width Petal.Length
+## 0%            4.3         2.0         1.00
+## 25%           5.1         2.8         1.60
+## 50%           5.8         3.0         4.35
+## 75%           6.4         3.3         5.10
+## 100%          7.9         4.4         6.90
+##      Petal.Width
+## 0%           0.1
+## 25%          0.3
+## 50%          1.3
+## 75%          1.8
+## 100%         2.5
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+        La fonction \emph{apply} permet d'appliquer une fonction sur une \df dans le sens~:
+        \begin{itemize}
+          \item des lignes, ligne par ligne, avec l'indice 1
+         \item des colonnes, colonne par colonne, avec l'indice 2
+         \item cellule par cellule avec l'indice \emph{1:2} (ou \emph{c(1,2)})
+       \end{itemize}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les fonctions apply}
+
+        Donc pour l'exemple précédent, calculer les quantiles, on demande à
+        R de passer chaque colonne à la fonction quantile.
+
+        La fonction quantile rend un vecteur et R se ``débrouille'' tout
+        seul avec les vecteurs résultats~: il les aggrège sous forme
+        de matrice.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+  Par exemple sapply, prends comme argument une \liste et renvoie
+  quelque chose de simplifié quand elle le peut.
+
+        Par exemple pour retrouver les colonnes numeric d'une \df...
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sapply}\hlstd{( iris, is.numeric )}
+\end{alltt}
+\begin{verbatim}
+## Sepal.Length  Sepal.Width Petal.Length 
+##         TRUE         TRUE         TRUE 
+##  Petal.Width      Species 
+##         TRUE        FALSE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+  Pourquoi ça marche ?
+
+  Parce que \df peut être convertie en \liste puis la fonction est appliquée à chaque élement de la \liste.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{str}\hlstd{(}\hlkwd{as.list}\hlstd{(iris))}
+\end{alltt}
+\begin{verbatim}
+## List of 5
+##  $ Sepal.Length: num [1:150] 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num [1:150] 3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num [1:150] 1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num [1:150] 0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+  L'avantage de \emph{sapply} est qu'elle renvoie un objet
+  simplifié par rapport à \emph{lapply}.
+
+  \emph{vapply} est identique avec un contrôle sur le type d'objet renvoyé.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+    \emph{replicate} est une fonction extrêmement utile. Un des
+    gros avantages de R est qu'il permet très aisement de simuler
+    des données.
+
+    \emph{replicate} est une des fonctions qui permet de le faire en répétant une boucle tout en générant des nombres aléatoires.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{les autres fonctions apply}
+
+  \textit{mapply} se distingue car elle peut prendre plusieurs arguments.
+  
+  \textit{vapply} est utilisé sur les vecteurs et permet la vérification du type en sortie.
+  
+  \dots
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{42}\hlstd{)}
+\hlkwd{system.time}\hlstd{(}
+\hlstd{res1} \hlkwb{<-} \hlkwd{replicate}\hlstd{(} \hlnum{10000}\hlstd{,} \hlkwa{function}\hlstd{() \{} \hlkwd{return}\hlstd{(}\hlkwd{mean}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{))) \} )}
+\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##    user  system elapsed 
+##   0.008   0.000   0.006
+\end{verbatim}
+\begin{alltt}
+\hlkwd{system.time}\hlstd{(\{}
+\hlstd{res2} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlnum{10000}\hlstd{)}
+\hlkwa{for} \hlstd{( ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{10000} \hlstd{) \{ res2[ii]} \hlkwb{<-} \hlkwd{mean}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{)) \}}
+\hlstd{\})}
+\end{alltt}
+\begin{verbatim}
+##    user  system elapsed 
+##   0.868   0.000   0.870
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les différentes fonctions}
+
+  Ce qu'il ne faut surtout pas faire~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{system.time}\hlstd{(\{}
+\hlstd{res2} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+\hlkwa{for} \hlstd{( ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{10000} \hlstd{) \{ res2} \hlkwb{<-} \hlkwd{c}\hlstd{( res2,} \hlkwd{mean}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{)) ) \}}
+\hlstd{\})}
+\end{alltt}
+\begin{verbatim}
+##    user  system elapsed 
+##   1.028   0.000   1.030
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Un exemple, le bootstrap...}
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{n} \hlkwb{<-} \hlnum{1000}
+\hlkwd{set.seed}\hlstd{(}\hlnum{42}\hlstd{)}
+\hlstd{b} \hlkwb{<-} \hlkwd{replicate}\hlstd{( n,} \hlkwd{mean}\hlstd{(} \hlkwd{sample}\hlstd{( patient}\hlopt{$}\hlstd{totalechelle,}
+                                 \hlkwd{length}\hlstd{(patient}\hlopt{$}\hlstd{totalechelle),}
+                                 \hlkwc{replace} \hlstd{= T ),} \hlkwc{na.rm}\hlstd{=T ) )}
+\hlkwd{mean}\hlstd{((b}\hlopt{-}\hlkwd{mean}\hlstd{(b))}\hlopt{^}\hlnum{2}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les boucles}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{for} \hlstd{( ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{4} \hlstd{) \{} \hlkwd{print}\hlstd{(ii) \}}
+\end{alltt}
+\begin{verbatim}
+## [1] 1
+## [1] 2
+## [1] 3
+## [1] 4
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{for} \hlstd{( ww} \hlkwa{in} \hlstd{LETTERS[}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{] ) \{} \hlkwd{print}\hlstd{(ww) \}}
+\end{alltt}
+\begin{verbatim}
+## [1] "A"
+## [1] "B"
+## [1] "C"
+## [1] "D"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les boucles}
+
+En vrai, une boucle pourrait servir à ça~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{a} \hlkwb{<-} \hlkwd{numeric}\hlstd{(}\hlnum{4}\hlstd{)}
+\hlkwa{for} \hlstd{( ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{4} \hlstd{) \{ a[ii]} \hlkwb{<-} \hlkwd{mean}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{)) \}}
+\hlstd{a}
+\end{alltt}
+\begin{verbatim}
+## [1] -0.057470355  0.005562816  0.008292973
+## [4] -0.009122556
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Ce qui s'écrit plus simplement et surtout beaucoup plus efficacement~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{a} \hlkwb{<-} \hlkwd{vapply}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{4}\hlstd{,}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{mean}\hlstd{(}\hlkwd{rnorm}\hlstd{(x)),}\hlkwd{numeric}\hlstd{(}\hlnum{1}\hlstd{))}
+\hlstd{a}
+\end{alltt}
+\begin{verbatim}
+## [1]  0.7700131  1.2346050 -0.5141222  0.2071179
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les boucles}
+
+En vrai, une boucle pourrait servir à ça~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{vars} \hlkwb{<-} \hlkwd{colnames}\hlstd{(iris)[}\hlkwd{sapply}\hlstd{(iris,is.numeric)]}
+\hlkwa{for} \hlstd{( ii} \hlkwa{in} \hlstd{vars ) \{ iris[ii]} \hlkwb{<-} \hlkwd{scale}\hlstd{(iris[ii]) \}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Ce qui s'écrit plus simplement et surtout beaucoup plus efficacement~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{vars} \hlkwb{<-} \hlkwd{colnames}\hlstd{(iris)[}\hlkwd{sapply}\hlstd{(iris,is.numeric)]}
+\hlstd{iris[,vars]} \hlkwb{<-} \hlkwd{apply}\hlstd{(iris[,vars],}\hlnum{2}\hlstd{,scale)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les boucles}
+
+Une utilisation justifiée des boucles.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwa{for} \hlstd{( ww} \hlkwa{in} \hlkwd{c}\hlstd{(} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{x}\hlopt{^}\hlnum{1}\hlstd{\},} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{x}\hlopt{^}\hlnum{2}\hlstd{\},} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{x}\hlopt{^}\hlnum{3}\hlstd{\} ) ) \{} \hlkwd{print}\hlstd{(}\hlkwd{ww}\hlstd{(}\hlnum{2}\hlstd{)) \}}
+\end{alltt}
+\begin{verbatim}
+## [1] 2
+## [1] 4
+## [1] 8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+En fait, non
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{power} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{n}\hlstd{,}\hlkwc{x}\hlstd{) \{x}\hlopt{^}\hlstd{n\}}
+\hlkwd{sapply}\hlstd{(}\hlkwd{as.list}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{3}\hlstd{),power,}\hlkwc{x}\hlstd{=}\hlnum{2}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] 2 4 8
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Split...}
+
+  La fonction \emph{split} permet de découper une \df en
+  fonction des modalités d'une variable et de récupérer une
+  \liste en sortie avec pour chaque modalité la partie correspondante de la \df.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{str}\hlstd{(}\hlkwd{split}\hlstd{(iris,}\hlkwd{factor}\hlstd{(iris}\hlopt{$}\hlstd{Species)))}
+\end{alltt}
+\begin{verbatim}
+## List of 3
+##  $ setosa    :'data.frame':	50 obs. of  5 variables:
+##   ..$ Sepal.Length: num [1:50] -0.898 -1.139 -1.381 -1.501 -1.018 ...
+##   ..$ Sepal.Width : num [1:50] 1.0156 -0.1315 0.3273 0.0979 1.245 ...
+##   ..$ Petal.Length: num [1:50] -1.34 -1.34 -1.39 -1.28 -1.34 ...
+##   ..$ Petal.Width : num [1:50] -1.31 -1.31 -1.31 -1.31 -1.31 ...
+##   ..$ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ versicolor:'data.frame':	50 obs. of  5 variables:
+##   ..$ Sepal.Length: num [1:50] 1.397 0.672 1.276 -0.415 0.793 ...
+##   ..$ Sepal.Width : num [1:50] 0.3273 0.3273 0.0979 -1.7375 -0.5904 ...
+##   ..$ Petal.Length: num [1:50] 0.534 0.42 0.647 0.137 0.477 ...
+##   ..$ Petal.Width : num [1:50] 0.263 0.394 0.394 0.132 0.394 ...
+##   ..$ Species     : Factor w/ 3 levels "setosa","versicolor",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ virginica :'data.frame':	50 obs. of  5 variables:
+##   ..$ Sepal.Length: num [1:50] 0.5515 -0.0523 1.5176 0.5515 0.793 ...
+##   ..$ Sepal.Width : num [1:50] 0.557 -0.82 -0.132 -0.361 -0.132 ...
+##   ..$ Petal.Length: num [1:50] 1.27 0.76 1.21 1.04 1.16 ...
+##   ..$ Petal.Width : num [1:50] 1.706 0.919 1.182 0.788 1.313 ...
+##   ..$ Species     : Factor w/ 3 levels "setosa","versicolor",..: 3 3 3 3 3 3 3 3 3 3 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{do.call}
+
+  \textit{do.call} est une fonction assez complexe. Elle permet notamment de définir l'environnement dans lequel exécuté une commande R. 
+  
+  Toutefois elle a une utilisation simple à connaître. Elle permet en une ligne d'aggréger des résultats provenant d'une commande lapply. 
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{stats} \hlkwb{<-} \hlkwa{function} \hlstd{(}\hlkwc{x}\hlstd{) \{} \hlkwd{c}\hlstd{(}
+  \hlkwd{quantile}\hlstd{( x}\hlopt{$}\hlstd{Sepal.Length,}\hlkwc{probs}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0.25}\hlstd{,}\hlnum{0.5}\hlstd{,}\hlnum{0.75}\hlstd{,}\hlnum{1}\hlstd{)),}
+  \hlkwd{mean}\hlstd{(x}\hlopt{$}\hlstd{Sepal.Length),}
+  \hlkwd{sd}\hlstd{(x}\hlopt{$}\hlstd{Sepal.Length) )}
+\hlstd{\}}
+\hlstd{res} \hlkwb{<-} \hlkwd{lapply}\hlstd{(} \hlkwd{split}\hlstd{(iris,iris}\hlopt{$}\hlstd{Species), stats )}
+\hlkwd{str}\hlstd{(res)}
+\end{alltt}
+\begin{verbatim}
+## List of 3
+##  $ setosa    : Named num [1:7] -1.8638 -1.26 -1.0184 -0.7769 -0.0523 ...
+##   ..- attr(*, "names")= chr [1:7] "0%" "25%" "50%" "75%" ...
+##  $ versicolor: Named num [1:7] -1.1392 -0.2939 0.0684 0.5515 1.3968 ...
+##   ..- attr(*, "names")= chr [1:7] "0%" "25%" "50%" "75%" ...
+##  $ virginica : Named num [1:7] -1.139 0.461 0.793 1.276 2.484 ...
+##   ..- attr(*, "names")= chr [1:7] "0%" "25%" "50%" "75%" ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{do.call}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{do.call}\hlstd{( rbind, res )}
+\end{alltt}
+\begin{verbatim}
+##                  0%        25%         50%
+## setosa     -1.86378 -1.2599638 -1.01843718
+## versicolor -1.13920 -0.2938574  0.06843254
+## virginica  -1.13920  0.4609133  0.79301235
+##                   75%        100%           
+## setosa     -0.7769106 -0.05233076 -1.0111914
+## versicolor  0.5514857  1.39682886  0.1119073
+## virginica   1.2760656  2.48369858  0.8992841
+##                     
+## setosa     0.4256782
+## versicolor 0.6233453
+## virginica  0.7679092
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{do.call}
+
+  Si l'exemple peut être réalisé par exemple avec plyr, il est bonne illustration de \textit{do.call}.
+  
+  Plutôt qu'une matrice, si les résultats sont de types différents, on peut écrire dans certains cas~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{do.call}\hlstd{( data.frame, res )}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{lapply}
+
+  La fonction \textit{lapply} est une fonction dont l'utilisation doit croître avec l'expérience. Elle est centrale dans R et s'annonce de plus en plus indispensable car elle est à la base des fonctions de vectorisation des calculs dans R.
+  
+  Par exemple, un jackknife, est très facile à réaliser avec une fonction \textit{lapply}.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{mm} \hlkwb{<-} \hlkwd{mean}\hlstd{(iris[,}\hlstr{"Sepal.Length"}\hlstd{])}
+\hlstd{res} \hlkwb{<-} \hlkwd{sapply}\hlstd{(} \hlkwd{as.list}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{nrow}\hlstd{(iris)),}
+               \hlkwa{function} \hlstd{(}\hlkwc{x}\hlstd{) \{}
+                 \hlstd{(}\hlkwd{mean}\hlstd{(iris[}\hlopt{-}\hlstd{x,}\hlstr{"Sepal.Length"}\hlstd{])}\hlopt{-}\hlstd{mm)}\hlopt{^}\hlnum{2}
+\hlstd{\} )}
+\hlstd{vv} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{(}\hlkwd{as.numeric}\hlstd{(res))}\hlopt{/}\hlstd{(}\hlkwd{nrow}\hlstd{(iris)}\hlopt{*}\hlstd{(}\hlkwd{nrow}\hlstd{(iris)}\hlopt{-}\hlnum{1}\hlstd{)))}
+\hlkwd{paste}\hlstd{(} \hlstr{"["}\hlstd{,} \hlkwd{qt}\hlstd{(}\hlnum{0.025}\hlstd{,}\hlkwd{nrow}\hlstd{(iris)}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlstd{vv}\hlopt{+}\hlstd{mm,}
+       \hlstr{":"}\hlstd{,} \hlkwd{qt}\hlstd{(}\hlnum{0.975}\hlstd{,}\hlkwd{nrow}\hlstd{(iris)}\hlopt{-}\hlnum{1}\hlstd{)}\hlopt{*}\hlstd{vv}\hlopt{+}\hlstd{mm,} \hlstr{"]"} \hlstd{)}
+\end{alltt}
+\begin{verbatim}
+## [1] "[ -0.00108282416339017 : 0.00108282416339017 ]"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+  La vectorisation est pour l'instant assez peu documenté. Il existe l'ouvrage de McCallum (2012) et quelques ressources dans les blogs sur R.
+  
+  Sous les systèmes de type GNU/Linux, la vectorisation sur une même machine est d'une simplicité évangélique. Il suffit de charger le paquet \textit{parallel} et de spécifier le nombre de processeurs à utiliser et d'utiliser la fonction \textit{mclapply}.
+  
+  Ce qui donne pratiquement le même code que précedemment pour un jackknife\dots
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{mm} \hlkwb{<-} \hlkwd{mean}\hlstd{(iris[,}\hlstr{"Sepal.Length"}\hlstd{])}
+\hlstd{res} \hlkwb{<-} \hlkwd{mclapply}\hlstd{(} \hlkwd{as.list}\hlstd{(}\hlnum{1}\hlopt{:}\hlkwd{nrow}\hlstd{(iris)),} \hlkwa{function} \hlstd{(}\hlkwc{x}\hlstd{)}
+  \hlstd{(}\hlkwd{mean}\hlstd{(iris[}\hlopt{-}\hlstd{x,}\hlstr{"Sepal.Length"}\hlstd{])}\hlopt{-}\hlstd{mm)}\hlopt{^}\hlnum{2}\hlstd{,}
+  \hlkwc{mc.cores}\hlstd{=}\hlnum{4}
+\hlstd{)}
+
+\hlstd{vv} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{(}\hlkwd{as.numeric}\hlstd{(res))}\hlopt{/}\hlstd{(}\hlkwd{nrow}\hlstd{(iris)}\hlopt{*}\hlstd{(}\hlkwd{nrow}\hlstd{(iris)}\hlopt{-}\hlnum{1}\hlstd{)))}
+
+\hlkwd{paste}\hlstd{(} \hlstr{"["}\hlstd{,} \hlkwd{qt}\hlstd{(}\hlnum{0.025}\hlstd{,}\hlkwd{nrow}\hlstd{(iris))}\hlopt{*}\hlstd{vv}\hlopt{+}\hlstd{mm,} \hlstr{":"}\hlstd{,}
+       \hlkwd{qt}\hlstd{(}\hlnum{0.975}\hlstd{,}\hlkwd{nrow}\hlstd{(iris))}\hlopt{*}\hlstd{vv}\hlopt{+}\hlstd{mm,} \hlstr{"]"} \hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+  Avec ce mécanisme, 10 processus R vont être lancés en parallèle sur la machine. La mémoire nécessaire  à chaque processus doit être disponible. Ce qui revient à demander à la machine 4 fois la mémoire nécessaire à l'éxecution du processus.
+  
+  Le système utilise la commande \textit{fork} du système d'exploitation. Par conséquent, chaque processus récupère l'environnement (variables) et paquets de la session courante. Pratique.
+  
+  Dans le cas de simulation, il est nécessaire de bien lire l'aide du package pour obtenir selon ses besoins des seeds parallèles ou asynchrone.
+  
+\end{frame}  
+  
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+  Dans le cas de machine Windows, cette méthode ne fonctionne pas en raison du fonctionnement de Windows (quelque soit sa version).
+  
+  Aussi dans ce cas et pour faire du calcul parallèle en gérant plus finement les ressources matériels et plusieurs ordinateurs quelque soit leur système d'exploitation, il est nécessaire de passer plutôt par l'utilisation des framework SNOW et MPI par exemple.
+  
+  L'utilisation est plus délicate car l'utilisateur doit notamment indiquer quelles variables, quels paquets, \dots doivent être injectés dans les processus avant le lancement du calcul.
+  
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Calculs parallèles}
+
+  Une vue entière est dédiée au problème des calculs lourds\dots
+  
+  \vspace{0.1cm}
+  
+  \href{http://cran.r-project.org/web/views/HighPerformanceComputing.html}{High-Performance and Parallel Computing with R}
+  
+
+\end{frame}
+
+
+\section{L'automatisation des scripts}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Lancement d'un script automatiquement}
+
+  Pour lancer un script automatiquement, on peut le faire dans
+  un fichier \emph{batch}, c'est-à-dire un petit executable qui se
+  termine en \emph{.bat} sous \Windows.
+
+  Il est conseillé de mettre le chemin de R dans le PATH \Windows
+  pour ne pas avoir à taper le chemin complet d'accès à R.
+
+  On peut ainsi appeler un script~:
+
+\begin{verbatim}
+R -f Monscript.R
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Lancement d'un script automatiquement}
+
+  Mais R a une commande spécialement conçues pour réaliser des
+  opérations depuis des fichiers exécutables...
+
+\begin{verbatim}
+R CMD BATCH Monscript.R
+\end{verbatim}
+
+  Un fichier \emph{.Rout} est généré automatiquement et contient
+  tout ce qui est apparu dans la console.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{\emph{source}}
+
+  La fonction \emph{source} permet d'exécuter le contenu d'un
+  script depuis un autre script.
+
+  Cela permet par exemple de stocker des fonctions génériques
+  puis de les rappeler en suite sans faire de paquets...
+
+\begin{verbatim}
+source("MesFonctions.R")
+monbarplot(iris$Species)
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les règles de rédaction des scripts}
+
+  R est un langage de programmation...
+
+  {\textbf Pour la relecture et la lisibilité du code penser à commenter
+  et à indenter !}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les règles de rédaction des scripts}
+
+    Il est souvent plus simple d'utiliser un éditeur de texte tel
+    que \emph{emacs} ou \emph{notepad++} pour profiter de la coloration
+    syntaxique puis de copier-coller dans la console R.
+
+    ou \emph{RStudio}.
+
+\end{frame}
+
+
+
+\end{document}
+

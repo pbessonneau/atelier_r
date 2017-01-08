@@ -1,0 +1,410 @@
+\documentclass{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Math?matiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux suppl?mentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% N?cessaires pour les tableaux de la macro Excel.
+
+% Outil suppl?mentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour ins?rer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour ins?rer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour ins?rer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En t?tes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour ins?rer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les diff?rents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-?-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+\subtitle{RStudio}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Les premiers pas avec RStudio}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Présentation générale}
+  
+  RStudio est né il y a quelques années et est le
+  compagnon indispensable de R depuis deux ans environ. 
+  
+  Son interface est beaucoup plus attrayante et rappelle beaucoup l'interface
+  d'autres logiciels de statistiques (SAS par exemple).
+  
+  En outre elle a de nombreux avantages~: apporte un meilleur confort de 
+  programmation R, une meilleure interface 
+  Sweave/knitr, facilite la programmation mixte R/C++, etc.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Présentation générale}
+  
+  RStudio est une société commerciale qui contribue largement au développement du  
+  logiciel libre R et paquets avec, dans son équipe, de grands noms de R comme 
+  Hadley Wickham (ggplot2, reshape2, plyr, ddplyr).
+  
+  Elle vit de licences commerciales~: ses logiciels ont tous une version gratuite
+  et une version payante~:
+  
+  \begin{itemize}
+    \item RStudio Desktop~: c'est une interface conviviale de développement R
+    \item RStudio Server~: c'est un serveur dont l'interface est identique 
+    à RStudio Desktop mais dont les commandes sont exécutées sur un serveur via
+    un navigateur
+  \end{itemize}
+  
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Présentation générale de R-Studio}
+  
+  L'espace est divisé en quatre fenêtres~: 
+  \begin{itemize}
+  \item l'éditeur de scripts (en haut à gauche)
+  \item le contenu de la mémoire ou l'historique des commandes (en haut à droite)
+  \item la console R (en bas à gauche)
+  \item une fenêtre contenant l'aide ou les graphiques ou l'explorateur de 
+  fichiers (en bas à droite)
+  \end{itemize}
+  
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Présentation générale}
+  
+  \scalebox{0.16}{
+  \includegraphics{graphiques/fenetres}
+  }
+  
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Présentation générale}
+  
+  Comme vous l'avez remarqué dans chaque fenêtre, on passe d'une tâche à l'autre
+  en utilisant 	\textbf{les onglets}~: par exemple pour passer de l'explorateur de 
+  fichiers aux graphiques ou à l'aide (respectivement les onglets Files, 
+  Plots et Help).
+  
+  Vous utiliserez essentiellement l'éditeur en haut à gauche.
+  
+  Nous donnons également les raccourcis-claviers car ils peuvent être très pratiques.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Le fonctionnement}
+  
+  Tout en R est basé sur la ligne de commande (historiquement R se présente
+  comme un shell).
+  
+  Dans RStudio vous tapez les commandes dans l'éditeur puis vous les soumettez
+  à R en utilisant le bouton \emph{Run} en haut au milieu (ou en 
+  utilisant CTRL+ENTREE).
+  
+  Par défaut \emph{Run} ou CTRL+ENTREE soumettent la ligne sur laquelle se 
+  trouve le curseur ou une sélection du script.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Le fonctionnement}
+  
+  Quand vous créez un graphique ou que vous demandez de l'aide alors l'onglet
+  correspondant se met en avant tout seul en bas à droite.
+  
+  Dans R, tout est en mémoire vive (ou presque). En débutant tout les objets
+  que vous manipulez ou que vous créez apparaissent dans la fenêtre en haut à
+  droite~: c'est (presque) tout le contenu de la mémoire.
+  
+  Quand cet objet est une \emph{data.frame} vous pouvez cliquer pour 
+  les visualiser (un peu comme dans un tableur). 
+  
+  Attention, même s'il est possible d'éditer ces données c'est une opération à 
+  proscrire.
+  
+\end{frame}
+
+\section{Les différentes fenêtres}
+
+\begin{frame}[containsverbatim]
+  \frametitle{L'éditeur (en haut à gauche)}
+  
+  Par défaut l'éditeur est en mode \emph{Script R}. Par conséquent il va 
+  essayer d'interpréter le contenu de la fenêtre pour vous aider en vous 
+  proposant les variables disponibles, les fonctions, etc.
+  
+  La complétion se fait avec la touche \emph{TAB}. 
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{L'éditeur (en haut à gauche)}
+  
+  \textcolor{red}{ATTENTION} comme il essaie d'interpréter ce que vous écrivez
+  il peut ralentir voire boguer quand vous prenez des notes dans l'éditeur.
+  
+  Vous pouvez prendre des notes à condition de les mettre en commentaires. Pour
+  cela commencer la ligne avec un \emph{\#}.
+  
+  Une solution facile est de taper vos notes, de sélectionner le texte et de le
+  mettre en commentaire en utilisant \emph{CTRL+SHIFT+C} (ou dans le menu 
+  \emph{Code}). 
+  
+  Vous pouvez aussi créer et éditer des fichiers texte dans RStudio.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{L'éditeur (en haut à gauche)}
+  
+  Les raccourcis-claviers les plus courants ~: 
+  
+  \begin{description}
+    \item [CTRL+ENTREE] soumets la ligne ou la sélection à la console R
+    \item [CTRL+SHIFT+C] passer le contenu de script à commentaire ou l'inverse
+    \item [CTRL+SHIFT+A] pour indenter le code sélectionné comme un pro
+    \item [CTRL+1] rend active la fenêtre éditeur
+    \item [CTRL+2] rend active la fenêtre console
+  \end{description}
+  
+  Un cheatsheet est disponible sur le site de \href{http://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf}{RStudio}.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La fenêtre de l'environnement global (en haut à droite)}
+  
+  Vous trouverez dans la fenêtre de l'évnirionnement globale la liste des objets 
+  que vous avez créés ou chargés en mémoire. Vous y trouvez ce qu'une commande 
+  \emph{ls()} retourne.
+  
+  Si ce sont des \emph{data.frame} vous pouvez cliquer dessus pour ouvrir
+  une vue "tableur". Seules les premières observations (et colonnes) sont visibles.
+  
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{La console R}
+  
+  Vous pouvez y taper directement les commandes qui seront interprétés par R. 
+  
+  Vous pouvez aussi voir dans cette fenêtre si il y a une erreur ou un message
+  suite au code tapé ou au code soumis via l'éditeur. C'est dans cette fenêtre que vous retrouverez 
+  l'équivalent de la \emph{log} sous SAS.
+  
+  Vous avez accès à l'historique des commandes avec la flèche \emph{en haut}.
+  
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La fenêtre multi-tâches (en bas à droite)}
+  
+  Vous y trouvez l'aide, les graphiques, la gestion des paquets selon l'onglet
+  que vous choisissez. A essayer~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlopt{?}\hlstd{rnorm}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+ 
+ou  
+ 
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{hist}\hlstd{(}\hlkwd{rnorm}\hlstd{(}\hlnum{1000}\hlstd{))}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  
+\end{frame}
+
+\section{Les pas suivants\dots}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Dans le futur}
+  
+  Apprenez à vous servir des projets\dots Ils permettent de travailler sur des projets
+  différents en conservant l'interface (fenêtre, contenu mémoire,\dots) exactement
+  comme vous l'avez laissé \emph{lors du dernier lancement de RStudio}.
+  
+  Outre la possibiité de produire des documents \LaTeX, il est également possible de faire des documents
+  HTML ou RTF incluant une belle présentation et le code R à l'intérieur\dots
+  
+  Pour ceux qui sont intéressés RStudio est un outil de choix pour Sweave/knitr,
+  le développement de paquets, le suivi de version avec git (ou svn), etc.
+  
+\end{frame}
+
+\end{document}

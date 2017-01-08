@@ -1,0 +1,1405 @@
+\section{Répertoire de travail et parcours}
+
+  \subsection{La spécification des chemins sous R}
+
+        Tous les répertoires doivent être indiqués avec la syntaxe \emph{NIXs},
+        \cad avec des slashs (/) en lieu et place des
+        backslashs (\textbackslash) sous
+        \Windows.
+
+
+
+        Pour rappel, il y a trois répertoires spéciaux à se souvenir~:
+        \begin{description}
+          \item[.] c'est le répertoire courant
+          \item[..] c'est le répertoire parent du répertoire courant
+          \item[\textasciitilde] c'est votre répertoire personnel
+        \end{description}
+
+
+  \subsection{Le répertoire de travail de R}
+
+    Le répertoire de travail de R est le point de référence pour accéder à vos fichiers. 
+    
+    Dans RStudio, le répertoire de travail ne change pas en manipulant l'explorateur de fichiers à droite. Il ne changera que si vous utilisez le bouton \emph{More/Set as Working Directory}.  
+
+
+
+        Le répertoire de travail de R dépend de la façon dont vous le lancez~:
+        \begin{itemize}
+          \item avec la console graphique de R sous \Windows, vous partez dans le répertoire X:\textbackslash Program Files\textbackslash R...
+          \item avec RStudio, dans votre répertoire personnel
+          \item depuis un terminal \Linux dans le répertoire courant du shell
+          \item ...
+        \end{itemize}
+
+
+  \subsection{Les commandes utiles pour les répertoires}
+
+        Les commandes à se souvenir sont les suivantes~:
+        \begin{description}
+          \item[setwd] pour \emph{set working directory} qui permet de déterminer le répertoire courant
+          \item[getwd] pour \emph{get working directory} qui renvoie
+            dans un vecteur \emph{character} le chemin courant
+         \item[dir] pour récupérer dans un vecteur \emph{character} les
+           fichiers du répertoire courant. Il faut spécifier
+           \emph{all=T} pour avoir les fichiers commençant par un
+           point (même sous \Windows).
+        \end{description}
+        
+        Sur la console R, il y a des raccourcis dans les menus. Dans RStudio, vous avez la fenêtre \emph{Files}.
+
+
+  \subsection{Les chemins sous R}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{setwd}\hlstd{(}\hlstr{"~/Documents/R/FormationR"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{getwd}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## [1] "/home/pascal/Dropbox/R/journee"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{dir}\hlstd{(}\hlkwc{pattern}\hlstd{=}\hlstr{"tex"}\hlstd{)}
+\end{alltt}
+\begin{verbatim}
+##  [1] "00_Introduction-concordance.tex"             
+##  [2] "00_Introduction.synctex.gz"                  
+##  [3] "00_Introduction.tex"                         
+##  [4] "01_RStudio-concordance.tex"                  
+##  [5] "01_RStudio.synctex.gz"                       
+##  [6] "01_RStudio.tex"                              
+##  [7] "03_Les_types_de_donnees-concordance.tex"     
+##  [8] "03_Les_types_de_donnees.synctex.gz"          
+##  [9] "03_Les_types_de_donnees.tex"                 
+## [10] "04_Les_types_objets.synctex.gz"              
+## [11] "04_Les_types_objets.tex"                     
+## [12] "05_Donnees-concordance.tex"                  
+## [13] "05_Donnees.synctex.gz"                       
+## [14] "05_Donnees.tex"                              
+## [15] "10_Importation_et_exportation.tex"           
+## [16] "11_Statistiques_descriptives-concordance.tex"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{dir}\hlstd{(}\hlkwc{pattern}\hlstd{=}\hlstr{"tex"}\hlstd{,}\hlkwc{all}\hlstd{=T)}
+\end{alltt}
+\begin{verbatim}
+##  [1] "00_Introduction-concordance.tex"             
+##  [2] "00_Introduction.synctex.gz"                  
+##  [3] "00_Introduction.tex"                         
+##  [4] "01_RStudio-concordance.tex"                  
+##  [5] "01_RStudio.synctex.gz"                       
+##  [6] "01_RStudio.tex"                              
+##  [7] "03_Les_types_de_donnees-concordance.tex"     
+##  [8] "03_Les_types_de_donnees.synctex.gz"          
+##  [9] "03_Les_types_de_donnees.tex"                 
+## [10] "04_Les_types_objets.synctex.gz"              
+## [11] "04_Les_types_objets.tex"                     
+## [12] "05_Donnees-concordance.tex"                  
+## [13] "05_Donnees.synctex.gz"                       
+## [14] "05_Donnees.tex"                              
+## [15] "10_Importation_et_exportation.tex"           
+## [16] "11_Statistiques_descriptives-concordance.tex"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\section{Sauvegarde d'objets R}
+
+	\subsection{Sauvegarde de l'environnement}
+
+        Il est appréciable de faire une sauvegarde complète de
+        l'environnement avec lequel on travaille...
+
+        Dans ce cas, R permet de sauvegarder toutes les variables et
+        fonctions en mémoire, seuls les paquets ne seront pas restaurés.
+
+        Il suffit d'utiliser la commande:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{save.image}\hlstd{()}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+        Dans le cas où il n'y a pas d'argument, le fichier s'appele
+        automatiquement \emph{.RData} et est sauvegardé dans le
+        répertoire courant.
+
+        Lorsque R est lancé depuis un répertoire contenant un fichier
+        dont le nom est \emph{.RData}, il est automatiquement chargé.
+
+
+
+        La sauvegarde de l'environnement dans un fichier \emph{.RData} vous est proposé quand vous quittez R, RStudio ou la console R.
+
+        Pour éviter ce comportement, pour un script par exemple, vous pouvez taper~:
+        
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{q}\hlstd{(}\hlstr{"no"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+        Lorsqu'on spécifie un argument, cela doit être une chaine texte
+        qui indique le nom (et le répertoire éventuellement) du fichier.
+
+        Le format est un format \emph{.Rdata} qui est le format propre
+        de R. Il a la particularité d'être compressé (GNU/ZIP, \emph{gzip}). Les
+        fichiers produits sont donc légers.
+
+
+	\subsection{Sauvegarde d'objets}
+  
+        Les objets complexes, \liste, \df, \emph{array}, ... peuvent être
+        sauvegardés au format \emph{RData}.
+
+        Pour sauvegarder un(des) objet(s), il suffit d'utiliser la commande~:
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{save}\hlstd{(iris,}\hlkwc{file}\hlstd{=}\hlstr{"data/iris.RData"}\hlstd{)}
+\hlstd{> }\hlkwd{save}\hlstd{(iris,mtcars,}\hlkwc{file}\hlstd{=}\hlstr{"data/misc.RData"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Avec, en premier, l'objet (ou les objets) puis \emph{file} et le nom du fichier.
+
+
+  	\subsection{Restauration d'objets}
+
+        Il suffit pour recharger un environnement ou un objet (\cad un
+        objet de type \emph{.RData}) d'utiliser la commande \emph{load}~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{load}\hlstd{(}\hlstr{"data/iris.RData"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+         La commande restaure en mémoire l'objet sous le nom que vous avez utilisé pour le sauvegarder (dans l'exemple c'est \emph{iris}).
+
+
+
+        Le chargement en lui-même est \og~silencieux~\fg... 
+        C'est-à-dire que R ne précise pas le(s) objet(s) qui 
+        est(sont) chargé(s) par la commande load.
+
+        Comme vu précédemment, l'objet sauvegardé prends en mémoire 
+        le nom qu'on lui a donné lors de la commande \emph{save}.
+
+
+
+        Il est évident que, 6 mois après, il peut être difficile de se
+        rappeler du nom de l'objet sauvegardé...
+
+        Comme souvent dans R, il faut changer le contexte
+        d'évaluation pour obtenir le nom de l'objet~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{(}\hlkwd{load}\hlstd{(}\hlstr{"data/iris.RData"}\hlstd{))}
+\end{alltt}
+\begin{verbatim}
+## [1] "iris"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+        Pour des traitements automatisés, il est ainsi possible de récupérer le nom des objets sauvegardés.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{recharger} \hlkwb{<-} \hlkwd{load}\hlstd{(}\hlstr{"data/iris.RData"}\hlstd{)}
+\hlstd{> }\hlstd{recharger}
+\end{alltt}
+\begin{verbatim}
+## [1] "iris"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\section{Fichiers texte}
+
+  	\subsection{\emph{read.table}}
+
+        Sauf cas particulier, on peut charger (presque) n'importe quel
+        type de fichier texte délimité avec la commande \emph{read.table}.
+
+        La fonction \emph{read.table} prend comme argument le nom du fichier texte.
+
+
+
+        Par défaut ce fichier texte doit avoir comme séparateurs des
+        blancs entre les champs et pour séparateur entre la partie entière et la partie
+        décimale un point.
+
+        La première ligne n'est pas considérée comme une entête mais comme des données.
+
+        Chaque colonne détectée correspondra à une variable qui sera
+        restituée dans un \df.
+
+
+
+        La fonction \emph{read.table} est une fonction de haut
+        niveau. Par haut niveau, cela signifie que le plus gros du travail est épargné à l'utilisateur.
+
+        En effet la fonction va détecter elle-même le type de chaque variable/colonne.
+
+
+  	\subsection{les options de \emph{read.table}}
+
+        Qu'en-est-il des autres formats de fichier avec séparateurs ?
+
+        Il suffit de se rappeler les trois arguments suivants~:
+
+        \begin{description}
+          \item[header] si \emph{TRUE} alors la première ligne est utilisée
+            pour définir les noms de variable
+          \item[sep] c'est un vecteur caractère qui permet de définir
+            quel(s) est(sont) le(s) séparateur(s) de colonnes
+          \item[dec] c'est un vecteur caractère qui définit le
+            caractère utilisé pour séparer la partie entière de
+            la partie décimale
+        \end{description}
+
+
+
+        A partir de ces réglages, on peut charger n'importe quel
+        fichier délimité.
+
+        Par exemple, le format CSV français d'Excel s'écrit~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{iris} \hlkwb{<-} \hlkwd{read.table}\hlstd{(}\hlstr{"data/iris.csv"}\hlstd{,}
+\hlstd{+ }\hlkwc{header}\hlstd{=T,}\hlkwc{sep}\hlstd{=}\hlstr{";"}\hlstd{,}\hlkwc{dec}\hlstd{=}\hlstr{","}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+        Pour les formats de fichiers courants, il existe des alias de
+        la fonction \emph{read.table}~: elles sont équivalentes à \emph{read.table} mais ont des valeurs par défaut différentes.
+        
+        Les version numérotées \emph{2} correspondent aux formats français.
+
+% Table generated by Excel2LaTeX from sheet 'Feuil1'
+\begin{table}[htbp]
+  \centering
+  \caption{Alias de read.table}
+    \begin{tabular}{rrrrr}
+    \addlinespace
+    \toprule
+    {\bf Arguments} & {\bf read.delim} & {\bf read.delim2} & {\bf read.csv} & {\bf read.csv2} \\
+    \midrule
+    header & T     & T     & T     & T \\
+    sep   & \textbackslash t & \textbackslash t & ,     & ; \\
+    dec   & .     & ,     & .     & , \\
+    \bottomrule
+    \end{tabular}
+  \label{tab:aliasreadtable}
+\end{table}
+
+
+
+        Parmi les autres options utiles de \emph{read.table}, on
+        pourra noter les options suivantes~:
+
+        \begin{description}
+          \item[stringsAsFactors] par défaut \emph{TRUE}, les variables de type
+            \emph{character}, si \emph{TRUE}, seront transformées en variable de
+            type \emph{factor} automatiquement
+         \item[encoding] l'encodage du fichier qui peut par exemple
+           être \og~latin1~\fg ou \og~UTF-8~\fg
+         \item[na.strings] un vecteur \emph{character} indiquant la(es) valeur(s)
+           à considérer comme une(des) valeur(s) manquante(s)
+         \item[row.names] le nom de la colonne ou le numéro de la
+           colonne qui sera utilisée pour le nom des observations
+         \item[nrows] indique le nombre de lignes à lire
+         \item[skip] nombre de lignes à ignorer en début de fichier
+        \end{description}
+
+
+
+        Il est à noter deux options pour forcer certain aspect du chargement~:
+        \begin{description}
+          \item[col.names] vecteur \emph{character} permettant de nommer les variables.
+          \item[as.is] vecteur \emph{character} indiquant le type de chaque colonne
+        \end{description}
+
+
+
+        L'argument \emph{as.is} permet notamment de spécifier un type \emph{character}
+        pour des codes \og~001~\fg, \og~010~\fg qui seraient traités comme des
+        nombres par R.
+
+        Dans ce cas, il peut être intéressant d'importer le fichier
+        (ou une partie avec l'option \emph{nrows}), récupérer le type
+        de chaque variable dans un vecteur, et modifier seulement le
+        type de quelques variables.
+
+
+
+    Sans utiliser les fonctions \emph{apply}...
+    
+    \begin{enumerate}
+      \item on récupère le nom des colonnes
+      \item on crée un vecteur avec NA pour l'auto-détection de type et \emph{character} pour la variable \emph{Species}
+      \item on charge le fichier avec ce vecteur comme argument de \emph{ColClasses}
+    \end{enumerate}
+    
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{iris} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(} \hlstr{"data/iris.csv"}\hlstd{,} \hlkwc{nrow} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlstd{> }\hlstd{types} \hlkwb{<-} \hlkwd{rep}\hlstd{(} \hlnum{NA}\hlstd{,} \hlkwd{ncol}\hlstd{(iris) )}
+\hlstd{> }\hlkwd{names}\hlstd{(types)} \hlkwb{<-} \hlkwd{colnames}\hlstd{(iris)}
+\hlstd{> }\hlstd{types[}\hlstr{"Species"}\hlstd{]} \hlkwb{<-} \hlstr{"character"}
+\hlstd{> }\hlstd{iris} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(} \hlstr{"data/iris.csv"}\hlstd{,} \hlkwc{colClasses}\hlstd{=types )}
+\hlstd{> }\hlstd{(types} \hlkwb{<-} \hlkwd{sapply}\hlstd{(}\hlkwd{as.list}\hlstd{(iris),class))}
+\end{alltt}
+\begin{verbatim}
+## Sepal.Length  Sepal.Width Petal.Length 
+##    "numeric"    "numeric"    "numeric" 
+##  Petal.Width      Species 
+##    "numeric"  "character"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+        Un exemple plus souple avec les fonctions \emph{apply}~:
+        
+        Pour éviter de spécifier le type de chaque colonne~:
+        \begin{enumerate}
+          \item on lit une première fois le fichier (en partie)
+          \item on récupère et on modifie le type de chaque colonne
+          \item on lit le fichier avec le type de colonne définitif
+        \end{enumerate}
+        
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{iris} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(} \hlstr{"data/iris.csv"}\hlstd{,} \hlkwc{nrow} \hlstd{=} \hlnum{10} \hlstd{)}
+\hlstd{> }\hlstd{(types} \hlkwb{<-} \hlkwd{sapply}\hlstd{(}\hlkwd{as.list}\hlstd{(iris),class))}
+\end{alltt}
+\begin{verbatim}
+## Sepal.Length  Sepal.Width Petal.Length 
+##    "numeric"    "numeric"    "numeric" 
+##  Petal.Width      Species 
+##    "numeric"     "factor"
+\end{verbatim}
+\begin{alltt}
+\hlstd{> }\hlstd{types[}\hlstr{"Species"}\hlstd{]} \hlkwb{<-} \hlstr{"character"}
+\hlstd{> }\hlstd{iris} \hlkwb{<-} \hlkwd{read.csv2}\hlstd{(} \hlstr{"data/iris.csv"}\hlstd{,} \hlkwc{colClasses}\hlstd{=types )}
+\hlstd{> }\hlstd{(types} \hlkwb{<-} \hlkwd{sapply}\hlstd{(}\hlkwd{as.list}\hlstd{(iris),class))}
+\end{alltt}
+\begin{verbatim}
+## Sepal.Length  Sepal.Width Petal.Length 
+##    "numeric"    "numeric"    "numeric" 
+##  Petal.Width      Species 
+##    "numeric"  "character"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+  	\subsection{l'aternative \emph{readr}}
+  	  
+  	Le paquet \emph{readr} est un paquet de Hadley Wichkam (très connu).
+  	
+  	Il fonctionne sur le principe d'automate finis par conséquent il est plus
+  	robuste aux erreurs dans les fichiers. 
+  	
+  	Par exemple il permet d'importer des fichiers contenant des verbatim avec
+  	des sauts de lignes si le champ est encadré par des quotes.
+  	
+
+  	  
+  	Le paquet a aussi comme particularité de disposer d'une fonction qui
+  	essaie de "deviner" le format du CSV (français/anglophone) permettant
+  	ainsi de simplifier l'importation.
+  	
+  	Parmi les inconvénients, il y a le fait qu'il essaie de deviner le format 
+  	(c'est un défaut et une qualité) et qu'il n'y a pas d'option spécifiques 
+  	pour indiquer l'\emph{encoding} du fichier.
+  	
+
+
+    Le diable se cache dans les détails, les fonctions de \emph{readr} utilise
+    la même syntaxe excepté qu'il faut remplacer les points par des "\_".
+  	  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{require}\hlstd{(readr)}
+\hlstd{> }\hlstd{iris} \hlkwb{<-} \hlkwd{read_csv2}\hlstd{(}\hlstr{"Support R/data/Iris.csv"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  	
+        
+
+    Le diable se cache dans les détails, les fonctions de \emph{readr} utilise
+    la même syntaxe excepté qu'il faut remplacer les points par des "\_".
+  	  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{require}\hlstd{(readr)}
+\hlstd{> }\hlstd{iris} \hlkwb{<-} \hlkwd{read_csv2}\hlstd{(}\hlstr{"Support R/data/Iris.csv"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+  	
+
+
+    \emph{readr} permet de lire également des lignes de textes avec read\_lines,
+    des fichiers log, format fixe, etc. et ce plus rapidement que les fonctions 
+    de base.
+  	
+
+  	\subsection{l'aternative \emph{data.table}}
+
+    Avec le paquet \emph{data.table} qui permet de manipuler des \emph{data.frame}
+    plus rapidement si celle-ci sont manipulées avec des variables "index" est
+    livré une version de \emph{read.csv}.
+    
+    Attention le type de retour est \emph{data.table} et non \emph{data.frame}.
+    
+ 
+         
+  	\subsection{Exporter avec \emph{write.table}}
+
+        L'export d'un fichier texte délimité se fait avec la fonction \emph{write.table}.
+
+        Comme la fonction \emph{read.table}, elle a le même type d'alias.
+
+        Elle prend pour premier argument la \df à exporter puis
+        l'argument \emph{file} qui est un vecteur \emph{character}
+        indiquant le nom du fichier.
+
+        Les arguments essentiels sont les mêmes que pour
+        \emph{read.table}~: \emph{sep}, \emph{dec} et \emph{header}.
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{write.csv2}\hlstd{(iris,}\hlstr{"data/iris.csv"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+  	\subsection{les options de \emph{write.table}}
+
+        Contrairement aux alias de \emph{read.table}, les options des
+        alias ne sont pas modifiables. Pour modifier le comportement
+        pour les champs \emph{sep}, \emph{dec} et \emph{header}, il
+        faut passer par la fonction d'origine \emph{write.table}.
+
+
+
+        Les options intéressantes sont notamment~:
+
+        \begin{description}
+          \item[row.names] par défaut \emph{T}, les identifiants de ligne sont
+            exportés dans une première colonne
+         \item[append] pour ajouter à un fichier existant si TRUE
+         \item[na] la valeur à utiliser pour les valeurs manquantes
+         \item[col.names] pour spécifier les noms des colonnes éventuellement
+        \end{description}
+
+
+
+
+
+
+  	\subsection{Chargement de données au format fixe}
+
+        La fonction \emph{read.fwf} est l'équivalent de read.table
+        pour les anciens formats de fichiers texte sans séparateur de
+        colonne mais à position de colonne fixe.
+
+        On indique la taille de chaque colonne séquentiellement.
+
+
+
+        Cette fonction a un comportement un peu surprenant. Quand
+        \emph{header=T}, les noms de colonnes sont récupérés, ils
+        doivent être séparés par un séparateur de champs.
+
+        En fait cela est logique si on considère que les noms peuvent
+        être plus longs que la largeur attribuée aux données.
+
+
+
+\begin{verbatim}
+AMC  Concord2229304099
+AMC  Pacer  1733504749
+AMC  Spirit 2226403799
+BuickCentury2032504816
+BuickElectra1540807827
+\end{verbatim}
+
+        Ce fichier est importé avec la commande~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a}\hlkwb{=}\hlkwd{read.fwf}\hlstd{(}\hlstr{"data/fixed.txt"}\hlstd{,}\hlkwc{width}\hlstd{=}\hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{7}\hlstd{,} \hlnum{2}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{4}\hlstd{))}
+\hlstd{> }\hlkwd{colnames}\hlstd{(a)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"model"}\hlstd{,}\hlstr{"make"}\hlstd{,}\hlstr{"mph"}\hlstd{,}\hlstr{"weight"}\hlstd{,}\hlstr{"price"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+        La fonction ci-dessous permet de récupérer automatiquement les
+        noms s'ils utilisent la disposition des données.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{read.fwf2} \hlkwb{<-} \hlkwa{function} \hlstd{(} \hlkwc{file}\hlstd{,} \hlkwc{width}\hlstd{,} \hlkwc{...} \hlstd{) \{}
+
+\hlstd{+ }   \hlstd{l} \hlkwb{=} \hlkwd{scan}\hlstd{( file,} \hlkwc{what}\hlstd{=}\hlstr{"character"}\hlstd{,} \hlkwc{nlines}\hlstd{=}\hlnum{1}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{"\textbackslash{}n"} \hlstd{)}
+
+\hlstd{+ }   \hlstd{col.names} \hlkwb{<-} \hlkwd{substr}\hlstd{(}
+\hlstd{+ }        \hlkwd{rep}\hlstd{(l,}\hlkwd{length}\hlstd{(width)) ,}
+\hlstd{+ }        \hlkwd{cumsum}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,width[}\hlopt{-}\hlkwd{length}\hlstd{(width)])),}
+\hlstd{+ }        \hlkwd{c}\hlstd{(}\hlkwd{cumsum}\hlstd{(width))}
+\hlstd{+ }   \hlstd{)}
+\hlstd{+ }   \hlkwd{return}\hlstd{(}
+\hlstd{+ }      \hlkwd{read.fwf}\hlstd{( file,} \hlkwc{width}\hlstd{=width,} \hlkwc{col.names}\hlstd{=col.names,} \hlkwc{skip} \hlstd{=} \hlnum{1}\hlstd{, ... )}
+\hlstd{+ }   \hlstd{)}
+\hlstd{+ }\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+
+        On peut également importer ce type de fichier avec la commande \emph{read.fortran} qui reprend la syntaxe de ce langage de 1977.
+
+        La syntaxe n'est pas développée ici. SAS utilise dans certains
+        cas une syntaxe proche (pour les fonctions \emph{put} et \emph{input}).
+
+
+  	\subsection{Chargement de données texte avec les fonctions de bas niveau}
+
+        Comme indiqué précédemment, les fonctions \emph{read.table}
+        sont des fonctions de haut niveau et nécessite peu de sueur
+        pour l'utilisateur.
+
+        Mais elles reposent sur l'existence d'une fonction de bas
+        niveau, \emph{scan}, qui permet de lire n'importe quel
+        format de fichier au prix d'un peu d'efforts.
+
+
+  	\subsection{Chargement de données texte/binaire avec les fonctions de bas niveau}
+
+        R fournit aussi des fonctions de type C pour la lecture~:
+        \begin{description}
+          \item[readChar] pour la lecture caractère par caractère
+            d'un buffer texte
+          \item[readBin] pour la lecture d'un fichier binaire
+          \item[readLines] pour la lecture ligne par ligne d'un fichier
+        \end{description}
+
+
+  	\subsection{Sauvegarde de données texte avec les fonctions de bas niveau}
+
+        Comme indiqué précédemment, les fonctions \emph{write.table}
+        sont des fonctions de haut niveau et nécessite peu de travail
+        pour l'utilisateur.
+
+        Mais elles reposent sur l'existence d'une fonction de bas
+        niveau, \emph{cat}, qui permet de créer n'importe quel type de fichier.
+
+
+  	\subsection{Sauvegarde de données texte/binaire avec les fonctions de bas niveau}
+
+        Les fonctions de type C pour l'écriture sont~:
+        \begin{description}
+          \item[cat] pour l'enregistrement d'un buffer texte
+          \item[writeLines] pour l'enregistrement ligne par ligne d'un fichier
+        \end{description}
+
+
+\section{Autres Fichiers statistiques}
+
+  	\subsection{le paquet \emph{foreign}}
+
+        Le paquet \emph{foreign} permet de charger de nombreux formats externes.
+
+        Il fonctionne comme \emph{read.table}, avec en lieu et place
+        de \emph{table}, le type de fichier.
+
+
+
+        Les formats supportés sont~: Minitab, S, SAS, SPSS, Stata, Systat, dBase,...
+
+
+  	\subsection{SPSS avec \emph{foreign}}
+
+        Par exemple pour un fichier SPSS~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{iris.spss} \hlkwb{<-} \hlkwd{read.spss}\hlstd{(}\hlstr{"data/iris.sav"}\hlstd{)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# re-encoding from CP1252}}\end{kframe}
+\end{knitrout}
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{class}\hlstd{(iris.spss)}
+\end{alltt}
+\begin{verbatim}
+## [1] "list"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{str}\hlstd{(iris.spss)}
+\end{alltt}
+\begin{verbatim}
+## List of 5
+##  $ Sepal.Length: num [1:150] 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num [1:150] 3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num [1:150] 1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num [1:150] 0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : chr [1:150] "setosa    " "setosa    " "setosa    " "setosa    " ...
+##  - attr(*, "label.table")=List of 5
+##   ..$ Sepal.Length: NULL
+##   ..$ Sepal.Width : NULL
+##   ..$ Petal.Length: NULL
+##   ..$ Petal.Width : NULL
+##   ..$ Species     : NULL
+##  - attr(*, "codepage")= int 1252
+##  - attr(*, "variable.labels")= Named chr(0) 
+##   ..- attr(*, "names")= chr(0)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+        Les fonctions de ce paquet sont relativement avancées et permettent, pour la plupart
+        des formats de fichiers, de récupérer les attributs des variables et autres
+        données additionnelles.
+
+
+
+        En conséquence, l'objet retourné n'est pas toujours une \df.
+
+        Dans le cas de SPSS, pour revenir à une \df, la commande est simple~:
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{str}\hlstd{(}\hlkwd{as.data.frame}\hlstd{(iris.spss))}
+\end{alltt}
+\begin{verbatim}
+## 'data.frame':	150 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels "setosa    ","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+
+        Mais on peut perdre éventuellement les attributs.
+
+        Les attributs sont accessibles par la fonction \emph{attributes}.
+
+
+  	\subsection{SAS avec \emph{foreign}}
+
+        Le code SAS pour exporter une table sous ce format est le suivant~:
+
+\begin{verbatim}
+libname xportout xport 'iris.xpt';
+data xportout.iris;
+   set iris;
+run;
+\end{verbatim}
+
+        Mais les \hreff{http://support.sas.com/documentation/cdl/en/movefile/59598/HTML/default/xport.htm}{limitations} sont nombreuses et cela reste moins pratique que d'utiliser un format texte.
+
+
+  	\subsection{SAS avec \emph{haven}}
+
+    Contrairement au paquet \emph{foreign}, le paquet \emph{haven}, permet
+    d'importer des fichiers sas au format \emph{sas7bdat}, c'est-à-dire le
+    format "normal" de SAS.
+    
+    Il est assez efficace mais il ne supporte pas toutes les fonctionnalités
+    de SAS. Il est possible que l'importation échoue car des fonctionnalités
+    avancées sont utilisés dans la table SAS.
+    
+    Il n'existe pas de documentation claire sur ce qui est supporté et ce qui
+    ne l'est pas ce qui rend les choses problématiques.
+    
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{require}\hlstd{(haven)}
+\hlstd{> }\hlstd{eleves} \hlkwb{<-} \hlkwd{read_sas}\hlstd{(}\hlstr{"eleves.sas7bdat"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+  Une documentation spécifique existe quand il y a des dates dans les fichiers.
+
+
+  	\subsection{Stata 13}
+  	
+  	La nouvelle version de Stata (supérieure ou égale à la version 13) inaugure un nouveau format de fichiers.
+  	
+  	Il n'est pas supporté par \emph{foreign} par contre le paquet \emph{readstata13}
+  	permet l'importation de ces fichiers.
+
+
+
+  	\subsection{JSON et XML}
+  	
+  	R permet l'importation des fichiers XML et JSON. Le premier est une syntaxe
+  	commune sur les applications orientées web old school tandis que le deuxième
+  	est typique des nouvelles applications web utilisant javascript lourdement
+  	comme Node.js, JQuery, D3.js, ... 
+  	
+  	Par exemple sur de nombreux sites d'open data on trouve maintenant des exports
+  	en JSON pour faciliter la vie de ceux qui font des visualisations de ces
+  	données.
+
+
+  	\subsection{jsonlite}
+  	
+  	Le paquet le plus simple pour importer des données JSON est \emph{jsonlite}.
+  	
+  	On utilise l'argument simplifyDataFrame pour essayer de réduire les données
+  	à une \emph{data.frame} dans la mesure du possible. Sinon les sorties sont
+  	du type \emph{list} qui est la structure de données la plus proche 
+  	du type JSON sous R.
+  	
+  	Par exemple si on l'utilise sur les données des arbres remarquables collectées
+  	sur le site open data de la ville de Paris\dots
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{require}\hlstd{(jsonlite)}
+\end{alltt}
+
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: jsonlite}}\begin{alltt}
+\hlstd{> }\hlstd{arbres} \hlkwb{<-} \hlkwd{fromJSON}\hlstd{(}\hlstr{"data/arbresremarquablesparis2011.json"}\hlstd{,}
+\hlstd{+ }                   \hlkwc{simplifyDataFrame} \hlstd{= T)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+    Si on regarde de plus près, le retour est relativement complexe
+    car les coordonnées géographiques notamment, font que l'objet est une liste.
+    Les identifiants des arbres sont des vecteurs et les descriptifs des arbres
+    sont dans une \emph{data.frame} nommée\emph{fields}. Les coordonnées sont 
+    dans une \emph{list}.
+    
+    En général, sur les formats un peu complexes, les traitements demandent un 
+    peu de programmation.
+
+
+  	\subsection{XML}
+    
+    Le paquet le plus utile et le plus rapide pour l'XML est le paquet
+    \emph{XML}. Il a fait l'objet d'un livre
+    \href{http://www.springer.com/us/book/9781461478997}{XML and Web Technologies for Data Sciences with R}.
+    Il n'est pas nécessaire d'acheter le livre pour se servir du paquet mais
+    ce livre mais il est peu être utile si on travaille beaucoup avec les fichiers
+    XML.
+    
+    Le paquet contient une fonction \emph{xmlToDataFrame} qui est généralement ce que
+    l'on veut. Après il parfoit nécessaire de préciser sur quels noeuds
+    on travaille avec la fonction \emph{xmlNodes}.
+    
+    Le paquet permet également de réaliser des requêtes \emph{XSLT} éventuellement
+    pour formater et/ou localiser les noeuds.
+    
+
+\section{Bases de données}
+
+  	\subsection{Les possibilités de R avec les bases de données}
+
+        R est capable de transférer des données depuis une base de
+        données vers R et inversement.
+
+        Il est en outre capable de lancer des commandes sur la base de
+        données (suppression de tables, consultation des tables et des schémas).
+
+        Ces fonctionnalités sont basés, comme la plupart de langages
+        modernes, sur le modèle DBI (Database Interface).
+
+
+  	\subsection{Le fonctionnement de la DBI}
+
+        Le principe du module \emph{DBI} est de rationnaliser les échanges avec
+        les bases de données.
+
+        Ainsi on accède, sauf commande particulière, de la même façon
+        depuis R à une base de données qu'il s'agisse de MySQL,
+        PostgreSQL, Oracle ou SQLite.
+
+        La seule limite est de disposer d'un \textit{driver} correspondant à la
+        base de données auquelle on veut accéder.
+
+
+
+        \begin{enumerate}
+          \item Le module de R correspondant à la base de données est
+            appelé par l'utilisateur
+          \item Le module \emph{DBI} est chargé implicitement
+          \item L'utilisateur se connecte à la base de données
+          \item l'utilisateur effectue les requêtes qu'il souhaite
+          \item L'utilisateur, à la fin de l'utilisation, clôt la connexion
+        \end{enumerate}
+
+
+
+    Il est à noter que l'utilisateur à la fin de la connexion doit récupérer l'objet créé. Cet objet complexe représente une connexion entre R et la base de données. Par la suite, cet objet est utilisé pour toutes les opérations sur la base.
+
+    Rien n'interdit (sauf l'administrateur de la bd) d'avoir plusieurs connexions actives à la base de données avec des paramètres utilisateur identiques ou différents.
+    
+    Le danger est de ne pas penser à détruire l'objet \emph{connexion} et de laisser une connexion ouverte sur la base de données.
+
+
+
+        Sauf exception, la création d'une connexion nécessite des droits utilisateur adéquats et une déclaration d'usage auprès de l'administrateur de la base de données.
+        
+        Cela permet notamment de choisir le pilote le plus adapté pour l'attaque de la base de données par R.
+
+        Et à l'administrateur d'être vigilant pendant la période d'apprentissage.
+
+
+
+        La différence avec certains logiciels statistiques est qu'il
+        est nécessaire de connaître un peu le langage SQL pour accéder
+        aux données.
+        
+        En effet les requêtes sont formulées en SQL. 
+        
+
+  	\subsection{Un exemple avec SQLite}
+
+        SQLite est une base de données de \og~poche~\fg. En effet ce
+        n'est pas un serveur et donc être installé sur son poste.
+
+        Son usage ici est purement illustratif et pédagogique.
+
+        Comme dit précédemment, la \emph{DBI} fait que les commandes
+        ci-dessous sont (presque) les mêmes que pour un serveur
+        MySQL ou Oracle.
+
+
+  	\subsection{Connexion à la base de données}
+
+        Dans un premier temps, il faut se connecter à la base de données.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{require}\hlstd{(RSQLite)}
+\hlstd{> }\hlstd{driver} \hlkwb{<-} \hlkwd{dbDriver}\hlstd{(}\hlstr{"SQLite"}\hlstd{)}
+\hlstd{> }\hlstd{con} \hlkwb{<-} \hlkwd{dbConnect}\hlstd{( driver,} \hlkwc{dbname} \hlstd{=} \hlstr{"data/eslc_stu.sqlite"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Le driver correspond au nom de la base de données. Il est passé en
+argument à la \emph{DBI}. A noter que SQLite ne nécessite pas d'utilisateur et de mots de passe.
+
+
+
+        Dans le cas d'un serveur de base de données, la syntaxe est
+        légèrement différente. La commande de l'utilisateur, l'adresse
+        du serveur ainsi que les identifiants.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{require}\hlstd{(RMySQL)}
+\hlstd{> }\hlstd{driver} \hlkwb{<-} \hlkwd{dbDriver}\hlstd{(}\hlstr{"MySQL"}\hlstd{)}
+\hlstd{> }\hlstd{conn} \hlkwb{<-} \hlkwd{dbConnect}\hlstd{(}
+\hlstd{+ }   \hlstd{driver,}
+\hlstd{+ }   \hlkwc{host}\hlstd{=}\hlstr{"127.0.0.1"}\hlstd{,}
+\hlstd{+ }   \hlkwc{username}\hlstd{=}\hlstr{"user"}\hlstd{,}
+\hlstd{+ }   \hlkwc{password} \hlstd{=} \hlstr{"passwd"}\hlstd{,}
+\hlstd{+ }   \hlkwc{dbname} \hlstd{=} \hlstr{"eslc"}
+\hlstd{+ }\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+  	\subsection{Requêtes sur une table}
+
+        Dans ce cas, on veut rapatrier des informations de la base
+        vers une data.frame.
+
+        Le pilote se charge automatiquement des conversions
+        nécessaires entre les noms de variables (caractères interdits
+        pour les noms de variables pour R ou pour la base de données)
+        et le type des variables (par exemple les dates sont converties).
+
+
+  	\subsection{Requête SELECT sur une table}
+
+        Le principe est toujours le même~:
+
+        \begin{enumerate}
+          \item on \og~forme~\fg la requête
+          \item la requête est exécutée
+        \end{enumerate}
+
+
+
+        Une première requête très simple...
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{requete} \hlkwb{<-} \hlkwd{dbSendQuery}\hlstd{( con,} \hlstr{"SELECT * from stu"}\hlstd{)}
+\hlstd{> }\hlstd{stu} \hlkwb{<-} \hlkwd{fetch}\hlstd{(requete,} \hlkwc{n} \hlstd{=} \hlnum{5} \hlstd{)}
+\hlstd{> }\hlkwd{dbClearResult}\hlstd{(requete)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+L'argument $n=5$ de \emph{fetch} indique que l'on ne veut rapatrier
+que les 5 premières lignes de la requête.
+
+La commande \emph{dbClearResult(requete)} est optionnelle pour
+certaines base de données.
+
+
+
+
+        Une seconde requête très simple avec une sélection... La
+        requête peut être très complexe. Elle doit respecter la
+        syntaxe SQL supportée par le serveur.
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{requete} \hlkwb{<-} \hlkwd{dbSendQuery}\hlstd{(}
+\hlstd{+ }   \hlstd{con,}
+\hlstd{+ }   \hlstr{"SELECT * from stu WHERE country_id='FR'"}
+\hlstd{+ }\hlstd{)}
+\hlstd{> }\hlstd{stu} \hlkwb{<-} \hlkwd{fetch}\hlstd{(requete,} \hlkwc{n} \hlstd{=} \hlnum{5} \hlstd{)}
+\hlstd{> }\hlkwd{dbClearResult}\hlstd{(requete)}
+\end{alltt}
+\begin{verbatim}
+## [1] TRUE
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+Au lieu d'utiliser les guillemets simples, on peux utiliser
+\textbackslash ".
+
+
+  	\subsection{Bonnes pratiques avec les serveurs...}
+
+        Avant d'aller plus loin, il est important de rappeler certains points~:
+
+        \begin{itemize}
+          \item la méthode d'authentification, les identifiants et
+            l'usage doit être approuvé par l'administrateur de la base
+            de données.
+          \item le paquet \emph{DBI} camoufle une bonne partie de la
+            complexité des échanges. La commande \emph{dbClearResults}
+            illustre par exemple le fait que la requête est mise en cache par le
+            serveur. Il est primordial de suivre quelques règles
+            simples lors des requêtes...
+      \end{itemize}
+
+
+
+            \begin{itemize}
+              \item Même si c'est optionnel, vider dès que possible le
+                cache coté serveur avec \emph{dbClearResults}
+              \item Ecrire tous les scripts avec \emph{fetch( con,
+                  n=limits)}. La variable \emph{limits} sera fixée au
+                début pendant le déboguage à quelques lignes. Puis
+                pour la valeur sera mise $-1$ quand le script sera
+                stable. Mieux, limiter dans le code SQL le nombre de
+                lignes récupérées (option \emph{limit}, \emph{fetch},
+                \emph{rownum},... selon le serveur).
+              \item Sauf cas d'espèce, vous ne devez avoir qu'{
+                  \bfseries une
+                seule déclaration de connexion}~: un seul objet
+                \emph{dbConnect}. Si vous en avez plusieurs, vous êtes
+                autant d'utilisateurs sur le serveur que de connexions...
+              \item Respecter toutes les précautions d'usage que vous
+                employez habituellement en travaillant en SQL
+           \end{itemize}
+
+
+
+           Dans tous les cas, il est important de lire les
+           recommandations indiquées dans la notice du pilote et de
+           travailler de concert avec les administrateurs de la base de données.
+
+
+  	\subsection{Rapatrier une table...}
+
+        Plutôt qu'une requête, vous pouvez rapatrier toute la table...
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{stu} \hlkwb{<-} \hlkwd{dbReadTable}\hlstd{( con,} \hlstr{"NomDeLaTable"} \hlstd{)}
+\hlstd{> }\hlstd{stu} \hlkwb{<-} \hlkwd{dbReadTable}\hlstd{( con,} \hlstr{"NomDeLaTable"}\hlstd{,} \hlkwc{row.names}\hlstd{=student_id )}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+  	\subsection{Créer une table...}
+
+        Si vous avez les droits, vous pouvez créer une table~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{dbWriteTable}\hlstd{( con,} \hlstr{"stu2"}\hlstd{, stu )}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+  	\subsection{Les commandes non standardisées}
+
+        Les commandes permettant de faire des requêtes de type
+        \emph{UPDATE}, \emph{INSERT} utilise le \emph{mapping}. La requête
+        est écrite en SQL avec une syntaxe particulière pour les
+        champs dont les données proviendront de R.
+
+        Lors de l'exécution, la commande met en relation chaque
+        identificateur dans la requête avec une variable d'une \emph{data.frame}.
+
+
+
+        Les commandes permettant de visualiser les tables de la base
+        de données, la structure des tables, ... sont des commandes
+        propres à chaque base de données.
+
+        De ce fait, ils ne sont pas standards.
+
+        Pour \emph{RSQLite}, les seules commandes (dont le noms sont assez
+        transparents) sont \emph{dbListTables}, \emph{sqliteCopyDatabase}.
+
+
+
+\section{Microsoft Office}
+
+    \subsection{Le paquet \emph{XLConnect}}
+
+    Le paquet \emph{XLConnect} est relativement simple d'utilisation et permet 
+    d'importer et d'exporter des fichiers Excel au format 2003 ou 2007/2010/2013.
+    
+    Le paquet est basé sur une bibliothèque Java de la fondation Apache. 
+    Office n'est pas nécessaire mais \og~Java~\fg l'est~: soit openjdk, soit le 
+    Java d'Oracle. Le fait de pouvoir produire des fichiers Office sous NIXs 
+    par exemple est très appréciable.
+    
+    Outre l'import et export simple, le paquet permet de modifier la 
+    présentation du tableur (couleurs,styles,...). 
+    
+    La documentation de \emph{XLConnect} est particulièrement complète.
+
+
+
+    Le système ressemble un peu à l'accès à une base de données. Il y a deux étapes~:
+    \begin{itemize}
+      \item on ouvre une connection sur un fichier Excel (existant ou nouveau)
+      \item on manipule le fichier en utilisant la connexion créée
+    \end{itemize}
+
+
+    \subsection{Lecture de fichier Excel}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{wb} \hlkwb{=} \hlkwd{loadWorkbook}\hlstd{(}\hlstr{"eslc.xlsx"}\hlstd{,} \hlkwc{create} \hlstd{= T)}
+\hlstd{> }\hlstd{data} \hlkwb{=} \hlkwd{readWorksheet}\hlstd{(wb,} \hlkwc{sheet} \hlstd{=} \hlstr{"Eleves"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+  Selon le suffixe \emph{xls} ou emph{xslx}, il s'adapte automatiquement à la 
+  version d'Excel 2003 ou 2010/../2013.
+
+
+
+    \subsection{Sauvegarde dans un fichier Excel}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{classeur} \hlkwb{=} \hlkwd{loadWorkbook}\hlstd{(}\hlstr{"res_eslc.xlsx"}\hlstd{,} \hlkwc{create} \hlstd{= T)}
+\hlstd{> }\hlkwd{createSheet}\hlstd{(classeur,} \hlkwc{name} \hlstd{=} \hlstr{"eleves"}\hlstd{)}
+\hlstd{> }\hlkwd{writeWorksheet}\hlstd{(classeur, eslc_eleves,} \hlkwc{sheet} \hlstd{=} \hlstr{"eleves"}\hlstd{)}
+\hlstd{> }\hlkwd{saveWorkbook}\hlstd{(wb)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+    \subsection{En plus de la base...}
+
+    Il faut savoir que contrairement aux fonctions de R, les \emph{rownames} ne 
+    sont pas exportés. Un argument permet d'utiliser une colonne existante pour 
+    les \emph{rownames} mais les \emph{rownames} eux-mêmes.
+    
+    L'écriture est définitive quand la fonction \emph{saveWorkbook} est appelée 
+    et l'écriture se fait en ajoutant au fichier existant. 
+
+    Ainsi si un \emph{data.frame} plus petit est exporté dans une feuille déjà 
+    pleine, il restera les données pré-existantes.
+    
+    Lors de l'écriture pour éviter ces problèmes, le moyen le plus direct est 
+    de supprimer la feuille existante.
+
+
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{classeur} \hlkwb{=} \hlkwd{loadWorkbook}\hlstd{(}\hlstr{"res_eslc.xlsx"}\hlstd{,} \hlkwc{create} \hlstd{= T)}
+\hlstd{> }\hlkwd{try}\hlstd{(\{}\hlkwd{removeSheet}\hlstd{(wb,} \hlkwc{sheet} \hlstd{=} \hlstr{"eleves"}\hlstd{)\},}\hlkwc{silent}\hlstd{=T)}
+\hlstd{> }\hlkwd{createSheet}\hlstd{(classeur,} \hlkwc{name} \hlstd{=} \hlstr{"eleves"}\hlstd{)}
+\hlstd{> }\hlkwd{writeWorksheet}\hlstd{(classeur, eslc_eleves,} \hlkwc{sheet} \hlstd{=} \hlstr{"eleves"}\hlstd{)}
+\hlstd{> }\hlkwd{saveWorkbook}\hlstd{(wb)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+    Il y a une autre possibilité en vidant la feuille existante. Plus doux... 
+    Avec la fonction \emph{clearSheet}.
+    
+    Mais là également pour des traitements automatisés il faudra souvent 
+    utiliser des \emph{try} pour éviter les erreurs lors de l'exécution.
+    
+
+    \subsection{Les arguments supplémentaires}
+
+    Les arguments \emph{startRow}, \emph{startCol} permettent à l'importation et 
+    à l'exportation de se concentrer sur une zone de la feuille. Votre collègue 
+    pourra laisser son titre en première ligne avec les données en troisième ligne.
+    
+    Vous pouvez également personnaliser le style des cellules~: cela passe par 
+    la création d'un style de cellules, d'ajouter des paramètres de style et 
+    enfin l'appliquer à des cellules définies.
+    
+
+    \subsection{La mise en forme}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{csHeader} \hlkwb{=} \hlkwd{createCellStyle}\hlstd{(wb,} \hlkwc{name} \hlstd{=} \hlstr{"header"}\hlstd{)}
+\hlstd{> }\hlkwd{setFillPattern}\hlstd{(csHeader,}
+\hlstd{+ }               \hlkwc{fill} \hlstd{= XLC}\hlopt{$}\hlstd{FILL.SOLID_FOREGROUND)}
+\hlstd{> }\hlkwd{setFillForegroundColor}\hlstd{(csHeader,}
+\hlstd{+ }                       \hlkwc{color} \hlstd{= XLC}\hlopt{$}\hlstd{COLOR.GREY_25_PERCENT)}
+\hlstd{> }\hlkwd{setCellStyle}\hlstd{(wb,} \hlkwc{sheet} \hlstd{= sheet,} \hlkwc{row} \hlstd{=} \hlnum{1}\hlstd{,}
+\hlstd{+ }              \hlkwc{col} \hlstd{=} \hlkwd{seq}\hlstd{(}\hlkwc{length.out} \hlstd{=} \hlkwd{ncol}\hlstd{(curr)),}
+\hlstd{+ }              \hlkwc{cellstyle} \hlstd{= csHeader)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+
+    Ce code est pompé sur la vignette car l'auteur n'a pas beaucoup pratiqué ces 
+    mises en forme. Remarquer qu'on retrouve un peu l'esprit Microsoft avec des 
+    constantes ...pas pratiques... pour appliquer un style (ex~: 
+    \emph{XLC\$FILL.SOLID\_FOREGROUND}). Elles sont contenues dans une grande 
+    liste \emph{XLC}.
+    
+    L'autre point non abordé est le fait que le paquet repose (en fait) beaucoup 
+    sur la définition de régions de cellules (ou noms sous Excel). Elle permet de 
+    contrôler l'importation, l'exportation, la mise en forme sur des portions de 
+    la feuille identifiées par des noms.
+    
+    Pour cela voir les fonctions~: \emph{createName}, \emph{writeNamedRegion}, \dots
+    
+    Et pour info vous pouvez insérer des graphiques (statiques!) au format png sur une feuille.
+    
+
+    \subsection{\emph{readxl}, l'alternative à XLConnect}
+    
+    Le paquet \emph{readxl} est un paquet qui permet la lecture de fichiers Excel
+    sans la présence d'un moteur Java. 
+    
+    Il lit les fichiers des versions 2003 à 2013. 
+    
+    Il est très rapide mais a moins d'options que le paquet XLConnect et est
+    donc très simple à utiliser.
+    
+
+    
+    
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{require}\hlstd{(readxl)}
+\hlstd{> }\hlstd{classeur} \hlkwb{=} \hlkwd{read_excel}\hlstd{(}\hlstr{"res_eslc.xlsx"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+    
+    Avec l'argument \emph{row}, il est possible de définir à partir de quelle
+    ligne, la lecture se fait. On peut également définir le type de chaque 
+    colonne~: character, date, numeric, \dots
+    
+    Ainsi l'utilisation est très proche de read\_csv du même auteur.
+
+    \subsection{Les sorties pour le reporting}
+
+    Pour rester dans les paquets pour Microsoft Office, si vous en avez besoin il 
+    existe le paquet \emph{ReporteRs} qui permet l'exportation de résultats et/ou 
+    tableaux pour Word et Powerpoint. Le site est très bien fait et a de nombreux 
+    tutoriaux.
+    
+    \href{http://davidgohel.github.io/ReporteRs/index.html}{ReporteRs site}
+    
+
+
+    Mais ces paquets restent en retrait car ils sont destinés à la production 
+    de rapports plutôt qu'à l'esprit \emph{litterate programming} de Sweave qui 
+    est remplacé maintenant par \emph{knitr} ou \emph{RMarkdown}.
+    
+    Ils permettent de réaliser des "cahiers d'analyse" et/ou des rapports en 
+    permettant des documents dynamiques tout au long d'une analyse.
+
+
+    \subsection{Shiny, D3.js, ...}
+
+    Des paquets et le serveur Shiny permettent enfin d'exporter des documents 
+    totalement dynamiques pour le web.
+    
+    Shiny est produit par la société qui produit RStudio. Le principe est de 
+    créer des documents web interactifs.
+    
+    Pour avoir une idée~: \href{http://shiny.rstudio.com/gallery/}{gallerie Shiny}, 
+    \href{http://cran.at.r-project.org/web/packages/dashboard/index.html}{paquet pour D3.js}.
+    
+    C'est pour créer des "datavisualistion" comme on peux voir dans le NYT par exemple.
+
+
+
+    Ces infographies sont plus simples à réaliser qu'il n'y paraît.
+    
+    Il y a un MOOC sur Coursera encore gratuit pour l'instant qui permet de s'y mettre.
+    
+    Et c'est très pédagogiques~: \href{https://www.coursera.org/course/devdataprod}{Developping Data Products}
+    
+    et un sur le \emph{Reproductible Research}{https://www.coursera.org/course/repdata}
+    
+
+\section{NoSQL et big data}
+
+    \subsection{Base NoSQL}
+
+    Des paquets pour les bases NoSQL et pour le big data sont disponibles sur le CRAN~:
+    \begin{itemize}
+      \item HadoopStreaming 
+      \item hive
+      \item RcppRedis
+      \item RCassandra
+      \item \dots
+    \end{itemize}
+
+

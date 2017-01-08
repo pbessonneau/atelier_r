@@ -1,0 +1,751 @@
+\documentclass{beamer}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Mathématiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux supplémentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% Nécessaires pour les tableaux de la macro Excel.
+
+% Outil supplémentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour insérer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour insérer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour insérer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En têtes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour insérer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les différents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{06/2015}
+
+
+\subtitle{Statistiques descriptives}
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+<<echo=F>>=
+require(MASS,quietly=T,warn.conflicts=FALSE)
+require(xtable,quietly=T,warn.conflicts=FALSE)
+require(stringr,quietly=T,warn.conflicts=FALSE)
+require(questionr,quietly=T,warn.conflicts=FALSE)
+require(R2HTML,quietly=T,warn.conflicts=FALSE)
+require(knitr)
+opts_chunk$set(fig.path='graphiques/beamer-',fig.align='center',fig.show='hold',size='footnotesize',
+               fig.height=7,fig.width=7,out.width="\\textwidth",resize.height="0.8\\textheight",
+               tidy=FALSE,prompt=TRUE
+               )
+options(width=45)
+
+cg <- read.csv("data/cg0309.csv",strings=F)
+
+@
+
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+
+% Begin document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Statistiques descriptives : variables quantitatives}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les statistiques de base}
+
+        Pour avoir un aperçu à partir des indicateurs les plus
+        courants, on peut utiliser la fonction \emph{summary}.
+
+        Cette fonction donne un résumé de la variable adaptée au type de la variable.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les statistiques de base}
+
+<<Summary>>=
+summary(iris)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les statistiques de base}
+
+        Si on veut extraire ces informations, on peut utiliser la fonction \emph{sink}.
+
+        Cette fonction permet de rediriger les résultats affichés à
+        l'écran vers un fichier.
+
+\begin{verbatim}
+sink("resultats.txt")
+summary(iris)
+sink()
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les statistiques de base}
+
+        Mais des fonctions sont disponibles pour chaque indicateur~:
+
+        \begin{description}
+          \item[mean] donne la moyenne. L'argument \emph{trim} permet
+            d'écarter une certaine proportion des valeurs extrêmes dans
+            le calcul de la moyenne.
+          \item[min] donne le minimum
+          \item[max] donne le maximum
+          \item[range] donne le minimum et le maxium dans un vecteur
+            de longueur 2
+          \item[sd] donne l'écart-type
+          \item[median] donne la médiane
+          \item[quantile] donne les quantiles c(0,0.25,0.5,0.75,1)
+            mais qui sont modifiables par l'option \emph{probs}
+        \end{description}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les statistiques de base}
+
+        On peut ainsi calculer pour une variable quantitative quelques statistiques~:
+
+<<Stat1a>>=
+mean(iris$Sepal.Length)
+sd(iris$Sepal.Length)
+quantile(iris$Sepal.Length)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les statistiques de base}
+
+<<Stat1b>>=
+r <- c(
+  mean(iris$Sepal.Length),
+  sd(iris$Sepal.Length),
+  quantile(iris$Sepal.Length)
+  )
+names(r) <- c("Moy.","EC","Min","1erQ","Méd.","3emeQ","Max")
+r
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les statistiques de base}
+
+<<Stat1c>>=
+r <- rbind( r, c(
+  mean(iris$Sepal.Length),
+  sd(iris$Sepal.Length),
+  quantile(iris$Sepal.Length)
+  )
+)
+rownames(r) <- c( "Sepal.Length", "Sepal.Width" )
+r
+write.csv2(r,"data/Resultats.txt")
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les statistiques de base}
+
+  Il existe une connexion de fichier particulière: "clipboard".
+  
+  Dans ce cas, le résultat n'est pas écrit dans un fichier mais dans le presse-papiers par exemple pour le copier-coller dans une application tierce.
+
+<<Stat1z,eval=FALSE>>=
+write.csv2(r,"clipboard")
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les statistiques de base}
+
+
+  Pour les CSVs, cela ne donne pas grand chose, mais le paquet \emph{questionr} contient la fonction \emph{clipcopy} qui permet d'exporter un objet au format HTML (via le paquet \emph{R2HTML}).
+
+<<clipcopy,eval=FALSE>>=
+clipcopy(r)
+@
+
+  L'objet peut alors peut alors être directement coller dans un tableur.
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les statistiques de base}
+
+        Attention, toutes ces fonctions renvoient \emph{NA}
+        si une valeur ou plus est manquante (ie. égale à \emph{NA}).
+<<NAs1>>=
+min(c(3,NA,5))
+@
+
+Pour ne pas avoir \emph{NA} comme réponse, il faut utiliser un argument
+supplémentaire \emph{na.rm=T}
+
+<<NAs2>>=
+min(c(3,NA,5),na.rm=T)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Plot}
+
+        Pour obtenir une représentation graphique de la variable, il suffit de taper~:
+
+\begin{verbatim}
+plot(iris$Sepal.Length)
+\end{verbatim}
+
+        Dans ce cas les valeurs de la variable sont en ordonnées et
+        les abscisses sont les numéros d'observation.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Plot}
+
+<<Plot,echo=F>>=
+plot(iris$Sepal.Length)
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+	\frametitle{Histogramme}
+
+        Pour obtenir un histogramme, il suffit de taper~:
+\begin{verbatim}
+hist(iris$Sepal.Length)
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Histogramme}
+
+<<Hist,echo=F>>=
+hist(iris$Sepal.Length)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Boxplots}
+
+        Pour obtenir un boxplot, il suffit de taper~:
+\begin{verbatim}
+boxplot(iris$Sepal.Length)
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Boxplots}
+
+<<Box1,echo=F>>=
+boxplot(iris$Sepal.Length)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Boxplots}
+
+        Pour obtenir des boxplots de plusieurs variables d'une même \df, il suffit de taper :
+
+\begin{verbatim}
+boxplot(iris[,1:4])
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Boxplots}
+
+<<Box2,echo=F>>=
+boxplot(iris[,1:4])
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Corrélations}
+
+        Pour analyser la covariance ou la corrélation de deux variables (ou plus), il suffit d'appeler la fonction \emph{cov} ou \emph{cor} avec les deux variables.
+
+<<Cor1>>=
+cor(cg$score,cg$plaisir)
+@
+
+Les méthodes disponibles pour le calcul de la corrélation sont celles de Pearson, Kendall et Spearman.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Corrélations}
+
+        La gestion des valeurs manquantes est particulière dans le cas
+        des corrélations.
+
+        En effet on peut avoir plusieurs cas de figures, pour
+        reprendre l'aide de R.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Corrélations}
+
+        Dans la majorité des cas on utilisera le \emph{use="pairwise.complete.obs"} qui permet d'obtenir une valeur de corrélation en présence de valeurs manquantes. Dans ce cas, la corrélation est calculée pour tous les couples de valeurs ne contenant pas de \emph{NA}.
+
+        Les alternatives sont de rendre une erreur en présence de \emph{NA} ou de supprimer toutes les observations contenant une valeur manquante.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Corrélations}
+
+<<Cor2>>=
+cor(cg$score,cg$plaisir,use="pairwise.complete.obs")
+@
+
+        En fait, une matrice de corrélations peut être créée en utilisant la propriété de \emph{cor} de se comporter différemment face à un objet de type \df.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Corrélations}
+
+<<Cor3a>>=
+cor(cg[,8:12],use="pairwise.complete.obs")
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Corrélations - Graphiques}
+
+On peut également passer une \df à \emph{plot} pour avoir une table des corrélations graphiques.
+
+\begin{verbatim}
+plot(iris[,1:4])
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Corrélations - Graphiques}
+
+<<Cor3b,echo=F>>=
+plot(iris[,1:4])
+@
+
+\end{frame}
+
+\section{Exemple de test statistique}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Test de corrélation}
+
+        Le but est ici de vous illustrer un test pour
+        vous montrer l'utilisation des objets.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Test de corrélation}
+
+<<CorT1a>>=
+cor.test(cg$score,cg$plaisir,use="pairwise.complete.obs")
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Test de corrélation}
+
+        Une sortie des résultats apparait mais comme la plupart des fonctions, la fonction
+        \emph{cor.test} renvoie aussi un objet silencieusement. Comme il n'y a pas d'affectation R devine qu'on veut l'imprimer. Mais si on change la syntaxe~:
+
+<<CorT1b>>=
+montest <- cor.test(cg$score,cg$plaisir,use="pairwise.complete.obs")
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Test de corrélation}
+
+        On peut accéder aux valeurs en utilisant directement la
+        fonction \emph{str} qui permet de connaître la structure des objets.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Test de corrélation}
+
+<<CorT4>>=
+str(montest)
+@
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Test de corrélation}
+
+        Par exemple, pour récupérer la corrélation et son intervalle de confiance~:
+
+<<CorT5>>=
+montest$estimate
+montest$conf.int
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Autres tests}
+
+        Les tests disponibles sous R sont nombreux dans les packages de
+        base et incalculables si on tient compte des paquets~: Student,
+        Wilcoxon, $\chi^2$, Bartlett, Fisher, ...
+
+        Tous, ou presque, fonctionnent sur le même principe.
+
+\end{frame}
+
+
+\section{Statistiques descriptives : variables qualitatives}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les données patient}
+
+        Ce sont des données recoltées par une pharmacienne sur
+        dossiers dans deux hopitaux.
+
+        Les données portent sur le traitement de la douleur chez
+        l'enfant. Le but est de déterminer la qualité de la prise en
+        charge de la douleur dans ces hopitaux.
+
+        Pour cela les évaluations de la douleur se font sur une
+        échelle de 0 à 100.
+
+        Les pathologies (CIM2) concernées sont codées de 1 à 4, de plus en plus
+        grave (appendicite à arthrodèse).
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Les données patient}
+
+% Table generated by Excel2LaTeX from sheet 'Feuil1'
+
+\begin{table}[htbp]
+  \centering
+  \scalebox{0.7}{
+    \begin{tabular}{rr}
+    \addlinespace
+    \toprule
+    {\bf Variable} & {\bf Description} \\
+    \midrule
+    UID   & Identifiant \\
+    Hopital & Hopital ( A ou B) \\
+    Sexe  & Sexe du patient \\
+    Poids & Poids du patient \\
+    Vitaux & Nombres de prises des signes vitaux \\
+    CIM2  & Pathologie (de 1 à 4, de plus en plus grave) \\
+    age   & Âge du patient \\
+    dureeopmin & Durée de l'opération en minutes \\
+    postopj & Nombres de jours post-opératoires \\
+    scoliose & Présence d'une scoliose \\
+    drepano & Enfant souffrant d'une drépanocytose/sphérocytose \\
+    ACP   & Pompe à morphine administrée \\
+    peridurale & Injection péridurale \\
+    periACP & Pompe à morphine administrée en péridurale \\
+    nbttt & Nombre de traitements contre la douleur \\
+    totalechelle & Total des échelles de la la douleur \\
+    nbechelle & Nombre de prises d'échelles de douleur \\
+    \bottomrule
+    \end{tabular}
+   }
+\end{table}
+
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Tableaux de contingence}
+
+        Il suffit d'utiliser la fonction \emph{table}.
+
+<<Patient1a>>=
+patient <- read.csv2("data/patient.csv")
+table(patient$sexe)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Tableaux de contingence}
+
+        Ces tableaux peuvent être à 2 niveaux~:
+
+<<Patient1b>>=
+table(patient$sexe,patient$CIM2)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Tableaux de contingence}
+
+        Comme les colonnes ne sont pas nommées cela peut être
+        difficile de s'y retrouver si les variables ont les mêmes modalités.
+
+        Il suffit dans ce cas là de modifier la syntaxe~:
+
+<<Patient1c>>=
+table(Sexe=patient$sexe,CIM2=patient$CIM2)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Exportation de tableaux de contingence}
+
+        Pour l'exportation des tableaux, elle peut se faire avec~:
+        \begin{itemize}
+          \item \emph{xtable}
+          \item la fonction clipcopy de \emph{questionr}
+          \item sous forme de CSV
+        \end{itemize}
+        
+        Dans ce dernier cas, l'aspect de la table exportée sera donc différent car il y a une conversion vers une \df.
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Exportation de tableaux de contingence}
+
+<<Patient1d>>=
+as.data.frame(table(Sexe=patient$sexe,CIM2=patient$CIM2))
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Exportation de tableaux de contingence (ancienne version)}
+
+        Il y a une astuce pour contourner le problème. La
+        classe \emph{table} a la même structure interne qu'une
+        \emph{matrix}. Alors on berne R.
+
+<<Patient1e>>=
+tableau <- (table(Sexe=patient$sexe,CIM2=patient$CIM2))
+class(tableau)
+class(tableau) <- "matrix"
+class(tableau)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Exportation de tableaux de contingence (version correcte)}
+
+        Depuis la première version du cours, il y a maintenant un contournement dans R~:
+
+<<Patient1e2>>=
+tableau <- (table(Sexe=patient$sexe,CIM2=patient$CIM2))
+as.data.frame.matrix(tableau)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Marges sur les tableaux}
+
+        On peut ajouter les marges avec la fonction addmargins~:
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Marges sur les tableaux}
+
+<<Patient1g>>=
+addmargins(tableau,1)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Marges sur les tableaux}
+
+<<Patient1h>>=
+addmargins(tableau,2)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Marges sur les tableaux}
+
+<<Patient1i>>=
+addmargins(tableau,1:2)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Tableau de proportion}
+
+        Cette fois c'est la fonction \emph{prop.table} qu'on appelle
+        en utilisant une table déjà créée~:
+
+<<Patient1j>>=
+prop.table(tableau,1)
+@
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+	\frametitle{Proportions dans les tableaux}
+
+<<Patient1k>>=
+prop.table(tableau,2)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+	\frametitle{Proportions dans les tableaux}
+
+        On peut combiner les deux...
+
+<<Patient1>>=
+addmargins(prop.table(tableau),1:2)
+@
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Autres fonctions}
+  
+  Les autres fonctions dans les tableaux de base sont \emph{ftable}, \emph{tabulate}, \emph{xtabs}, \dots Chacun a sa petite spécificité.
+  
+  Dans les packages, il existe pléthore de fonctions pour calculer des tableaux croisés. Notamment des versions qui permettent d'ajuster la présentation comme dans \emph{questionr}.
+
+\end{frame}
+
+
+\end{document}
+

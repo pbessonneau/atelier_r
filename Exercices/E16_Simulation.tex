@@ -1,0 +1,502 @@
+\documentclass{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usetheme[compress]{Singapore}
+\useoutertheme{miniframes}
+
+% \documentclass{beamer}
+%\usetheme{Warsaw}
+
+% Pour les documents en francais...
+	\usepackage[latin1]{inputenc}
+	\usepackage[french]{babel}
+	\usepackage[french]{varioref}
+
+% Math?matiques
+	\usepackage{amsmath}
+
+% Caracteres speciaux suppl?mentaires
+	\usepackage{latexsym,amsfonts}
+
+% A documenter
+	\usepackage{moreverb}
+
+% Macros pour les paquets
+	\usepackage{array}  			% N?cessaires pour les tableaux de la macro Excel.
+
+% Outil suppl?mentaire pour les tableaux
+	\usepackage{multirow}
+	\usepackage{booktabs}
+	\usepackage{xcolor} % alternating row colors in table, incompatible avec certains modules
+	\usepackage{longtable}
+	\usepackage{colortbl}
+
+% Pour ins?rer des graphiques
+	\usepackage{graphicx} 			% Graphique simples
+	\usepackage{subfigure}			% Graphiques multiples
+
+% Pour ins?rer des couleurs
+	\usepackage{color}
+
+% Rotation des objets et des pages
+%	\usepackage{rotating}
+%	\usepackage{lscape}
+
+% Pour insrer du code source, LaTeX ou SAS par exemple.
+	\usepackage{verbatim}
+        \usepackage{moreverb}
+	\usepackage{listings}
+	\usepackage{fancyvrb}
+
+%	\lstset{language=SAS,numbers=left}		% Par dfaut le listing est en SAS
+
+% Pour ins?rer des hyperliens
+  \usepackage{hyperref}
+
+% American Psychological Association (for bibliographic references).
+	\usepackage{apacite}
+
+% Pour l'utilisation des macros
+	\usepackage{xspace}
+
+% Pour l'utilisation de notes en fin de document.
+%	\usepackage{endnotes}
+
+% Array
+%	\usepackage{multirow}
+%	\usepackage{booktabs}
+
+% Rotation
+%	\usepackage{rotating}
+
+% En t?tes et pieds de pages
+%	\usepackage{fancyhdr}
+%	\usepackage{lastpage}
+
+
+% Page layout
+
+% By LaTeX commands
+%\setlength{\oddsidemargin}{0cm}
+%\setlength{\textwidth}{16cm}
+%\setlength{\textheight}{24cm}
+%\setlength{\topmargin}{-1cm}
+%\setlength{\marginparsep}{0.2cm}
+
+% fancyheader parameters
+%\pagestyle{fancy}
+
+%\fancyfoot[L]{{\small Formation \LaTeX, DEPP}}
+%\fancyfoot[c]{}
+%\fancyfoot[R]{{\small \thepage/\pageref{LastPage}}}
+
+%\fancyhead[L]{}
+%\fancyhead[c]{}
+%\fancyhead[R]{}
+
+% Pour ins?rer des dessins de Linux
+\newcommand{\LinuxA}{\includegraphics[height=0.5cm]{Graphiques/linux.png}}
+\newcommand{\LinuxB}{\includegraphics[height=0.5cm]{Graphiques/linux.png}\xspace}
+
+% Macro pour les petits dessins pour les diff?rents OS.
+\newcommand{\Windows}{\emph{Windows}\xspace}
+\newcommand{\Mac}{\emph{Mac OS X}\xspace}
+\newcommand{\Linux}{\emph{Linux}\xspace}
+\newcommand{\MikTeX}{MiK\tex\xspace}
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\newcommand{\df}{\emph{data.frame}\xspace}
+\newcommand{\liste}{\emph{list}\xspace}
+\newcommand{\cad}{c'est-à-dire\xspace}
+
+% Titre
+\title{Introduction à R}
+\author{Pascal Bessonneau}
+%\institute{DEPP}
+\date{05/2016}
+\subtitle{Exercices, Simulation}
+
+
+\newcommand{\hreff}[2]{\underline{\href{#1}{#2}\xspace}}
+
+
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\begin{frame}
+	\maketitle
+\end{frame}
+
+\begin{frame}
+	\tableofcontents
+\end{frame}
+
+\section{Exercices sur la loi normale}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La loi normale}
+
+  La fonction \emph{rnorm} permet de créer un vecteur contenant des nombres tirés
+  de la loi normale~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{10000}\hlstd{)}
+\hlstd{> }\hlkwd{plot}\hlstd{(a)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{La loi normale}
+
+  La fonction \emph{rnorm} permet de créer un vecteur contenant des nombres tirés
+  de la loi normale~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{hist}\hlstd{(a)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La loi normale}
+
+  La fonction \emph{rnorm} permet de créer un vecteur contenant des nombres tirés
+  de la loi normale~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{10000}\hlstd{,}\hlkwc{mean}\hlstd{=}\hlnum{2}\hlstd{,}\hlkwc{sd}\hlstd{=}\hlnum{4}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La loi normale}
+
+  La fonction \emph{rnorm} permet de créer un vecteur contenant des nombres tirés
+  de la loi normale~:
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{hist}\hlstd{(a)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\section{Simulation de tirage de dés}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Les dés}
+
+  On peut aisement sous R simuler un tirage d'une pièce~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{a} \hlkwb{<-} \hlkwd{rbinom}\hlstd{(}\hlnum{10000}\hlstd{,}\hlkwc{size} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{prob} \hlstd{=} \hlnum{1} \hlopt{/} \hlnum{2} \hlstd{)}
+\hlstd{> }\hlkwd{mean}\hlstd{(a)}
+\hlstd{> }\hlkwd{sd}\hlstd{(a)}
+\hlstd{> }\hlkwd{table}\hlstd{(a)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+  On peut simuler k tirages de n pièces~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{k} \hlkwb{<-} \hlnum{10}
+\hlstd{> }\hlstd{n} \hlkwb{<-} \hlnum{10}
+\hlstd{> }\hlstd{m} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+\hlstd{> }\hlkwa{for} \hlstd{(ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{k) \{}
+\hlstd{+ }  \hlstd{m} \hlkwb{<-} \hlkwd{c}\hlstd{( m,} \hlkwd{mean}\hlstd{(} \hlkwd{rbinom}\hlstd{(n,} \hlkwc{size} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{prob} \hlstd{=} \hlnum{1}\hlopt{/}\hlnum{2} \hlstd{) ) )}
+\hlstd{+ }\hlstd{\}}
+\hlstd{> }\hlstd{m}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{hist}\hlstd{(m)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{k} \hlkwb{<-} \hlnum{10000}
+\hlstd{> }\hlstd{n} \hlkwb{<-} \hlnum{10}
+\hlstd{> }\hlstd{m} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+\hlstd{> }\hlkwa{for} \hlstd{(ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{k) \{}
+\hlstd{+ }  \hlstd{m} \hlkwb{<-} \hlkwd{c}\hlstd{( m,} \hlkwd{mean}\hlstd{(}\hlkwd{rbinom}\hlstd{(}\hlnum{10}\hlstd{,}\hlkwc{size} \hlstd{=} \hlnum{1}\hlstd{,} \hlkwc{prob} \hlstd{=} \hlnum{1} \hlopt{/} \hlnum{2} \hlstd{)) )}
+\hlstd{+ }\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{hist}\hlstd{(m)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{La convergence vers la loi normale}
+
+  On dit en statistiques qu'il y a convergence vers la loi normale.
+  
+  Quand on tire une pièce, la valeur obtenu suit une loi binomiale. C'est lié à la
+  méthode de tirage et au \emph{design} de l'expérience. 
+  
+  Cette moyenne varie car on tire un échantillon des valeurs possibles. En conséquence
+  la moyenne obtenue va varier pour chaque échantillon. Et la valeur de la moyenne
+  va varier en suivant une loi normale.  
+  
+\end{frame}
+
+
+\section{Coding Challenge}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Simuler une matrice de k x k nombres aléatoires}
+  
+  la loi peut être la loi uniforme, la loi normale, \dots
+  
+  Le but, obtenir une matrice de k x k avec $k^2$ nombres aléatoires.
+  
+  Etonnez moi ! 
+  
+  Un conseil commencez avec k égal 10 ou 50. Puis avec k égal à 1000.
+  
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Simuler une matrice de k x k nombres aléatoires}
+  
+  Pour créer une matrice la commande est~:
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlkwd{matrix}\hlstd{(valeurs,}\hlkwc{nrow}\hlstd{=k,}\hlkwc{ncol}\hlstd{=k)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Proposition 1}
+
+
+
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{matrice} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{NA}\hlstd{,}\hlkwc{nrow}\hlstd{=k,}\hlkwc{ncol}\hlstd{=k)}
+\hlstd{> }\hlkwa{for} \hlstd{(ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{k) \{}
+\hlstd{+ }  \hlkwa{for} \hlstd{(jj} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{k) \{}
+\hlstd{+ }    \hlstd{matrice[ii,jj]} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(}\hlnum{1}\hlstd{)}
+\hlstd{+ }  \hlstd{\}}
+\hlstd{+ }\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Proposition 2}
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{matrice} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{NA}\hlstd{,}\hlkwc{nrow}\hlstd{=k,}\hlkwc{ncol}\hlstd{=k)}
+\hlstd{> }\hlkwa{for} \hlstd{(ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{k) \{}
+\hlstd{+ }  \hlstd{matrice[ii,]} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(k)}
+\hlstd{+ }\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Proposition 3}
+  
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{matrice} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlnum{1}\hlstd{,}\hlkwc{nrow}\hlstd{=k,}\hlkwc{ncol}\hlstd{=k)}
+\hlstd{> }\hlstd{matrice} \hlkwb{<-} \hlkwd{apply}\hlstd{(matrice,}\hlnum{1}\hlopt{:}\hlnum{2}\hlstd{,rnorm)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Proposition 4}
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{matrice} \hlkwb{<-} \hlkwd{rnorm}\hlstd{(k}\hlopt{^}\hlnum{2}\hlstd{)}
+\hlstd{> }\hlkwd{dim}\hlstd{(matrice)} \hlkwb{<-} \hlkwd{c}\hlstd{(k,k)}
+\hlstd{> }
+\hlstd{> }\hlcom{# je sais, c'est pas esthétique.}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Mouvements brownien}
+  
+Random walking: un homme avance de pas en pas à chaque fois d'une valeur
+tiré dans une loi normale dans la direction x et idem pour la direction y.
+Réaliser les simulations pour n points
+
+\end{frame}
+
+
+\begin{frame}[containsverbatim]
+  \frametitle{Mouvements brownien}
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{n} \hlkwb{<-} \hlnum{10000}
+\hlstd{> }\hlstd{position.x} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{)}
+\hlstd{> }\hlstd{position.y} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{)}
+\hlstd{> }\hlkwa{for} \hlstd{(ii} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{n) \{}
+\hlstd{+ }  \hlstd{position.x} \hlkwb{<-} \hlkwd{c}\hlstd{(position.x,position.x[ii}\hlopt{-}\hlnum{1}\hlstd{]}\hlopt{+}\hlkwd{rnorm}\hlstd{(}\hlnum{1}\hlstd{))}
+\hlstd{+ }  \hlstd{position.y} \hlkwb{<-} \hlkwd{c}\hlstd{(position.y,position.y[ii}\hlopt{-}\hlnum{1}\hlstd{]}\hlopt{+}\hlkwd{rnorm}\hlstd{(}\hlnum{1}\hlstd{))}
+\hlstd{+ }\hlstd{\}}
+\hlstd{> }\hlkwd{plot}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlkwc{type}\hlstd{=}\hlstr{"n"}\hlstd{,}\hlkwc{xlim}\hlstd{=}\hlkwd{range}\hlstd{(position.x),}\hlkwc{ylim}\hlstd{=}\hlkwd{range}\hlstd{(position.y))}
+\hlstd{> }\hlkwd{lines}\hlstd{(position.x,position.y)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]
+  \frametitle{Mouvements brownien}
+  
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{> }\hlstd{n} \hlkwb{<-} \hlnum{10000}
+\hlstd{> }\hlstd{position.x} \hlkwb{<-} \hlkwd{cumsum}\hlstd{(}\hlkwd{c}\hlstd{(} \hlnum{0}\hlstd{,} \hlkwd{rnorm}\hlstd{(n)))}
+\hlstd{> }\hlstd{position.y} \hlkwb{<-} \hlkwd{cumsum}\hlstd{(}\hlkwd{c}\hlstd{(} \hlnum{0}\hlstd{,} \hlkwd{rnorm}\hlstd{(n)))}
+\hlstd{> }\hlkwd{plot}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlkwc{type}\hlstd{=}\hlstr{"n"}\hlstd{,}\hlkwc{xlim}\hlstd{=}\hlkwd{range}\hlstd{(position.x),}\hlkwc{ylim}\hlstd{=}\hlkwd{range}\hlstd{(position.y))}
+\hlstd{> }\hlkwd{lines}\hlstd{(position.x,position.y)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+
+
+
+
+
+\end{document}
